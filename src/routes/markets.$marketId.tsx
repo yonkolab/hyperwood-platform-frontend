@@ -1,4 +1,4 @@
-import { useSuspenseQuery } from "@tanstack/react-query";
+import { useQuery, useSuspenseQuery } from "@tanstack/react-query";
 import { createFileRoute } from "@tanstack/react-router";
 import { MarketChart } from "#/components/markets/market-chart";
 import { OrderBookPanel } from "#/components/markets/order-book";
@@ -36,9 +36,6 @@ export const Route = createFileRoute("/markets/$marketId")({
 				marketTradesQueryOptions(params.marketId),
 			),
 			context.queryClient.ensureQueryData(
-				marketCandlesQueryOptions(params.marketId),
-			),
-			context.queryClient.ensureQueryData(
 				marketAnnouncementsQueryOptions(params.marketId),
 			),
 			context.queryClient.ensureQueryData(currentUserQueryOptions),
@@ -54,9 +51,14 @@ function MarketDetailPage() {
 		marketOrderBookQueryOptions(marketId),
 	);
 	const { data: trades } = useSuspenseQuery(marketTradesQueryOptions(marketId));
-	const { data: candles } = useSuspenseQuery(
-		marketCandlesQueryOptions(marketId),
-	);
+	const isArchived =
+		market.status === "settled" ||
+		market.status === "voided" ||
+		market.status === "cancelled";
+	const { data: candles } = useQuery({
+		...marketCandlesQueryOptions(marketId),
+		enabled: isArchived,
+	});
 	const { data: announcements } = useSuspenseQuery(
 		marketAnnouncementsQueryOptions(marketId),
 	);

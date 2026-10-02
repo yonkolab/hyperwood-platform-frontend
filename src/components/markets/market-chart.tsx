@@ -9,14 +9,24 @@ import {
 } from "recharts";
 import type { HistoricalCandle } from "#/lib/api/types";
 
-export function MarketChart(props: { candles: HistoricalCandle[] }) {
-	const data = props.candles.map((candle) => ({
+export function MarketChart(props: { candles?: HistoricalCandle[] }) {
+	const data = (props.candles ?? []).map((candle) => ({
 		label: new Date(candle.bucketStart).toLocaleTimeString("pt-BR", {
 			hour: "2-digit",
 			minute: "2-digit",
 		}),
 		close: candle.closePriceBps / 100,
 	}));
+
+	if (data.length === 0) {
+		return (
+			<div className="flex h-72 w-full items-center justify-center rounded-2xl border border-dashed border-slate-800 bg-slate-950/50">
+				<p className="max-w-xs text-center text-sm text-slate-500">
+					Gráfico de candles disponível após o encerramento do mercado.
+				</p>
+			</div>
+		);
+	}
 
 	return (
 		<div className="h-72 w-full">
