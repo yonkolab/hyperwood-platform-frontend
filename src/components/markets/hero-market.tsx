@@ -47,6 +47,10 @@ export function HeroMarket(props: { data: HomePageData }) {
 		() => (market ? buildMockPulseItems(market) : []),
 		[market],
 	);
+	const scrollingPulseItems = useMemo(
+		() => [...pulseItems, ...pulseItems],
+		[pulseItems],
+	);
 	const liveCountdown = useMemo(
 		() => formatHeroCountdown(market?.closesAt, now),
 		[market?.closesAt, now],
@@ -79,108 +83,113 @@ export function HeroMarket(props: { data: HomePageData }) {
 
 	return (
 		<div className="space-y-4">
-			<Card className="overflow-hidden rounded-[24px] border-slate-800/80 bg-[#0d141d] p-5 lg:p-6">
-				<div className="flex flex-col gap-6">
-					<div className="flex flex-col gap-3 lg:flex-row lg:items-start lg:justify-between">
+			<Card className="overflow-hidden rounded-[24px] border-slate-800/80 bg-[#0d141d] p-4 lg:h-[480px] lg:p-5">
+				<div className="flex h-full flex-col gap-4">
+					<div className="flex flex-col gap-2 lg:flex-row lg:items-start lg:justify-between">
 						<div className="min-w-0">
-							<p className="text-sm font-medium text-slate-400">
+							<p className="text-xs font-medium text-slate-400 lg:text-sm">
 								{market.event.category} · {market.event.title}
 							</p>
-							<h1 className="mt-1 max-w-3xl text-3xl font-semibold tracking-tight text-white lg:text-[2.2rem]">
+							<h1 className="mt-1 max-w-3xl text-[1.55rem] font-semibold leading-tight tracking-tight text-white lg:text-[1.75rem]">
 								{market.title}
 							</h1>
 						</div>
 						<div className="text-left lg:text-right">
-							<p className="text-sm font-medium text-slate-500">Termina em</p>
-							<p className="mt-2 text-3xl font-semibold tabular-nums text-rose-300 lg:text-[2rem]">
+							<p className="text-xs font-medium text-slate-500 lg:text-sm">Termina em</p>
+							<p className="mt-1 text-[1.45rem] font-semibold tabular-nums text-rose-300 lg:text-[1.65rem]">
 								{liveCountdown}
 							</p>
 						</div>
 					</div>
 
-					<div className="grid gap-6 lg:grid-cols-[320px_minmax(0,1fr)] lg:items-stretch">
-						<div className="flex min-h-[420px] flex-col">
-							<div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-1 xl:grid-cols-2">
+					<div className="grid flex-1 gap-4 lg:grid-cols-[292px_minmax(0,1fr)] lg:items-stretch">
+						<div className="flex min-h-0 flex-col">
+							<div className="grid gap-2 sm:grid-cols-2 lg:grid-cols-1 xl:grid-cols-2">
 								<Button
 									variant="positive"
-									className="h-14 justify-center rounded-2xl text-base font-semibold"
+									className="h-11 justify-center rounded-xl text-[13px] font-semibold"
 								>
 									<span>{shortOutcomeLabel(market, true)}</span>
 								</Button>
 								<Button
 									variant="negative"
-									className="h-14 justify-center rounded-2xl text-base font-semibold"
+									className="h-11 justify-center rounded-xl text-[13px] font-semibold"
 								>
 									<span>{shortOutcomeLabel(market, false)}</span>
 								</Button>
 							</div>
 
-							<div className="mt-5 flex-1 space-y-4 overflow-hidden rounded-[20px] border border-slate-900 bg-slate-950/60 p-4">
-								{pulseItems.map((item, index) => (
-									<div key={item.id} className="flex items-start gap-3">
+							<div className="hero-comments-mask mt-3 flex-1 overflow-hidden">
+								<div className="hero-comments-track space-y-3 pr-2">
+									{scrollingPulseItems.map((item, index) => (
 										<div
-											className={`mt-0.5 flex size-8 shrink-0 items-center justify-center rounded-full bg-gradient-to-br ${MOCK_AVATARS[index % MOCK_AVATARS.length]} text-[10px] font-semibold text-slate-950`}
+											key={`${item.id}-${index}`}
+											className="flex items-start gap-3"
 										>
-											{item.author.slice(0, 2).toUpperCase()}
+											<div
+												className={`mt-0.5 flex size-7 shrink-0 items-center justify-center rounded-full bg-gradient-to-br ${MOCK_AVATARS[index % MOCK_AVATARS.length]} text-[10px] font-semibold text-slate-950`}
+											>
+												{item.author.slice(0, 2).toUpperCase()}
+											</div>
+											<div className="min-w-0">
+												<p className="text-[13px] font-semibold leading-none text-slate-100">
+													{item.author}
+												</p>
+												<p className="mt-1 line-clamp-2 text-xs leading-5 text-slate-400">
+													{item.message}
+												</p>
+											</div>
 										</div>
-										<div className="min-w-0">
-											<p className="text-sm font-semibold text-slate-100">
-												{item.author}
-											</p>
-											<p className="mt-1 line-clamp-3 text-sm leading-6 text-slate-400">
-												{item.message}
-											</p>
-										</div>
-									</div>
-								))}
+									))}
+								</div>
 							</div>
 
-							<p className="mt-4 text-sm text-slate-500">
-								${formatCompactNumber(market.volumeUsdMinor / 100)} Vol
-							</p>
 						</div>
 
-						<div className="rounded-[20px] border border-slate-900 bg-slate-950/60 p-4 lg:p-5">
-							<div className="mb-5 grid gap-4 border-b border-slate-900 pb-4 lg:grid-cols-3">
+						<div className="flex min-h-0 flex-col px-1">
+							<div className="mb-4 grid gap-3 border-b border-slate-900 pb-3 lg:grid-cols-3">
 								<div className="flex items-center gap-3">
-									<div className="flex size-11 items-center justify-center rounded-2xl bg-amber-400/95 text-sm font-black text-slate-950">
+									<div className="flex size-10 items-center justify-center rounded-xl bg-amber-400/95 text-xs font-black text-slate-950">
 										YES
 									</div>
 									<div>
-										<p className="text-lg font-semibold text-amber-300">
+										<p className="text-sm font-semibold text-amber-300 lg:text-base">
 											{formatPriceBps(market.yesPriceBps)}
 										</p>
-										<p className="text-sm text-slate-400">
+										<p className="text-xs text-slate-400 lg:text-sm">
 											{shortOutcomeLabel(market, true)}
 										</p>
 									</div>
 								</div>
 								<div className="text-center">
-									<p className="text-lg font-semibold text-white">
+									<p className="text-sm font-semibold text-white lg:text-base">
 										{formatCompactNumber(market.volumeUsdMinor / 100)}
 									</p>
-									<p className="mt-1 text-sm capitalize text-slate-400">
+									<p className="mt-1 text-xs capitalize text-slate-400">
 										mercado {market.status}
 									</p>
 								</div>
 								<div className="flex items-center justify-end gap-3">
 									<div className="text-right">
-										<p className="text-lg font-semibold text-cyan-300">
+										<p className="text-sm font-semibold text-cyan-300 lg:text-base">
 											{formatPriceBps(market.noPriceBps)}
 										</p>
-										<p className="text-sm text-slate-400">
+										<p className="text-xs text-slate-400 lg:text-sm">
 											{shortOutcomeLabel(market, false)}
 										</p>
 									</div>
-									<div className="flex size-11 items-center justify-center rounded-2xl bg-cyan-500/90 text-sm font-black text-slate-950">
+									<div className="flex size-10 items-center justify-center rounded-xl bg-cyan-500/90 text-xs font-black text-slate-950">
 										NO
 									</div>
 								</div>
 							</div>
 
-							<div className="h-[308px] w-full">
+							<div className="min-h-0 flex-1">
 								<ResponsiveContainer width="100%" height="100%">
-									<LineChart data={chartData} margin={{ left: 0, right: 8, top: 12, bottom: 0 }}>
+									<LineChart
+										data={chartData}
+										margin={{ left: 0, right: 8, top: 12, bottom: 0 }}
+									>
 										<CartesianGrid stroke="rgba(100,116,139,0.14)" vertical={false} />
 										<XAxis
 											dataKey="label"
@@ -227,11 +236,26 @@ export function HeroMarket(props: { data: HomePageData }) {
 									</LineChart>
 								</ResponsiveContainer>
 							</div>
+						</div>
+					</div>
 
-							<div className="mt-4 flex items-center justify-between text-sm text-slate-500">
-								<span>{market.tags.slice(0, 3).join(" · ")}</span>
-								<span>Hyperwood</span>
-							</div>
+					<div className="flex items-center justify-between border-t border-slate-900 pt-3 text-[11px] text-slate-500 lg:text-xs">
+						<div className="flex items-center gap-3">
+							<span className="font-medium text-slate-400">
+								${formatCompactNumber(market.volumeUsdMinor / 100)} Vol
+							</span>
+							<span className="hidden sm:inline">
+								{market.tags.slice(0, 3).join(" · ")}
+							</span>
+						</div>
+						<div className="flex items-center gap-3">
+							<span className="inline-flex items-center gap-2 font-medium text-rose-400">
+								<span className="size-2 rounded-full bg-rose-500" />
+								AO VIVO
+							</span>
+							<span className="font-semibold tracking-[0.16em] text-slate-400">
+								HYPERWOOD
+							</span>
 						</div>
 					</div>
 				</div>

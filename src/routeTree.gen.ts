@@ -9,38 +9,23 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
-import { Route as WalletRouteImport } from './routes/wallet'
-import { Route as VerifyEmailRouteImport } from './routes/verify-email'
-import { Route as RegisterRouteImport } from './routes/register'
-import { Route as PortfolioRouteImport } from './routes/portfolio'
-import { Route as LoginRouteImport } from './routes/login'
 import { Route as IndexRouteImport } from './routes/index'
-import { Route as SettingsSecurityRouteImport } from './routes/settings.security'
-import { Route as PortfolioExportsRouteImport } from './routes/portfolio.exports'
-import { Route as MfaVerifyRouteImport } from './routes/mfa.verify'
+import { Route as LoginRouteImport } from './routes/login'
+import { Route as PortfolioRouteImport } from './routes/portfolio'
+import { Route as RegisterRouteImport } from './routes/register'
+import { Route as VerifyEmailRouteImport } from './routes/verify-email'
+import { Route as WalletRouteImport } from './routes/wallet'
 import { Route as MarketsMarketIdRouteImport } from './routes/markets.$marketId'
-import { Route as PortfolioHistoryOrdersRouteImport } from './routes/portfolio.history.orders'
-import { Route as PortfolioHistoryFillsRouteImport } from './routes/portfolio.history.fills'
+import { Route as MfaVerifyRouteImport } from './routes/mfa.verify'
+import { Route as PortfolioExportsRouteImport } from './routes/portfolio.exports'
+import { Route as SettingsSecurityRouteImport } from './routes/settings.security'
 import { Route as ApiRealtimePortfolioRouteImport } from './routes/api.realtime.portfolio'
+import { Route as PortfolioHistoryFillsRouteImport } from './routes/portfolio.history.fills'
+import { Route as PortfolioHistoryOrdersRouteImport } from './routes/portfolio.history.orders'
 
-const WalletRoute = WalletRouteImport.update({
-  id: '/wallet',
-  path: '/wallet',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const VerifyEmailRoute = VerifyEmailRouteImport.update({
-  id: '/verify-email',
-  path: '/verify-email',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const RegisterRoute = RegisterRouteImport.update({
-  id: '/register',
-  path: '/register',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const PortfolioRoute = PortfolioRouteImport.update({
-  id: '/portfolio',
-  path: '/portfolio',
+const IndexRoute = IndexRouteImport.update({
+  id: '/',
+  path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
 const LoginRoute = LoginRouteImport.update({
@@ -48,24 +33,24 @@ const LoginRoute = LoginRouteImport.update({
   path: '/login',
   getParentRoute: () => rootRouteImport,
 } as any)
-const IndexRoute = IndexRouteImport.update({
-  id: '/',
-  path: '/',
+const PortfolioRoute = PortfolioRouteImport.update({
+  id: '/portfolio',
+  path: '/portfolio',
   getParentRoute: () => rootRouteImport,
 } as any)
-const SettingsSecurityRoute = SettingsSecurityRouteImport.update({
-  id: '/settings/security',
-  path: '/settings/security',
+const RegisterRoute = RegisterRouteImport.update({
+  id: '/register',
+  path: '/register',
   getParentRoute: () => rootRouteImport,
 } as any)
-const PortfolioExportsRoute = PortfolioExportsRouteImport.update({
-  id: '/exports',
-  path: '/exports',
-  getParentRoute: () => PortfolioRoute,
+const VerifyEmailRoute = VerifyEmailRouteImport.update({
+  id: '/verify-email',
+  path: '/verify-email',
+  getParentRoute: () => rootRouteImport,
 } as any)
-const MfaVerifyRoute = MfaVerifyRouteImport.update({
-  id: '/mfa/verify',
-  path: '/mfa/verify',
+const WalletRoute = WalletRouteImport.update({
+  id: '/wallet',
+  path: '/wallet',
   getParentRoute: () => rootRouteImport,
 } as any)
 const MarketsMarketIdRoute = MarketsMarketIdRouteImport.update({
@@ -73,20 +58,35 @@ const MarketsMarketIdRoute = MarketsMarketIdRouteImport.update({
   path: '/markets/$marketId',
   getParentRoute: () => rootRouteImport,
 } as any)
-const PortfolioHistoryOrdersRoute = PortfolioHistoryOrdersRouteImport.update({
-  id: '/history/orders',
-  path: '/history/orders',
+const MfaVerifyRoute = MfaVerifyRouteImport.update({
+  id: '/mfa/verify',
+  path: '/mfa/verify',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PortfolioExportsRoute = PortfolioExportsRouteImport.update({
+  id: '/exports',
+  path: '/exports',
   getParentRoute: () => PortfolioRoute,
+} as any)
+const SettingsSecurityRoute = SettingsSecurityRouteImport.update({
+  id: '/settings/security',
+  path: '/settings/security',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiRealtimePortfolioRoute = ApiRealtimePortfolioRouteImport.update({
+  id: '/api/realtime/portfolio',
+  path: '/api/realtime/portfolio',
+  getParentRoute: () => rootRouteImport,
 } as any)
 const PortfolioHistoryFillsRoute = PortfolioHistoryFillsRouteImport.update({
   id: '/history/fills',
   path: '/history/fills',
   getParentRoute: () => PortfolioRoute,
 } as any)
-const ApiRealtimePortfolioRoute = ApiRealtimePortfolioRouteImport.update({
-  id: '/api/realtime/portfolio',
-  path: '/api/realtime/portfolio',
-  getParentRoute: () => rootRouteImport,
+const PortfolioHistoryOrdersRoute = PortfolioHistoryOrdersRouteImport.update({
+  id: '/history/orders',
+  path: '/history/orders',
+  getParentRoute: () => PortfolioRoute,
 } as any)
 
 export interface FileRoutesByFullPath {
@@ -198,32 +198,11 @@ export interface RootRouteChildren {
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    '/wallet': {
-      id: '/wallet'
-      path: '/wallet'
-      fullPath: '/wallet'
-      preLoaderRoute: typeof WalletRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/verify-email': {
-      id: '/verify-email'
-      path: '/verify-email'
-      fullPath: '/verify-email'
-      preLoaderRoute: typeof VerifyEmailRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/register': {
-      id: '/register'
-      path: '/register'
-      fullPath: '/register'
-      preLoaderRoute: typeof RegisterRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/portfolio': {
-      id: '/portfolio'
-      path: '/portfolio'
-      fullPath: '/portfolio'
-      preLoaderRoute: typeof PortfolioRouteImport
+    '/': {
+      id: '/'
+      path: '/'
+      fullPath: '/'
+      preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/login': {
@@ -233,32 +212,32 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof LoginRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/': {
-      id: '/'
-      path: '/'
-      fullPath: '/'
-      preLoaderRoute: typeof IndexRouteImport
+    '/portfolio': {
+      id: '/portfolio'
+      path: '/portfolio'
+      fullPath: '/portfolio'
+      preLoaderRoute: typeof PortfolioRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/settings/security': {
-      id: '/settings/security'
-      path: '/settings/security'
-      fullPath: '/settings/security'
-      preLoaderRoute: typeof SettingsSecurityRouteImport
+    '/register': {
+      id: '/register'
+      path: '/register'
+      fullPath: '/register'
+      preLoaderRoute: typeof RegisterRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/portfolio/exports': {
-      id: '/portfolio/exports'
-      path: '/exports'
-      fullPath: '/portfolio/exports'
-      preLoaderRoute: typeof PortfolioExportsRouteImport
-      parentRoute: typeof PortfolioRoute
+    '/verify-email': {
+      id: '/verify-email'
+      path: '/verify-email'
+      fullPath: '/verify-email'
+      preLoaderRoute: typeof VerifyEmailRouteImport
+      parentRoute: typeof rootRouteImport
     }
-    '/mfa/verify': {
-      id: '/mfa/verify'
-      path: '/mfa/verify'
-      fullPath: '/mfa/verify'
-      preLoaderRoute: typeof MfaVerifyRouteImport
+    '/wallet': {
+      id: '/wallet'
+      path: '/wallet'
+      fullPath: '/wallet'
+      preLoaderRoute: typeof WalletRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/markets/$marketId': {
@@ -268,12 +247,33 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof MarketsMarketIdRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/portfolio/history/orders': {
-      id: '/portfolio/history/orders'
-      path: '/history/orders'
-      fullPath: '/portfolio/history/orders'
-      preLoaderRoute: typeof PortfolioHistoryOrdersRouteImport
+    '/mfa/verify': {
+      id: '/mfa/verify'
+      path: '/mfa/verify'
+      fullPath: '/mfa/verify'
+      preLoaderRoute: typeof MfaVerifyRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/portfolio/exports': {
+      id: '/portfolio/exports'
+      path: '/exports'
+      fullPath: '/portfolio/exports'
+      preLoaderRoute: typeof PortfolioExportsRouteImport
       parentRoute: typeof PortfolioRoute
+    }
+    '/settings/security': {
+      id: '/settings/security'
+      path: '/settings/security'
+      fullPath: '/settings/security'
+      preLoaderRoute: typeof SettingsSecurityRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/realtime/portfolio': {
+      id: '/api/realtime/portfolio'
+      path: '/api/realtime/portfolio'
+      fullPath: '/api/realtime/portfolio'
+      preLoaderRoute: typeof ApiRealtimePortfolioRouteImport
+      parentRoute: typeof rootRouteImport
     }
     '/portfolio/history/fills': {
       id: '/portfolio/history/fills'
@@ -282,12 +282,12 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof PortfolioHistoryFillsRouteImport
       parentRoute: typeof PortfolioRoute
     }
-    '/api/realtime/portfolio': {
-      id: '/api/realtime/portfolio'
-      path: '/api/realtime/portfolio'
-      fullPath: '/api/realtime/portfolio'
-      preLoaderRoute: typeof ApiRealtimePortfolioRouteImport
-      parentRoute: typeof rootRouteImport
+    '/portfolio/history/orders': {
+      id: '/portfolio/history/orders'
+      path: '/history/orders'
+      fullPath: '/portfolio/history/orders'
+      preLoaderRoute: typeof PortfolioHistoryOrdersRouteImport
+      parentRoute: typeof PortfolioRoute
     }
   }
 }

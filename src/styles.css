@@ -41,3 +41,29 @@ select {
 ::selection {
   background: rgba(34, 211, 238, 0.25);
 }
+
+.hero-comments-mask {
+  mask-image: linear-gradient(to bottom, transparent 0%, black 10%, black 78%, transparent 100%);
+  -webkit-mask-image: linear-gradient(to bottom, transparent 0%, black 10%, black 78%, transparent 100%);
+}
+
+.hero-comments-track {
+  animation: hero-comments-scroll 24s linear infinite;
+  will-change: transform;
+}
+
+@keyframes hero-comments-scroll {
+  0% {
+    transform: translateY(0);
+  }
+
+  100% {
+    transform: translateY(-50%);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-comments-track {
+    animation: none;
+  }
+}
