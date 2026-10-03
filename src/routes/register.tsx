@@ -1,13 +1,14 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation } from "@tanstack/react-query";
-import { createFileRoute, Link } from "@tanstack/react-router";
-import { useState } from "react";
+import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useForm } from "react-hook-form";
+import { toast } from "sonner";
 import { z } from "zod";
 import { Button } from "#/components/ui/button";
 import { Card } from "#/components/ui/card";
 import { Input } from "#/components/ui/input";
 import { registerUser } from "#/features/auth/server";
+import { formatApiError } from "#/lib/api/errors";
 
 const formSchema = z.object({
 	email: z.string().email(),
@@ -25,18 +26,21 @@ function RegisterPage() {
 	const emailFieldId = "register-email";
 	const usernameFieldId = "register-username";
 	const passwordFieldId = "register-password";
-	const [deliveryMessage, setDeliveryMessage] = useState<string | null>(null);
+	const navigate = useNavigate();
 	const form = useForm<FormValues>({
 		resolver: zodResolver(formSchema),
 	});
 
 	const mutation = useMutation({
 		mutationFn: async (values: FormValues) => registerUser({ data: values }),
-		onSuccess: (result) => {
-			const token = result.verificationChallenge.token
-				? ` Token dev: ${result.verificationChallenge.token}.`
-				: "";
-			setDeliveryMessage(`Entrega: ${result.delivery.status}.${token}`);
+		onSuccess: async () => {
+			toast.success(
+				"Conta criada com sucesso! Enviamos um link de verificação para o seu e-mail.",
+			);
+			await navigate({ to: "/verify-email" });
+		},
+		onError: (error) => {
+			toast.error(formatApiError(error));
 		},
 	});
 
@@ -75,17 +79,6 @@ function RegisterPage() {
 							{...form.register("password")}
 						/>
 					</label>
-					{deliveryMessage ? (
-						<p className="rounded-2xl border border-cyan-400/20 bg-cyan-400/10 p-3 text-sm text-cyan-200">
-							{deliveryMessage}{" "}
-							<Link to="/verify-email" className="underline">
-								Verificar agora
-							</Link>
-						</p>
-					) : null}
-					{mutation.error ? (
-						<p className="text-sm text-rose-300">{mutation.error.message}</p>
-					) : null}
 					<Button
 						type="submit"
 						className="w-full"

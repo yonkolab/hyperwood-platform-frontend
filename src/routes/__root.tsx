@@ -5,6 +5,7 @@ import {
 	HeadContent,
 	Scripts,
 } from "@tanstack/react-router";
+import { Toaster } from "sonner";
 import { AppShell } from "#/components/layout/app-shell";
 import { AppI18nProvider } from "#/lib/i18n";
 import {
@@ -53,6 +54,7 @@ function RootDocument({ children }: { children: React.ReactNode }) {
 						{children}
 					</AppShell>
 				</AppI18nProvider>
+				<Toaster theme="dark" position="top-right" richColors closeButton />
 				<Scripts />
 			</body>
 		</html>

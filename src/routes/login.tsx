@@ -1,13 +1,14 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation } from "@tanstack/react-query";
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
-import { useState } from "react";
 import { useForm } from "react-hook-form";
+import { toast } from "sonner";
 import { z } from "zod";
 import { Button } from "#/components/ui/button";
 import { Card } from "#/components/ui/card";
 import { Input } from "#/components/ui/input";
 import { loginUser } from "#/features/auth/server";
+import { formatApiError } from "#/lib/api/errors";
 
 const formSchema = z.object({
 	email: z.string().email(),
@@ -24,7 +25,6 @@ function LoginPage() {
 	const emailFieldId = "login-email";
 	const passwordFieldId = "login-password";
 	const navigate = useNavigate();
-	const [errorMessage, setErrorMessage] = useState<string | null>(null);
 	const form = useForm<FormValues>({
 		resolver: zodResolver(formSchema),
 	});
@@ -43,7 +43,7 @@ function LoginPage() {
 			await navigate({ to: "/portfolio" });
 		},
 		onError: (error) => {
-			setErrorMessage(error.message);
+			toast.error(formatApiError(error));
 		},
 	});
 
@@ -77,9 +77,6 @@ function LoginPage() {
 							{...form.register("password")}
 						/>
 					</label>
-					{errorMessage ? (
-						<p className="text-sm text-rose-300">{errorMessage}</p>
-					) : null}
 					<Button
 						type="submit"
 						className="w-full"
