@@ -16,6 +16,7 @@ import {
 	getHomePageData,
 	getMarketAnnouncements,
 	getMarketCandles,
+	getMarketComments,
 	getMarketDetail,
 	getMarketOrderBook,
 	getMarkets,
@@ -94,6 +95,13 @@ export function marketAnnouncementsQueryOptions(marketId: string) {
 	return queryOptions({
 		queryKey: ["markets", marketId, "announcements"],
 		queryFn: () => getMarketAnnouncements({ data: { marketId } }),
+	});
+}
+
+export function marketCommentsQueryOptions(marketId: string) {
+	return queryOptions({
+		queryKey: ["markets", marketId, "comments"],
+		queryFn: () => getMarketComments({ data: { marketId } }),
 	});
 }
 

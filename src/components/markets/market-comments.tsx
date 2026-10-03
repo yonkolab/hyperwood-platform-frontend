@@ -27,6 +27,7 @@ import {
 import { formatApiError } from "#/lib/api/errors";
 import { ApiError } from "#/lib/api/http";
 import type { User } from "#/lib/api/types";
+import { marketCommentsQueryOptions } from "#/lib/query-options";
 
 function formatCommentTimeAgo(iso: string) {
 	const diffMs = Date.now() - new Date(iso).getTime();
@@ -470,10 +471,9 @@ function updateCommentInTree(
 
 export function MarketComments(props: { marketId: string; user: User | null }) {
 	const queryClient = useQueryClient();
-	const { data, isLoading } = useQuery({
-		queryKey: ["markets", props.marketId, "comments"],
-		queryFn: () => getMarketComments({ data: { marketId: props.marketId } }),
-	});
+	const { data, isLoading } = useQuery(
+		marketCommentsQueryOptions(props.marketId),
+	);
 	const commentCount = countComments(data?.comments ?? []);
 	const sectionRef = useRef<HTMLDivElement>(null);
 
@@ -537,7 +537,7 @@ export function MarketComments(props: { marketId: string; user: User | null }) {
 	);
 }
 
-function countComments(comments: MarketCommentNode[]): number {
+export function countComments(comments: MarketCommentNode[]): number {
 	return comments.reduce(
 		(total, comment) => total + 1 + countComments(comment.replies),
 		0,
