@@ -3,6 +3,7 @@ import { Link, useRouter, useRouterState } from "@tanstack/react-router";
 import { Menu, Search } from "lucide-react";
 import { Button } from "#/components/ui/button";
 import { Input } from "#/components/ui/input";
+import { ThemeToggle } from "#/components/ui/theme-toggle";
 import type { AppLocale } from "#/env";
 import { logoutUser } from "#/features/auth/server";
 import type { User } from "#/lib/api/types";
@@ -32,18 +33,19 @@ export function AppShell(props: {
 	});
 
 	return (
-		<div className="min-h-screen bg-[#0a0f16] text-slate-100">
-			<header className="sticky top-0 z-40 border-b border-slate-900/80 bg-[#0a0f16]/90 backdrop-blur">
+		<div className="min-h-screen bg-background text-foreground">
+			<header className="sticky top-0 z-40 border-b border-edge bg-card/90 backdrop-blur">
 				<div className="mx-auto max-w-7xl px-4 lg:px-8">
-					<div className="flex items-center gap-4 py-4">
-						<Link
-							to="/"
-							className="text-2xl font-semibold tracking-tight text-white"
-						>
-							Hyperwood
+					<div className="flex items-center gap-4 py-3">
+						<Link to="/" className="flex shrink-0 items-center">
+							<img
+								src="/hyperwood-logo.png"
+								alt="Hyperwood"
+								className="h-8 w-auto"
+							/>
 						</Link>
-						<div className="hidden flex-1 items-center gap-3 rounded-2xl border border-slate-800 bg-slate-950/80 px-3 py-2 md:flex">
-							<Search className="size-4 text-slate-500" />
+						<div className="hidden flex-1 items-center gap-3 rounded-lg border border-edge bg-background px-3 py-2 md:flex">
+							<Search className="size-4 text-muted" />
 							<Input
 								aria-label="search"
 								placeholder="Pesquise mercados, temas ou eventos..."
@@ -52,13 +54,12 @@ export function AppShell(props: {
 						</div>
 
 						<LocaleSwitcher locale={props.locale} />
+						<ThemeToggle />
 						{props.user ? (
 							<div className="hidden items-center gap-3 md:flex">
-								<span className="text-sm text-slate-400">
-									{props.user.email}
-								</span>
+								<span className="text-sm text-muted">{props.user.email}</span>
 								<Link to="/portfolio">
-									<Button>Entrar no app</Button>
+									<Button>Portfolio</Button>
 								</Link>
 								<Button
 									variant="ghost"
@@ -72,7 +73,7 @@ export function AppShell(props: {
 							<div className="hidden items-center gap-3 md:flex">
 								<Link
 									to="/login"
-									className="text-sm text-slate-300 hover:text-white"
+									className="text-sm font-medium text-muted hover:text-foreground"
 								>
 									Entrar
 								</Link>
@@ -85,15 +86,15 @@ export function AppShell(props: {
 							<Menu className="size-4" />
 						</Button>
 					</div>
-					<div className="scrollbar-none -mx-4 overflow-x-auto border-t border-slate-900/80 px-4">
-						<nav className="flex min-w-max items-center gap-5 py-3 text-sm">
+					<div className="scrollbar-none -mx-4 overflow-x-auto px-4">
+						<nav className="flex min-w-max items-center gap-6 py-2.5 text-sm">
 							<Link
 								to="/"
 								search={{}}
 								className={`whitespace-nowrap transition ${
 									!selectedCategory
-										? "font-semibold text-white"
-										: "text-slate-400 hover:text-white"
+										? "font-semibold text-foreground"
+										: "text-muted hover:text-foreground"
 								}`}
 							>
 								Tendências
@@ -105,8 +106,8 @@ export function AppShell(props: {
 									search={{ category }}
 									className={`whitespace-nowrap transition ${
 										selectedCategory === category
-											? "font-semibold text-white"
-											: "text-slate-400 hover:text-white"
+											? "font-semibold text-foreground"
+											: "text-muted hover:text-foreground"
 									}`}
 								>
 									{category}

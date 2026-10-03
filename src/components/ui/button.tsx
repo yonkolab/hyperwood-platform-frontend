@@ -20,19 +20,19 @@ export function Button({
 	return (
 		<button
 			className={cn(
-				"inline-flex items-center justify-center rounded-xl border px-4 py-2 text-sm font-semibold transition disabled:cursor-not-allowed disabled:opacity-50",
+				"inline-flex items-center justify-center rounded-lg border px-4 py-2 text-sm font-semibold transition disabled:cursor-not-allowed disabled:opacity-50",
 				variant === "primary" &&
-					"border-cyan-400/30 bg-cyan-400 text-slate-950 hover:bg-cyan-300",
+					"border-transparent bg-brand text-white hover:bg-brand-hover",
 				variant === "secondary" &&
-					"border-slate-800 bg-slate-900 text-slate-100 hover:border-slate-700 hover:bg-slate-800",
+					"border-edge bg-card text-foreground shadow-[0_1px_2px_rgba(13,31,23,0.06)] hover:border-brand/40",
 				variant === "ghost" &&
-					"border-transparent bg-transparent text-slate-300 hover:bg-slate-900",
+					"border-transparent bg-transparent text-muted hover:bg-subtle hover:text-foreground",
 				variant === "danger" &&
-					"border-red-500/30 bg-red-500/15 text-red-200 hover:bg-red-500/20",
+					"border-transparent bg-no text-white hover:bg-no/90",
 				variant === "positive" &&
-					"border-emerald-400/20 bg-emerald-400/15 text-emerald-200 hover:bg-emerald-400/20",
+					"border-transparent bg-yes text-white hover:bg-yes/90",
 				variant === "negative" &&
-					"border-rose-400/20 bg-rose-400/15 text-rose-200 hover:bg-rose-400/20",
+					"border-transparent bg-no text-white hover:bg-no/90",
 				className,
 			)}
 			{...props}

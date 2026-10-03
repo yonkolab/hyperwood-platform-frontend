@@ -58,7 +58,7 @@ function LoginPage() {
 	return (
 		<div className="mx-auto max-w-md">
 			<Card className="p-6">
-				<h1 className="text-2xl font-semibold text-white">
+				<h1 className="text-2xl font-semibold text-foreground">
 					Entre na sua conta
 				</h1>
 				<form
@@ -69,14 +69,14 @@ function LoginPage() {
 				>
 					<label
 						htmlFor={emailFieldId}
-						className="space-y-2 text-sm text-slate-400"
+						className="space-y-2 text-sm text-muted"
 					>
 						<span>E-mail</span>
 						<Input id={emailFieldId} type="email" {...form.register("email")} />
 					</label>
 					<label
 						htmlFor={passwordFieldId}
-						className="space-y-2 text-sm text-slate-400"
+						className="space-y-2 text-sm text-muted"
 					>
 						<span>Senha</span>
 						<Input

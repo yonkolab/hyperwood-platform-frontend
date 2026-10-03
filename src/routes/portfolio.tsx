@@ -89,28 +89,30 @@ function PortfolioPage() {
 			</section>
 			<section className="grid gap-6 xl:grid-cols-[minmax(0,1fr)_360px]">
 				<Card className="p-5">
-					<h2 className="text-xl font-semibold text-white">Posições abertas</h2>
+					<h2 className="text-xl font-semibold text-foreground">
+						Posições abertas
+					</h2>
 					<div className="mt-4 space-y-3">
 						{summary.positions.length === 0 ? (
-							<p className="text-sm text-slate-500">Sem posições abertas.</p>
+							<p className="text-sm text-muted">Sem posições abertas.</p>
 						) : (
 							summary.positions.map((position) => (
 								<div
 									key={`${position.marketId}-${position.outcome}`}
-									className="grid grid-cols-[1fr_auto_auto] gap-4 rounded-2xl border border-slate-900 bg-slate-950/70 px-4 py-4"
+									className="grid grid-cols-[1fr_auto_auto] gap-4 rounded-lg border border-edge bg-card/70 px-4 py-4"
 								>
 									<div>
-										<p className="font-medium text-white">
+										<p className="font-medium text-foreground">
 											{position.marketTitle}
 										</p>
-										<p className="mt-1 text-sm text-slate-500">
+										<p className="mt-1 text-sm text-muted">
 											{position.outcome}
 										</p>
 									</div>
-									<span className="text-sm text-slate-300">
+									<span className="text-sm text-muted">
 										{position.quantity}
 									</span>
-									<span className="font-semibold text-cyan-300">
+									<span className="font-semibold text-brand">
 										{formatPriceBps(position.averageEntryPriceBps)}
 									</span>
 								</div>
@@ -119,22 +121,20 @@ function PortfolioPage() {
 					</div>
 				</Card>
 				<Card className="p-5">
-					<h2 className="text-xl font-semibold text-white">
+					<h2 className="text-xl font-semibold text-foreground">
 						Liquidações recentes
 					</h2>
 					<div className="mt-4 space-y-3">
 						{settlements.settlements.slice(0, 6).map((settlement) => (
 							<div
 								key={settlement.settlementId}
-								className="rounded-2xl border border-slate-900 bg-slate-950/70 p-4"
+								className="rounded-lg border border-edge bg-card/70 p-4"
 							>
-								<p className="font-medium text-white">
+								<p className="font-medium text-foreground">
 									{settlement.marketTitle}
 								</p>
-								<p className="mt-1 text-sm text-slate-500">
-									{settlement.outcome}
-								</p>
-								<p className="mt-3 text-sm font-semibold text-emerald-300">
+								<p className="mt-1 text-sm text-muted">{settlement.outcome}</p>
+								<p className="mt-3 text-sm font-semibold text-yes">
 									{formatMoney(settlement.netPnlMinor)}
 								</p>
 							</div>
@@ -143,21 +143,25 @@ function PortfolioPage() {
 				</Card>
 			</section>
 			<Card className="p-5">
-				<h2 className="text-xl font-semibold text-white">Fills recentes</h2>
+				<h2 className="text-xl font-semibold text-foreground">
+					Fills recentes
+				</h2>
 				<div className="mt-4 space-y-3">
 					{fills.fills.slice(0, 8).map((fill) => (
 						<div
 							key={fill.tradeId}
-							className="grid grid-cols-[1fr_auto_auto] gap-4 rounded-2xl border border-slate-900 bg-slate-950/70 px-4 py-4"
+							className="grid grid-cols-[1fr_auto_auto] gap-4 rounded-lg border border-edge bg-card/70 px-4 py-4"
 						>
 							<div>
-								<p className="font-medium text-white">{fill.marketTitle}</p>
-								<p className="mt-1 text-sm text-slate-500">
+								<p className="font-medium text-foreground">
+									{fill.marketTitle}
+								</p>
+								<p className="mt-1 text-sm text-muted">
 									{fill.side} {fill.outcome}
 								</p>
 							</div>
-							<span className="text-sm text-slate-400">{fill.quantity}</span>
-							<span className="font-semibold text-cyan-300">
+							<span className="text-sm text-muted">{fill.quantity}</span>
+							<span className="font-semibold text-brand">
 								{formatPriceBps(fill.priceBps)}
 							</span>
 						</div>
@@ -171,10 +175,12 @@ function PortfolioPage() {
 function SummaryCard(props: { label: string; value: string }) {
 	return (
 		<Card className="p-5">
-			<p className="text-xs uppercase tracking-[0.2em] text-slate-500">
+			<p className="text-xs uppercase tracking-[0.2em] text-muted">
 				{props.label}
 			</p>
-			<p className="mt-3 text-2xl font-semibold text-white">{props.value}</p>
+			<p className="mt-3 text-2xl font-semibold text-foreground">
+				{props.value}
+			</p>
 		</Card>
 	);
 }

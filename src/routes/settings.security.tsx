@@ -99,10 +99,10 @@ function SecurityPage() {
 
 	return (
 		<div className="space-y-8">
-			{message ? <p className="text-sm text-cyan-200">{message}</p> : null}
+			{message ? <p className="text-sm text-brand">{message}</p> : null}
 			<section className="grid gap-6 xl:grid-cols-[380px_1fr_1fr]">
 				<Card className="p-5">
-					<h2 className="text-xl font-semibold text-white">TOTP</h2>
+					<h2 className="text-xl font-semibold text-foreground">TOTP</h2>
 					<Button
 						className="mt-4 w-full"
 						onClick={() => setupMutation.mutate()}
@@ -110,9 +110,9 @@ function SecurityPage() {
 						Iniciar TOTP
 					</Button>
 					{totpSetupResult ? (
-						<div className="mt-4 space-y-2 rounded-2xl border border-slate-900 bg-slate-950/70 p-4 text-sm text-slate-300">
+						<div className="mt-4 space-y-2 rounded-lg border border-edge bg-card/70 p-4 text-sm text-muted">
 							<p>Secret: {totpSetupResult.secret}</p>
-							<p className="break-all text-xs text-slate-500">
+							<p className="break-all text-xs text-muted">
 								{totpSetupResult.otpauthUri}
 							</p>
 						</div>
@@ -134,19 +134,19 @@ function SecurityPage() {
 					</form>
 				</Card>
 				<Card className="p-5">
-					<h2 className="text-xl font-semibold text-white">Sessões</h2>
+					<h2 className="text-xl font-semibold text-foreground">Sessões</h2>
 					<div className="mt-4 space-y-3">
 						{sessions.sessions.map((session) => (
 							<div
 								key={session.id}
-								className="rounded-2xl border border-slate-900 bg-slate-950/70 px-4 py-4"
+								className="rounded-lg border border-edge bg-card/70 px-4 py-4"
 							>
 								<div className="flex items-center justify-between gap-4">
 									<div>
-										<p className="font-medium text-white">
+										<p className="font-medium text-foreground">
 											{session.userAgent ?? "Desconhecido"}
 										</p>
-										<p className="mt-1 text-sm text-slate-500">
+										<p className="mt-1 text-sm text-muted">
 											{formatDateTime(session.createdAt)}
 										</p>
 									</div>
@@ -160,7 +160,7 @@ function SecurityPage() {
 											Revogar
 										</Button>
 									) : (
-										<span className="text-xs uppercase tracking-[0.18em] text-cyan-300">
+										<span className="text-xs uppercase tracking-[0.18em] text-brand">
 											atual
 										</span>
 									)}
@@ -170,7 +170,9 @@ function SecurityPage() {
 					</div>
 				</Card>
 				<Card className="p-5">
-					<h2 className="text-xl font-semibold text-white">Chaves de API</h2>
+					<h2 className="text-xl font-semibold text-foreground">
+						Chaves de API
+					</h2>
 					<form
 						className="mt-4 space-y-3"
 						onSubmit={apiKeyForm.handleSubmit(async (values) =>
@@ -193,12 +195,14 @@ function SecurityPage() {
 						{apiKeys.apiKeys.map((apiKey) => (
 							<div
 								key={apiKey.id}
-								className="rounded-2xl border border-slate-900 bg-slate-950/70 px-4 py-4"
+								className="rounded-lg border border-edge bg-card/70 px-4 py-4"
 							>
 								<div className="flex items-start justify-between gap-4">
 									<div>
-										<p className="font-medium text-white">{apiKey.keyPrefix}</p>
-										<p className="mt-1 text-sm text-slate-500">
+										<p className="font-medium text-foreground">
+											{apiKey.keyPrefix}
+										</p>
+										<p className="mt-1 text-sm text-muted">
 											{apiKey.scopes.join(", ")}
 										</p>
 									</div>

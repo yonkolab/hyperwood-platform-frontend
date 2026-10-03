@@ -81,8 +81,10 @@ function VerifyEmailPage() {
 	return (
 		<div className="mx-auto max-w-lg">
 			<Card className="p-6">
-				<h1 className="text-2xl font-semibold text-white">Verificar e-mail</h1>
-				<p className="mt-2 text-sm leading-6 text-slate-400">
+				<h1 className="text-2xl font-semibold text-foreground">
+					Verificar e-mail
+				</h1>
+				<p className="mt-2 text-sm leading-6 text-muted">
 					{hasTokenFromLink
 						? "Chegou aqui pelo link do e-mail? O token já está preenchido — basta confirmar."
 						: "Cole abaixo o token que você recebeu por e-mail para ativar sua conta."}
@@ -96,7 +98,7 @@ function VerifyEmailPage() {
 				>
 					<label
 						htmlFor={tokenFieldId}
-						className="space-y-2 text-sm text-slate-400"
+						className="space-y-2 text-sm text-muted"
 					>
 						<span>Token de verificação</span>
 						<Input
@@ -115,11 +117,11 @@ function VerifyEmailPage() {
 				</form>
 
 				<div className="my-6 flex items-center gap-3">
-					<span className="h-px flex-1 bg-slate-800" />
+					<span className="h-px flex-1 bg-edge" />
 					<span className="text-xs uppercase tracking-widest text-slate-500">
 						Não recebeu o e-mail?
 					</span>
-					<span className="h-px flex-1 bg-slate-800" />
+					<span className="h-px flex-1 bg-edge" />
 				</div>
 
 				<form
@@ -130,7 +132,7 @@ function VerifyEmailPage() {
 				>
 					<label
 						htmlFor={resendEmailFieldId}
-						className="flex-1 space-y-2 text-sm text-slate-400"
+						className="flex-1 space-y-2 text-sm text-muted"
 					>
 						<span>Seu e-mail</span>
 						<Input

@@ -53,13 +53,13 @@ export function OrderBookPanel(props: {
 					{levels.map((level) => (
 						<div
 							key={`${level.outcome}-${level.side}-${level.priceBps}`}
-							className="grid grid-cols-[1fr_auto_auto] gap-3 rounded-2xl border border-slate-900 bg-slate-950/80 px-3 py-3 text-sm"
+							className="grid grid-cols-[1fr_auto_auto] gap-3 rounded-lg border border-edge bg-card px-3 py-3 text-sm"
 						>
-							<span className="capitalize text-slate-200">
+							<span className="capitalize text-foreground">
 								{level.side} {level.outcome}
 							</span>
-							<span className="text-slate-400">{level.quantity}</span>
-							<span className="font-semibold text-cyan-300">
+							<span className="text-muted">{level.quantity}</span>
+							<span className="font-semibold text-brand">
 								{formatPriceBps(level.priceBps)}
 							</span>
 						</div>
@@ -72,13 +72,13 @@ export function OrderBookPanel(props: {
 					{props.trades.trades.slice(0, 8).map((trade) => (
 						<div
 							key={trade.id}
-							className="grid grid-cols-[auto_1fr_auto] gap-3 rounded-2xl border border-slate-900 bg-slate-950/80 px-3 py-3 text-sm"
+							className="grid grid-cols-[auto_1fr_auto] gap-3 rounded-lg border border-edge bg-card px-3 py-3 text-sm"
 						>
-							<span className="capitalize text-slate-300">{trade.outcome}</span>
-							<span className="text-slate-500">
+							<span className="capitalize text-muted">{trade.outcome}</span>
+							<span className="text-muted">
 								{formatDateTime(trade.executedAt)}
 							</span>
-							<span className="font-semibold text-white">
+							<span className="font-semibold text-foreground">
 								{formatPriceBps(trade.priceBps)}
 							</span>
 						</div>

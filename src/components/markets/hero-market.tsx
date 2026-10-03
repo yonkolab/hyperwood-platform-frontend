@@ -23,9 +23,9 @@ type HeroPulseItem = {
 };
 
 const MOCK_AVATARS = [
-	"from-fuchsia-500 to-cyan-400",
+	"from-yes to-brand",
 	"from-amber-400 to-yellow-200",
-	"from-emerald-400 to-lime-300",
+	"from-yes to-[#7fd8a9]",
 	"from-violet-500 to-indigo-300",
 ];
 
@@ -67,7 +67,7 @@ export function HeroMarket(props: { data: HomePageData }) {
 	if (!market) {
 		return (
 			<Card className="p-8">
-				<p className="text-slate-400">Nenhum mercado ativo para destacar.</p>
+				<p className="text-muted">Nenhum mercado ativo para destacar.</p>
 			</Card>
 		);
 	}
@@ -83,22 +83,22 @@ export function HeroMarket(props: { data: HomePageData }) {
 
 	return (
 		<div className="space-y-4">
-			<Card className="overflow-hidden rounded-[24px] border-slate-800/80 bg-[#0d141d] p-4 lg:h-[480px] lg:p-5">
+			<Card className="overflow-hidden rounded-lg border-edge bg-card p-4 lg:h-[480px] lg:p-5">
 				<div className="flex h-full flex-col gap-4">
 					<div className="flex flex-col gap-2 lg:flex-row lg:items-start lg:justify-between">
 						<div className="min-w-0">
-							<p className="text-xs font-medium text-slate-400 lg:text-sm">
+							<p className="text-xs font-medium text-muted lg:text-sm">
 								{market.event.category} · {market.event.title}
 							</p>
-							<h1 className="mt-1 max-w-3xl text-[1.55rem] font-semibold leading-tight tracking-tight text-white lg:text-[1.75rem]">
+							<h1 className="mt-1 max-w-3xl text-[1.55rem] font-semibold leading-tight tracking-tight text-foreground lg:text-[1.75rem]">
 								{market.title}
 							</h1>
 						</div>
 						<div className="text-left lg:text-right">
-							<p className="text-xs font-medium text-slate-500 lg:text-sm">
+							<p className="text-xs font-medium text-muted lg:text-sm">
 								Termina em
 							</p>
-							<p className="mt-1 text-[1.45rem] font-semibold tabular-nums text-rose-300 lg:text-[1.65rem]">
+							<p className="mt-1 text-[1.45rem] font-semibold tabular-nums text-no lg:text-[1.65rem]">
 								{liveCountdown}
 							</p>
 						</div>
@@ -109,13 +109,13 @@ export function HeroMarket(props: { data: HomePageData }) {
 							<div className="grid gap-2 sm:grid-cols-2 lg:grid-cols-1 xl:grid-cols-2">
 								<Button
 									variant="positive"
-									className="h-11 justify-center rounded-xl text-[13px] font-semibold"
+									className="h-11 justify-center rounded-md text-[13px] font-semibold"
 								>
 									<span>{shortOutcomeLabel(market, true)}</span>
 								</Button>
 								<Button
 									variant="negative"
-									className="h-11 justify-center rounded-xl text-[13px] font-semibold"
+									className="h-11 justify-center rounded-md text-[13px] font-semibold"
 								>
 									<span>{shortOutcomeLabel(market, false)}</span>
 								</Button>
@@ -134,10 +134,10 @@ export function HeroMarket(props: { data: HomePageData }) {
 												{item.author.slice(0, 2).toUpperCase()}
 											</div>
 											<div className="min-w-0">
-												<p className="text-[13px] font-semibold leading-none text-slate-100">
+												<p className="text-[13px] font-semibold leading-none text-foreground">
 													{item.author}
 												</p>
-												<p className="mt-1 line-clamp-2 text-xs leading-5 text-slate-400">
+												<p className="mt-1 line-clamp-2 text-xs leading-5 text-muted">
 													{item.message}
 												</p>
 											</div>
@@ -148,38 +148,38 @@ export function HeroMarket(props: { data: HomePageData }) {
 						</div>
 
 						<div className="flex min-h-0 flex-col px-1">
-							<div className="mb-4 grid gap-3 border-b border-slate-900 pb-3 lg:grid-cols-3">
+							<div className="mb-4 grid gap-3 border-b border-edge pb-3 lg:grid-cols-3">
 								<div className="flex items-center gap-3">
-									<div className="flex size-10 items-center justify-center rounded-xl bg-amber-400/95 text-xs font-black text-slate-950">
+									<div className="flex size-10 items-center justify-center rounded-md bg-amber-400/95 text-xs font-black text-slate-950">
 										YES
 									</div>
 									<div>
 										<p className="text-sm font-semibold text-amber-300 lg:text-base">
 											{formatPriceBps(market.yesPriceBps)}
 										</p>
-										<p className="text-xs text-slate-400 lg:text-sm">
+										<p className="text-xs text-muted lg:text-sm">
 											{shortOutcomeLabel(market, true)}
 										</p>
 									</div>
 								</div>
 								<div className="text-center">
-									<p className="text-sm font-semibold text-white lg:text-base">
+									<p className="text-sm font-semibold text-foreground lg:text-base">
 										{formatCompactNumber(market.volumeUsdMinor / 100)}
 									</p>
-									<p className="mt-1 text-xs capitalize text-slate-400">
+									<p className="mt-1 text-xs capitalize text-muted">
 										mercado {market.status}
 									</p>
 								</div>
 								<div className="flex items-center justify-end gap-3">
 									<div className="text-right">
-										<p className="text-sm font-semibold text-cyan-300 lg:text-base">
+										<p className="text-sm font-semibold text-brand lg:text-base">
 											{formatPriceBps(market.noPriceBps)}
 										</p>
-										<p className="text-xs text-slate-400 lg:text-sm">
+										<p className="text-xs text-muted lg:text-sm">
 											{shortOutcomeLabel(market, false)}
 										</p>
 									</div>
-									<div className="flex size-10 items-center justify-center rounded-xl bg-cyan-500/90 text-xs font-black text-slate-950">
+									<div className="flex size-10 items-center justify-center rounded-md bg-brand text-xs font-black text-white">
 										NO
 									</div>
 								</div>
@@ -197,7 +197,7 @@ export function HeroMarket(props: { data: HomePageData }) {
 										/>
 										<XAxis
 											dataKey="label"
-											tick={{ fill: "#64748b", fontSize: 12 }}
+											tick={{ fill: "#5c6660", fontSize: 12 }}
 											axisLine={false}
 											tickLine={false}
 										/>
@@ -205,14 +205,14 @@ export function HeroMarket(props: { data: HomePageData }) {
 											domain={[0, 100]}
 											orientation="right"
 											tickFormatter={(value) => `${value}%`}
-											tick={{ fill: "#64748b", fontSize: 12 }}
+											tick={{ fill: "#5c6660", fontSize: 12 }}
 											axisLine={false}
 											tickLine={false}
 										/>
 										<Tooltip
 											contentStyle={{
-												backgroundColor: "#020617",
-												border: "1px solid rgba(51,65,85,0.8)",
+												backgroundColor: "#ffffff",
+												border: "1px solid #e5e9e5",
 												borderRadius: 16,
 											}}
 											formatter={(value) =>
@@ -243,9 +243,9 @@ export function HeroMarket(props: { data: HomePageData }) {
 						</div>
 					</div>
 
-					<div className="flex items-center justify-between border-t border-slate-900 pt-3 text-[11px] text-slate-500 lg:text-xs">
+					<div className="flex items-center justify-between border-t border-edge pt-3 text-[11px] text-muted lg:text-xs">
 						<div className="flex items-center gap-3">
-							<span className="font-medium text-slate-400">
+							<span className="font-medium text-muted">
 								${formatCompactNumber(market.volumeUsdMinor / 100)} Vol
 							</span>
 							<span className="hidden sm:inline">
@@ -253,11 +253,11 @@ export function HeroMarket(props: { data: HomePageData }) {
 							</span>
 						</div>
 						<div className="flex items-center gap-3">
-							<span className="inline-flex items-center gap-2 font-medium text-rose-400">
+							<span className="inline-flex items-center gap-2 font-medium text-no">
 								<span className="size-2 rounded-full bg-rose-500" />
 								AO VIVO
 							</span>
-							<span className="font-semibold tracking-[0.16em] text-slate-400">
+							<span className="font-semibold tracking-[0.16em] text-muted">
 								HYPERWOOD
 							</span>
 						</div>
@@ -274,8 +274,8 @@ export function HeroMarket(props: { data: HomePageData }) {
 							onClick={() => setActiveIndex(index)}
 							className={`h-2.5 rounded-full transition ${
 								index === activeIndex
-									? "w-8 bg-slate-100"
-									: "w-2.5 bg-slate-700 hover:bg-slate-500"
+									? "w-8 bg-subtle"
+									: "w-2.5 bg-edge hover:bg-slate-300"
 							}`}
 							aria-label={`Destacar mercado ${index + 1}`}
 						/>
@@ -289,7 +289,7 @@ export function HeroMarket(props: { data: HomePageData }) {
 								current === 0 ? spotlightMarkets.length - 1 : current - 1,
 							)
 						}
-						className="inline-flex h-12 items-center gap-2 rounded-full border border-slate-800 bg-slate-950 px-4 text-sm text-slate-300 transition hover:border-slate-700 hover:text-white"
+						className="inline-flex h-12 items-center gap-2 rounded-full border border-edge bg-card px-4 text-sm text-muted transition hover:border-brand/40 hover:text-foreground"
 					>
 						<ChevronLeft className="size-4" />
 						<span className="max-w-[12rem] truncate">
@@ -303,7 +303,7 @@ export function HeroMarket(props: { data: HomePageData }) {
 								current === spotlightMarkets.length - 1 ? 0 : current + 1,
 							)
 						}
-						className="inline-flex h-12 items-center gap-2 rounded-full border border-slate-800 bg-slate-950 px-4 text-sm text-slate-300 transition hover:border-slate-700 hover:text-white"
+						className="inline-flex h-12 items-center gap-2 rounded-full border border-edge bg-card px-4 text-sm text-muted transition hover:border-brand/40 hover:text-foreground"
 					>
 						<span className="max-w-[12rem] truncate">
 							{nextMarket?.event.title ?? "Próximo"}
@@ -313,7 +313,7 @@ export function HeroMarket(props: { data: HomePageData }) {
 					<Link
 						to="/markets/$marketId"
 						params={{ marketId: market.id }}
-						className="inline-flex h-12 items-center rounded-full bg-cyan-500 px-5 text-sm font-semibold text-slate-950 transition hover:bg-cyan-400"
+						className="inline-flex h-12 items-center rounded-full bg-brand px-5 text-sm font-semibold text-white transition hover:bg-brand-hover"
 					>
 						Ver mercado
 					</Link>

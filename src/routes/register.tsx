@@ -47,7 +47,9 @@ function RegisterPage() {
 	return (
 		<div className="mx-auto max-w-lg">
 			<Card className="p-6">
-				<h1 className="text-2xl font-semibold text-white">Abra sua conta</h1>
+				<h1 className="text-2xl font-semibold text-foreground">
+					Abra sua conta
+				</h1>
 				<form
 					className="mt-6 space-y-4"
 					onSubmit={form.handleSubmit(async (values) =>
@@ -56,21 +58,21 @@ function RegisterPage() {
 				>
 					<label
 						htmlFor={emailFieldId}
-						className="space-y-2 text-sm text-slate-400"
+						className="space-y-2 text-sm text-muted"
 					>
 						<span>E-mail</span>
 						<Input id={emailFieldId} type="email" {...form.register("email")} />
 					</label>
 					<label
 						htmlFor={usernameFieldId}
-						className="space-y-2 text-sm text-slate-400"
+						className="space-y-2 text-sm text-muted"
 					>
 						<span>Usuário</span>
 						<Input id={usernameFieldId} {...form.register("username")} />
 					</label>
 					<label
 						htmlFor={passwordFieldId}
-						className="space-y-2 text-sm text-slate-400"
+						className="space-y-2 text-sm text-muted"
 					>
 						<span>Senha</span>
 						<Input

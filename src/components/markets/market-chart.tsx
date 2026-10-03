@@ -20,8 +20,8 @@ export function MarketChart(props: { candles?: HistoricalCandle[] }) {
 
 	if (data.length === 0) {
 		return (
-			<div className="flex h-72 w-full items-center justify-center rounded-2xl border border-dashed border-slate-800 bg-slate-950/50">
-				<p className="max-w-xs text-center text-sm text-slate-500">
+			<div className="flex h-72 w-full items-center justify-center rounded-lg border border-dashed border-edge bg-subtle">
+				<p className="max-w-xs text-center text-sm text-muted">
 					Gráfico de candles disponível após o encerramento do mercado.
 				</p>
 			</div>
@@ -32,29 +32,29 @@ export function MarketChart(props: { candles?: HistoricalCandle[] }) {
 		<div className="h-72 w-full">
 			<ResponsiveContainer width="100%" height="100%">
 				<LineChart data={data}>
-					<CartesianGrid stroke="rgba(148,163,184,0.12)" vertical={false} />
+					<CartesianGrid stroke="rgba(13,31,23,0.08)" vertical={false} />
 					<XAxis
 						dataKey="label"
-						tick={{ fill: "#64748b", fontSize: 12 }}
+						tick={{ fill: "#5c6660", fontSize: 12 }}
 						axisLine={false}
 						tickLine={false}
 					/>
 					<YAxis
-						tick={{ fill: "#64748b", fontSize: 12 }}
+						tick={{ fill: "#5c6660", fontSize: 12 }}
 						axisLine={false}
 						tickLine={false}
 					/>
 					<Tooltip
 						contentStyle={{
-							backgroundColor: "#020617",
-							border: "1px solid rgba(51,65,85,0.8)",
+							backgroundColor: "#ffffff",
+							border: "1px solid #e5e9e5",
 							borderRadius: 16,
 						}}
 					/>
 					<Line
 						type="monotone"
 						dataKey="close"
-						stroke="#22d3ee"
+						stroke="#0d382e"
 						strokeWidth={3}
 						dot={false}
 					/>

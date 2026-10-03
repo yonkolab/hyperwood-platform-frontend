@@ -5,6 +5,7 @@ import {
 	HeadContent,
 	Scripts,
 } from "@tanstack/react-router";
+import { useEffect, useState } from "react";
 import { Toaster } from "sonner";
 import { AppShell } from "#/components/layout/app-shell";
 import { AppI18nProvider } from "#/lib/i18n";
@@ -12,6 +13,7 @@ import {
 	currentUserQueryOptions,
 	localeQueryOptions,
 } from "#/lib/query-options";
+import { onThemeChange, resolveInitialTheme } from "#/lib/theme";
 import appCss from "../styles.css?url";
 
 interface RouterContext {
@@ -35,6 +37,12 @@ export const Route = createRootRouteWithContext<RouterContext>()({
 			{ title: "Hyperwood Trader" },
 		],
 		links: [{ rel: "stylesheet", href: appCss }],
+		scripts: [
+			{
+				children:
+					"try{var t=localStorage.getItem('hw-theme');if(t==='dark'||(!t&&window.matchMedia('(prefers-color-scheme: dark)').matches)){document.documentElement.classList.add('dark')}}catch(e){}",
+			},
+		],
 	}),
 	shellComponent: RootDocument,
 });
@@ -42,6 +50,15 @@ export const Route = createRootRouteWithContext<RouterContext>()({
 function RootDocument({ children }: { children: React.ReactNode }) {
 	const { data: localeResult } = useSuspenseQuery(localeQueryOptions);
 	const { data: user } = useSuspenseQuery(currentUserQueryOptions);
+	const [toastTheme, setToastTheme] = useState<"light" | "dark">("light");
+
+	useEffect(() => {
+		setToastTheme(resolveInitialTheme());
+
+		return onThemeChange(() => {
+			setToastTheme(resolveInitialTheme());
+		});
+	}, []);
 
 	return (
 		<html lang={localeResult.locale}>
@@ -54,7 +71,12 @@ function RootDocument({ children }: { children: React.ReactNode }) {
 						{children}
 					</AppShell>
 				</AppI18nProvider>
-				<Toaster theme="dark" position="top-right" richColors closeButton />
+				<Toaster
+					theme={toastTheme}
+					position="top-right"
+					richColors
+					closeButton
+				/>
 				<Scripts />
 			</body>
 		</html>

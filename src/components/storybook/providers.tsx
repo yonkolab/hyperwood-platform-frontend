@@ -89,7 +89,7 @@ function StoryProviders(props: { children: React.ReactNode }) {
 
 export const withAppProviders: Decorator = (Story) => (
 	<StoryProviders>
-		<div className="min-h-screen bg-[#0a0f16] p-6 text-slate-100">
+		<div className="min-h-screen bg-background p-6 text-foreground">
 			<Story />
 		</div>
 	</StoryProviders>

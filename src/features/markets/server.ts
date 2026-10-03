@@ -11,6 +11,7 @@ import type {
 	OrderBookSnapshotResponse,
 	TradeListResponse,
 } from "#/lib/api/types";
+import { getStoredSessionToken } from "#/lib/session/cookies";
 
 const marketsQuerySchema = z.object({
 	category: z.string().optional(),
@@ -124,3 +125,117 @@ export const getMarketCandles = createServerFn({ method: "GET" })
 
 		return result.candles;
 	});
+
+async function getAuthorizationToken() {
+	return getStoredSessionToken();
+}
+
+export type MarketCommentAuthor = {
+	id: string;
+	username: string | null;
+	email: string;
+};
+
+export type MarketCommentNode = {
+	id: string;
+	marketId: string;
+	parentId: string | null;
+	body: string;
+	depth: number;
+	likeCount: number;
+	replyCount: number;
+	status: string;
+	createdAt: string;
+	author: MarketCommentAuthor;
+	viewer: {
+		liked: boolean;
+		bookmarked: boolean;
+	};
+	replies: MarketCommentNode[];
+};
+
+type MarketCommentsResponse = {
+	marketId: string;
+	comments: MarketCommentNode[];
+};
+
+const commentActionSchema = z.object({
+	commentId: z.string().uuid(),
+});
+
+const createCommentSchema = marketIdSchema.extend({
+	body: z.string().min(1).max(2000),
+	parentId: z.string().uuid().optional(),
+});
+
+const reportCommentSchema = commentActionSchema.extend({
+	reason: z.string().min(3).max(160),
+});
+
+export const getMarketComments = createServerFn({ method: "GET" })
+	.inputValidator(marketIdSchema)
+	.handler(async ({ data }): Promise<MarketCommentsResponse> => {
+		let token: string | undefined;
+
+		try {
+			token = await getAuthorizationToken();
+		} catch {
+			token = undefined;
+		}
+
+		return requestBackend<MarketCommentsResponse>(
+			`/api/v1/markets/${data.marketId}/comments`,
+			{ token },
+		);
+	});
+
+export const createMarketComment = createServerFn({ method: "POST" })
+	.inputValidator(createCommentSchema)
+	.handler(
+		async ({ data }): Promise<{ comment: MarketCommentNode }> =>
+			requestBackend<{ comment: MarketCommentNode }>(
+				`/api/v1/markets/${data.marketId}/comments`,
+				{
+					method: "POST",
+					body: {
+						body: data.body,
+						...(data.parentId ? { parentId: data.parentId } : {}),
+					},
+					token: getAuthorizationToken(),
+				},
+			),
+	);
+
+export const toggleMarketCommentLike = createServerFn({ method: "POST" })
+	.inputValidator(commentActionSchema)
+	.handler(
+		async ({ data }): Promise<{ liked: boolean; likeCount: number }> =>
+			requestBackend<{ liked: boolean; likeCount: number }>(
+				`/api/v1/comments/${data.commentId}/like`,
+				{ method: "POST", token: getAuthorizationToken() },
+			),
+	);
+
+export const toggleMarketCommentBookmark = createServerFn({ method: "POST" })
+	.inputValidator(commentActionSchema)
+	.handler(
+		async ({ data }): Promise<{ bookmarked: boolean }> =>
+			requestBackend<{ bookmarked: boolean }>(
+				`/api/v1/comments/${data.commentId}/bookmark`,
+				{ method: "POST", token: getAuthorizationToken() },
+			),
+	);
+
+export const reportMarketComment = createServerFn({ method: "POST" })
+	.inputValidator(reportCommentSchema)
+	.handler(
+		async ({ data }): Promise<{ reported: boolean }> =>
+			requestBackend<{ reported: boolean }>(
+				`/api/v1/comments/${data.commentId}/report`,
+				{
+					method: "POST",
+					body: { reason: data.reason },
+					token: getAuthorizationToken(),
+				},
+			),
+	);

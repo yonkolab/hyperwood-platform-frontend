@@ -118,10 +118,12 @@ function WalletPage() {
 					value={formatMoney(balance.totalBalanceMinor)}
 				/>
 			</section>
-			{message ? <p className="text-sm text-cyan-200">{message}</p> : null}
+			{message ? <p className="text-sm text-brand">{message}</p> : null}
 			<section className="grid gap-6 xl:grid-cols-[320px_1fr_1fr]">
 				<Card className="p-5">
-					<h2 className="text-lg font-semibold text-white">Adicionar método</h2>
+					<h2 className="text-lg font-semibold text-foreground">
+						Adicionar método
+					</h2>
 					<form
 						className="mt-4 space-y-3"
 						onSubmit={methodForm.handleSubmit(async (values) =>
@@ -145,7 +147,9 @@ function WalletPage() {
 					</form>
 				</Card>
 				<Card className="p-5">
-					<h2 className="text-lg font-semibold text-white">Criar depósito</h2>
+					<h2 className="text-lg font-semibold text-foreground">
+						Criar depósito
+					</h2>
 					<TransferForm
 						methods={methods.fundingMethods}
 						form={transferForm}
@@ -154,7 +158,7 @@ function WalletPage() {
 					/>
 				</Card>
 				<Card className="p-5">
-					<h2 className="text-lg font-semibold text-white">Criar saque</h2>
+					<h2 className="text-lg font-semibold text-foreground">Criar saque</h2>
 					<TransferForm
 						methods={methods.fundingMethods}
 						form={transferForm}
@@ -165,7 +169,7 @@ function WalletPage() {
 			</section>
 			<section className="grid gap-6 xl:grid-cols-2">
 				<Card className="p-5">
-					<h2 className="text-xl font-semibold text-white">Depósitos</h2>
+					<h2 className="text-xl font-semibold text-foreground">Depósitos</h2>
 					<div className="mt-4 space-y-3">
 						{deposits.deposits.map((deposit) => (
 							<TransferRow
@@ -179,7 +183,7 @@ function WalletPage() {
 					</div>
 				</Card>
 				<Card className="p-5">
-					<h2 className="text-xl font-semibold text-white">Saques</h2>
+					<h2 className="text-xl font-semibold text-foreground">Saques</h2>
 					<div className="mt-4 space-y-3">
 						{withdrawals.withdrawals.map((withdrawal) => (
 							<TransferRow
@@ -200,10 +204,12 @@ function WalletPage() {
 function WalletMetric(props: { label: string; value: string }) {
 	return (
 		<Card className="p-5">
-			<p className="text-xs uppercase tracking-[0.2em] text-slate-500">
+			<p className="text-xs uppercase tracking-[0.2em] text-muted">
 				{props.label}
 			</p>
-			<p className="mt-3 text-2xl font-semibold text-white">{props.value}</p>
+			<p className="mt-3 text-2xl font-semibold text-foreground">
+				{props.value}
+			</p>
 		</Card>
 	);
 }
@@ -246,15 +252,15 @@ function TransferRow(props: {
 	status: string;
 }) {
 	return (
-		<div className="rounded-2xl border border-slate-900 bg-slate-950/70 px-4 py-4">
+		<div className="rounded-lg border border-edge bg-card/70 px-4 py-4">
 			<div className="flex items-center justify-between gap-4">
 				<div>
-					<p className="font-medium text-white">{props.title}</p>
-					<p className="mt-1 text-sm text-slate-500">{props.subtitle}</p>
+					<p className="font-medium text-foreground">{props.title}</p>
+					<p className="mt-1 text-sm text-muted">{props.subtitle}</p>
 				</div>
 				<div className="text-right">
-					<p className="font-semibold text-cyan-300">{props.amount}</p>
-					<p className="mt-1 text-xs uppercase tracking-[0.18em] text-slate-500">
+					<p className="font-semibold text-brand">{props.amount}</p>
+					<p className="mt-1 text-xs uppercase tracking-[0.18em] text-muted">
 						{props.status}
 					</p>
 				</div>

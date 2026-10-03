@@ -38,10 +38,10 @@ function HomePage() {
 			<section className="space-y-5">
 				<SectionHeading>
 					<div>
-						<h2 className="text-2xl font-semibold text-white">
+						<h2 className="text-2xl font-semibold text-foreground">
 							Todos os mercados
 						</h2>
-						<p className="mt-1 text-sm text-slate-500">
+						<p className="mt-1 text-sm text-muted">
 							Dados públicos alimentados pelo catálogo do Hyperwood.
 						</p>
 					</div>

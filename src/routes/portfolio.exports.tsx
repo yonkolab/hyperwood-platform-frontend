@@ -34,8 +34,10 @@ function PortfolioExportsPage() {
 		<Card className="p-5">
 			<div className="flex items-center justify-between gap-4">
 				<div>
-					<h1 className="text-2xl font-semibold text-white">Exportações</h1>
-					<p className="mt-1 text-sm text-slate-500">
+					<h1 className="text-2xl font-semibold text-foreground">
+						Exportações
+					</h1>
+					<p className="mt-1 text-sm text-muted">
 						Gere um snapshot JSON do histórico da conta.
 					</p>
 				</div>
@@ -45,10 +47,10 @@ function PortfolioExportsPage() {
 				{data.exportJobs.map((job) => (
 					<div
 						key={job.id}
-						className="rounded-2xl border border-slate-900 bg-slate-950/70 px-4 py-4"
+						className="rounded-lg border border-edge bg-card/70 px-4 py-4"
 					>
-						<p className="font-medium text-white">{job.format}</p>
-						<p className="mt-1 text-sm text-slate-500">
+						<p className="font-medium text-foreground">{job.format}</p>
+						<p className="mt-1 text-sm text-muted">
 							{formatDateTime(job.completedAt)}
 						</p>
 					</div>

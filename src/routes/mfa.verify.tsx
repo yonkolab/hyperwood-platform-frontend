@@ -47,22 +47,19 @@ function MfaVerifyPage() {
 	return (
 		<div className="mx-auto max-w-md">
 			<Card className="p-6">
-				<h1 className="text-2xl font-semibold text-white">Validar MFA</h1>
+				<h1 className="text-2xl font-semibold text-foreground">Validar MFA</h1>
 				<form
 					className="mt-6 space-y-4"
 					onSubmit={form.handleSubmit(async (values) =>
 						mutation.mutateAsync(values),
 					)}
 				>
-					<label
-						htmlFor={codeFieldId}
-						className="space-y-2 text-sm text-slate-400"
-					>
+					<label htmlFor={codeFieldId} className="space-y-2 text-sm text-muted">
 						<span>Código</span>
 						<Input id={codeFieldId} maxLength={6} {...form.register("code")} />
 					</label>
 					{errorMessage ? (
-						<p className="text-sm text-rose-300">{errorMessage}</p>
+						<p className="text-sm text-no">{errorMessage}</p>
 					) : null}
 					<Button type="submit" className="w-full">
 						Confirmar

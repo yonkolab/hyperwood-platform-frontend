@@ -90,7 +90,7 @@ export function TradeTicket(props: {
 		return (
 			<Card className="p-5">
 				<CardTitle>Boleta</CardTitle>
-				<p className="mt-4 text-sm text-slate-400">
+				<p className="mt-4 text-sm text-muted">
 					Faça login para enviar ordens neste mercado.
 				</p>
 			</Card>
@@ -123,20 +123,14 @@ export function TradeTicket(props: {
 					</Button>
 				</div>
 				<div className="grid gap-4 sm:grid-cols-2">
-					<label
-						htmlFor={sideFieldId}
-						className="space-y-2 text-sm text-slate-400"
-					>
+					<label htmlFor={sideFieldId} className="space-y-2 text-sm text-muted">
 						<span>Lado</span>
 						<Select id={sideFieldId} {...form.register("side")}>
 							<option value="buy">buy</option>
 							<option value="sell">sell</option>
 						</Select>
 					</label>
-					<label
-						htmlFor={typeFieldId}
-						className="space-y-2 text-sm text-slate-400"
-					>
+					<label htmlFor={typeFieldId} className="space-y-2 text-sm text-muted">
 						<span>Tipo</span>
 						<Select id={typeFieldId} {...form.register("type")}>
 							<option value="market">market</option>
@@ -146,7 +140,7 @@ export function TradeTicket(props: {
 				</div>
 				<label
 					htmlFor={quantityFieldId}
-					className="space-y-2 text-sm text-slate-400"
+					className="space-y-2 text-sm text-muted"
 				>
 					<span>Quantidade</span>
 					<Input
@@ -159,7 +153,7 @@ export function TradeTicket(props: {
 				{watchedType === "limit" ? (
 					<label
 						htmlFor={limitPriceFieldId}
-						className="space-y-2 text-sm text-slate-400"
+						className="space-y-2 text-sm text-muted"
 					>
 						<span>Preço limite (bps)</span>
 						<Input
@@ -171,22 +165,22 @@ export function TradeTicket(props: {
 						/>
 					</label>
 				) : null}
-				<div className="rounded-2xl border border-slate-900 bg-slate-950/70 p-4 text-sm text-slate-300">
+				<div className="rounded-lg border border-edge bg-card/70 p-4 text-sm text-muted">
 					<div className="flex items-center justify-between">
 						<span>Preço de referência</span>
-						<span className="font-semibold text-white">
+						<span className="font-semibold text-foreground">
 							{formatPriceBps(referencePrice)}
 						</span>
 					</div>
 					<div className="mt-2 flex items-center justify-between">
 						<span>Valor estimado</span>
-						<span className="font-semibold text-cyan-300">
+						<span className="font-semibold text-brand">
 							{estimatedValue.toFixed(2)}
 						</span>
 					</div>
 				</div>
 				{mutation.error ? (
-					<p className="text-sm text-rose-300">{mutation.error.message}</p>
+					<p className="text-sm text-no">{mutation.error.message}</p>
 				) : null}
 				<Button type="submit" className="w-full" disabled={mutation.isPending}>
 					{mutation.isPending ? "Enviando..." : "Enviar ordem"}

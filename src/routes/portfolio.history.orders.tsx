@@ -27,22 +27,24 @@ function OrderHistoryPage() {
 
 	return (
 		<Card className="p-5">
-			<h1 className="text-2xl font-semibold text-white">Histórico de ordens</h1>
+			<h1 className="text-2xl font-semibold text-foreground">
+				Histórico de ordens
+			</h1>
 			<div className="mt-5 space-y-3">
 				{data.orders.map((order) => (
 					<div
 						key={order.orderId}
-						className="grid grid-cols-[1fr_auto_auto_auto] gap-4 rounded-2xl border border-slate-900 bg-slate-950/70 px-4 py-4"
+						className="grid grid-cols-[1fr_auto_auto_auto] gap-4 rounded-lg border border-edge bg-card/70 px-4 py-4"
 					>
 						<div>
-							<p className="font-medium text-white">{order.marketTitle}</p>
-							<p className="mt-1 text-sm text-slate-500">
+							<p className="font-medium text-foreground">{order.marketTitle}</p>
+							<p className="mt-1 text-sm text-muted">
 								{formatDateTime(order.createdAt)}
 							</p>
 						</div>
-						<span className="text-sm text-slate-300">{order.status}</span>
-						<span className="text-sm text-slate-300">{order.quantity}</span>
-						<span className="font-semibold text-cyan-300">
+						<span className="text-sm text-muted">{order.status}</span>
+						<span className="text-sm text-muted">{order.quantity}</span>
+						<span className="font-semibold text-brand">
 							{formatPriceBps(order.referencePriceBps)}
 						</span>
 					</div>
