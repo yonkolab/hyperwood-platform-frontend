@@ -127,6 +127,28 @@ body {
   }
 }
 
+@keyframes hero-slide-in {
+  from {
+    transform: translateX(4.5rem);
+    opacity: 0;
+  }
+
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+.hero-slide-in {
+  animation: hero-slide-in 0.45s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-slide-in {
+    animation: none;
+  }
+}
+
 @keyframes flip-digit-in {
   0% {
     transform: translateY(-70%);
@@ -149,8 +171,28 @@ body {
   animation: flip-digit-in 0.38s cubic-bezier(0.22, 1, 0.36, 1) both;
 }
 
+@keyframes hero-bullet-progress {
+  from {
+    width: 0;
+  }
+
+  to {
+    width: 100%;
+  }
+}
+
+.hero-bullet-progress {
+  animation: hero-bullet-progress 6000ms linear both;
+  animation-play-state: var(--hero-bullet-state, running);
+}
+
 @media (prefers-reduced-motion: reduce) {
   .flip-digit {
     animation: none;
+  }
+
+  .hero-bullet-progress {
+    animation: none;
+    width: 100%;
   }
 }

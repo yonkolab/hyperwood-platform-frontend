@@ -46,7 +46,9 @@ export function HeroMarket(props: { data: HomePageData }) {
 		() => props.data.marketList.markets.slice(0, 4),
 		[props.data.marketList.markets],
 	);
+	const HERO_AUTOPLAY_MS = 6000;
 	const [activeIndex, setActiveIndex] = useState(0);
+	const [carouselPaused, setCarouselPaused] = useState(false);
 	const market = spotlightMarkets[activeIndex] ?? props.data.heroMarket;
 	const chartData = useMemo(
 		() => (market ? buildMockHeroSeries(market) : []),
@@ -56,6 +58,18 @@ export function HeroMarket(props: { data: HomePageData }) {
 		() => (market ? buildMockPulseItems(market) : []),
 		[market],
 	);
+	useEffect(() => {
+		if (carouselPaused || spotlightMarkets.length <= 1) {
+			return;
+		}
+
+		const timer = window.setInterval(() => {
+			setActiveIndex((current) => (current + 1) % spotlightMarkets.length);
+		}, HERO_AUTOPLAY_MS);
+
+		return () => window.clearInterval(timer);
+	}, [carouselPaused, spotlightMarkets.length]);
+
 	const [shareOpen, setShareOpen] = useState(false);
 	const [favorites, setFavorites] = useState<string[]>(() => {
 		if (typeof window === "undefined") {
@@ -145,32 +159,24 @@ export function HeroMarket(props: { data: HomePageData }) {
 		<div className="space-y-4">
 			<Card className="overflow-hidden rounded-lg border-edge bg-card p-4 lg:h-[480px] lg:p-5">
 				<div className="flex h-full flex-col gap-4">
-					<div className="flex flex-col gap-2">
-						<div className="min-w-0">
-							<p className="text-xs font-medium text-muted lg:text-sm">
-								{market.event.category}
-							</p>
-							<h1 className="font-display mt-1 max-w-3xl text-[1.55rem] font-semibold leading-tight tracking-tight text-foreground lg:text-[1.75rem]">
-								{market.title}
-							</h1>
-						</div>
-					</div>
-
-					<div className="grid flex-1 gap-4 lg:grid-cols-[minmax(0,340px)_minmax(0,1fr)] lg:items-stretch">
+					<div
+						key={activeIndex}
+						className="hero-slide-in grid min-h-0 flex-1 gap-4 lg:grid-cols-[minmax(0,480px)_minmax(0,1fr)] lg:items-stretch"
+					>
 						<div className="flex min-h-0 flex-col">
 							<Link
 								to="/"
 								search={{ category: market.event.category }}
 								className="group block"
 							>
-								<h2 className="font-display text-lg font-semibold leading-tight text-foreground transition group-hover:text-brand">
-									{market.event.title}
-								</h2>
+								<h1 className="font-display mt-1 max-w-3xl text-[1.55rem] font-semibold leading-tight tracking-tight text-foreground lg:text-[1.75rem]">
+									{market.title}
+								</h1>
 							</Link>
-							<FlipTimer compact closesAt={market?.closesAt} className="mt-2" />
-							<p className="mt-1 text-[10px] font-medium uppercase tracking-[0.18em] text-muted">
+							<p className="text-[10px] font-medium uppercase tracking-[0.18em] text-muted">
 								Termina em
 							</p>
+							<FlipTimer compact closesAt={market?.closesAt} className="mt-1" />
 							<div className="mt-3 max-h-56 space-y-1.5 overflow-y-auto pr-1">
 								{eventMarkets.map((eventMarket) => (
 									<Link
@@ -226,109 +232,84 @@ export function HeroMarket(props: { data: HomePageData }) {
 						</div>
 
 						<div className="flex min-h-0 flex-col px-1">
-							<div className="mb-2 flex items-center justify-end gap-1">
-								<div className="relative">
+							<div className="mb-4 flex items-center justify-between border-b border-edge pb-2">
+								<div className="flex items-center gap-4">
+									<span className="flex items-center gap-1.5 text-xs text-foreground">
+										<span className="size-2 rounded-full bg-yes" />
+										{shortOutcomeLabel(market, true)}
+									</span>
+									<span className="flex items-center gap-1.5 text-xs text-foreground">
+										<span className="size-2 rounded-full bg-no" />
+										{shortOutcomeLabel(market, false)}
+									</span>
+								</div>
+								<div className="flex items-center gap-1.5">
+									<div className="relative">
+										<button
+											type="button"
+											aria-label="Compartilhar"
+											className="flex size-9 items-center justify-center rounded-full text-muted transition hover:bg-subtle hover:text-foreground"
+											onClick={() => {
+												setShareOpen((value) => !value);
+											}}
+										>
+											<Share2 className="size-5" />
+										</button>
+										{shareOpen ? (
+											<div className="absolute right-0 top-9 z-20 w-40 overflow-hidden rounded-lg border border-edge bg-card py-1 shadow-[0_8px_24px_rgba(13,31,23,0.12)]">
+												<a
+													href={`https://x.com/intent/post?text=${encodeURIComponent(`${market.title} — Hyperwood`)}&url=${encodeURIComponent(heroMarketUrl)}`}
+													target="_blank"
+													rel="noreferrer"
+													className="flex items-center gap-2.5 px-3 py-2 text-sm text-foreground transition hover:bg-subtle"
+												>
+													<XLogo />X
+												</a>
+												<a
+													href={`https://www.threads.net/intent/post?text=${encodeURIComponent(`${market.title} — Hyperwood ${heroMarketUrl}`)}`}
+													target="_blank"
+													rel="noreferrer"
+													className="flex items-center gap-2.5 px-3 py-2 text-sm text-foreground transition hover:bg-subtle"
+												>
+													<ThreadsLogo />
+													Threads
+												</a>
+												<button
+													type="button"
+													className="flex w-full items-center gap-2.5 px-3 py-2 text-left text-sm text-foreground transition hover:bg-subtle"
+													onClick={() => {
+														void navigator.clipboard
+															.writeText(heroMarketUrl)
+															.then(() => {
+																toast.success("Link copiado.");
+															})
+															.catch(() => {
+																toast.error("Não foi possível copiar.");
+															});
+														setShareOpen(false);
+													}}
+												>
+													<Link2 className="size-4" />
+													Copiar link
+												</button>
+											</div>
+										) : null}
+									</div>
 									<button
 										type="button"
-										aria-label="Compartilhar"
-										className="flex size-8 items-center justify-center rounded-full text-muted transition hover:bg-subtle hover:text-foreground"
+										aria-label="Favoritar mercado"
+										aria-pressed={heroBookmarked}
+										className={`flex size-9 items-center justify-center rounded-full transition hover:bg-subtle ${heroBookmarked ? "text-brand" : "text-muted hover:text-foreground"}`}
 										onClick={() => {
-											setShareOpen((value) => !value);
+											toggleHeroBookmark(market.id);
 										}}
 									>
-										<Share2 className="size-4" />
+										<Bookmark
+											className={`size-5 ${heroBookmarked ? "fill-brand" : ""}`}
+										/>
 									</button>
-									{shareOpen ? (
-										<div className="absolute right-0 top-9 z-20 w-40 overflow-hidden rounded-lg border border-edge bg-card py-1 shadow-[0_8px_24px_rgba(13,31,23,0.12)]">
-											<a
-												href={`https://x.com/intent/post?text=${encodeURIComponent(`${market.title} — Hyperwood`)}&url=${encodeURIComponent(heroMarketUrl)}`}
-												target="_blank"
-												rel="noreferrer"
-												className="flex items-center gap-2.5 px-3 py-2 text-sm text-foreground transition hover:bg-subtle"
-											>
-												<XLogo />X
-											</a>
-											<a
-												href={`https://www.threads.net/intent/post?text=${encodeURIComponent(`${market.title} — Hyperwood ${heroMarketUrl}`)}`}
-												target="_blank"
-												rel="noreferrer"
-												className="flex items-center gap-2.5 px-3 py-2 text-sm text-foreground transition hover:bg-subtle"
-											>
-												<ThreadsLogo />
-												Threads
-											</a>
-											<button
-												type="button"
-												className="flex w-full items-center gap-2.5 px-3 py-2 text-left text-sm text-foreground transition hover:bg-subtle"
-												onClick={() => {
-													void navigator.clipboard
-														.writeText(heroMarketUrl)
-														.then(() => {
-															toast.success("Link copiado.");
-														})
-														.catch(() => {
-															toast.error("Não foi possível copiar.");
-														});
-													setShareOpen(false);
-												}}
-											>
-												<Link2 className="size-4" />
-												Copiar link
-											</button>
-										</div>
-									) : null}
-								</div>
-								<button
-									type="button"
-									aria-label="Favoritar mercado"
-									aria-pressed={heroBookmarked}
-									className={`flex size-8 items-center justify-center rounded-full transition hover:bg-subtle ${heroBookmarked ? "text-brand" : "text-muted hover:text-foreground"}`}
-									onClick={() => {
-										toggleHeroBookmark(market.id);
-									}}
-								>
-									<Bookmark
-										className={`size-4 ${heroBookmarked ? "fill-brand" : ""}`}
-									/>
-								</button>
-							</div>
-							<div className="mb-4 grid gap-3 border-b border-edge pb-3 lg:grid-cols-3">
-								<div className="flex items-center gap-3">
-									<div className="flex size-10 items-center justify-center rounded-md bg-amber-400/95 text-xs font-black text-slate-950">
-										YES
-									</div>
-									<div>
-										<p className="text-sm font-semibold text-amber-300 lg:text-base">
-											{formatPriceBps(market.yesPriceBps)}
-										</p>
-										<p className="text-xs text-muted lg:text-sm">
-											{shortOutcomeLabel(market, true)}
-										</p>
-									</div>
-								</div>
-								<div className="text-center">
-									<p className="text-sm font-semibold text-foreground lg:text-base">
-										{formatCompactNumber(market.volumeUsdMinor / 100)}
-									</p>
-									<p className="mt-1 text-xs capitalize text-muted">
-										mercado {market.status}
-									</p>
-								</div>
-								<div className="flex items-center justify-end gap-3">
-									<div className="text-right">
-										<p className="text-sm font-semibold text-brand lg:text-base">
-											{formatPriceBps(market.noPriceBps)}
-										</p>
-										<p className="text-xs text-muted lg:text-sm">
-											{shortOutcomeLabel(market, false)}
-										</p>
-									</div>
-									<div className="flex size-10 items-center justify-center rounded-md bg-brand text-xs font-black text-white">
-										NO
-									</div>
 								</div>
 							</div>
-
 							<div className="min-h-0 flex-1">
 								<ResponsiveContainer width="100%" height="100%">
 									<LineChart
@@ -368,18 +349,18 @@ export function HeroMarket(props: { data: HomePageData }) {
 										<Line
 											type="monotone"
 											dataKey="yes"
-											stroke="#fbbf24"
+											stroke="#00a67e"
 											strokeWidth={2.5}
 											dot={false}
-											activeDot={{ r: 5, fill: "#fbbf24" }}
+											activeDot={{ r: 5, fill: "#00a67e" }}
 										/>
 										<Line
 											type="monotone"
 											dataKey="no"
-											stroke="#38bdf8"
+											stroke="#dc2f2f"
 											strokeWidth={2.5}
 											dot={false}
-											activeDot={{ r: 5, fill: "#38bdf8" }}
+											activeDot={{ r: 5, fill: "#dc2f2f" }}
 										/>
 									</LineChart>
 								</ResponsiveContainer>
@@ -396,33 +377,60 @@ export function HeroMarket(props: { data: HomePageData }) {
 								{market.tags.slice(0, 3).join(" · ")}
 							</span>
 						</div>
-						<div className="flex items-center gap-3">
-							<span className="inline-flex items-center gap-2 font-medium text-no">
-								<span className="size-2 rounded-full bg-rose-500" />
+						<div className="flex h-7 items-center gap-3">
+							<span className="inline-flex items-center gap-2 font-medium text-[#DF0C10]">
+								<span className="relative flex size-2 shrink-0 items-center justify-center">
+									<span className="absolute inline-flex size-full animate-ping rounded-full bg-[#DF0C10] opacity-70" />
+									<span className="relative inline-flex size-2 rounded-full bg-[#DF0C10]" />
+								</span>
 								AO VIVO
 							</span>
-							<span className="font-semibold tracking-[0.16em] text-muted">
-								HYPERWOOD
-							</span>
+							<img
+								src="/logo-hyperwood-gray.png"
+								alt="Hyperwood"
+								className="h-4 w-auto object-contain opacity-80"
+							/>
 						</div>
 					</div>
 				</div>
 			</Card>
 
 			<div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-				<div className="flex items-center gap-2">
+				<div
+					className="flex items-center gap-2"
+					onMouseEnter={() => {
+						setCarouselPaused(true);
+					}}
+					onMouseLeave={() => {
+						setCarouselPaused(false);
+					}}
+				>
 					{spotlightMarkets.map((item, index) => (
 						<button
 							key={item.id}
 							type="button"
 							onClick={() => setActiveIndex(index)}
-							className={`h-2 rounded-full transition ${
+							className={`relative h-2 overflow-hidden rounded-full transition-colors ${
 								index === activeIndex
-									? "w-6 bg-foreground"
+									? "w-6 bg-slate-300"
 									: "w-2 bg-slate-300 hover:bg-slate-400"
 							}`}
 							aria-label={`Destacar mercado ${index + 1}`}
-						/>
+						>
+							{index === activeIndex ? (
+								<span
+									key={activeIndex}
+									className="hero-bullet-progress absolute inset-y-0 left-0 rounded-full bg-foreground"
+									style={
+										{
+											"--hero-bullet-state": carouselPaused
+												? "paused"
+												: "running",
+										} as React.CSSProperties
+									}
+								/>
+							) : null}
+						</button>
 					))}
 				</div>
 				<div className="flex items-center gap-3">

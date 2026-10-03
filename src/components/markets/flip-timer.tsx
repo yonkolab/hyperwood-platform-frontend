@@ -12,9 +12,9 @@ function buildUnits(remainingMs: number): TimeUnit[] {
 	const minutes = totalMinutes % 60;
 
 	return [
-		{ label: "day", value: days },
+		{ label: days === 1 ? "dia" : "dias", value: days },
 		{ label: "hrs", value: hours },
-		{ label: "mins", value: minutes },
+		{ label: "min", value: minutes },
 	];
 }
 
@@ -49,17 +49,15 @@ export function FlipTimer(props: {
 		>
 			{units.map((unit) => (
 				<div key={unit.label} className="flex flex-col items-center gap-1">
-					<div className="flex gap-1">
+					<div className="flex items-center">
 						{String(unit.value)
 							.padStart(2, "0")
 							.split("")
 							.map((digit, index) => (
 								<span
 									key={`${index}-${digit}`}
-									className={`flip-digit flex items-center justify-center rounded-md border border-edge bg-card font-bold tabular-nums text-foreground shadow-[0_1px_2px_rgba(13,31,23,0.08)] ${
-										props.compact
-											? "h-8 w-6 text-sm"
-											: "h-11 w-8 rounded-lg text-xl"
+									className={`flip-digit flex items-center justify-center font-bold tabular-nums text-foreground ${
+										props.compact ? "text-sm" : "text-xl"
 									}`}
 								>
 									{digit}
