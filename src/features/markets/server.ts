@@ -119,14 +119,12 @@ export const getMarketCandles = createServerFn({ method: "GET" })
 			marketId: string;
 			interval: "1h" | "1d";
 			candles: HistoricalCandle[];
-		}>(
-			`/api/v1/historical/markets/${data.marketId}/candles?interval=${data.interval}`,
-		);
+		}>(`/api/v1/markets/${data.marketId}/candles?interval=${data.interval}`);
 
 		return result.candles;
 	});
 
-async function getAuthorizationToken() {
+function getAuthorizationToken() {
 	return getStoredSessionToken();
 }
 
@@ -178,7 +176,7 @@ export const getMarketComments = createServerFn({ method: "GET" })
 		let token: string | undefined;
 
 		try {
-			token = await getAuthorizationToken();
+			token = getAuthorizationToken();
 		} catch {
 			token = undefined;
 		}

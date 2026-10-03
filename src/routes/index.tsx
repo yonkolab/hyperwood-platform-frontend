@@ -38,7 +38,7 @@ function HomePage() {
 			<section className="space-y-5">
 				<SectionHeading>
 					<div>
-						<h2 className="text-2xl font-semibold text-foreground">
+						<h2 className="font-display text-2xl font-semibold text-foreground">
 							Todos os mercados
 						</h2>
 						<p className="mt-1 text-sm text-muted">

@@ -47,7 +47,9 @@ function MfaVerifyPage() {
 	return (
 		<div className="mx-auto max-w-md">
 			<Card className="p-6">
-				<h1 className="text-2xl font-semibold text-foreground">Validar MFA</h1>
+				<h1 className="font-display text-2xl font-semibold text-foreground">
+					Validar MFA
+				</h1>
 				<form
 					className="mt-6 space-y-4"
 					onSubmit={form.handleSubmit(async (values) =>

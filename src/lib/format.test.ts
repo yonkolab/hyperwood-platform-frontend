@@ -23,4 +23,16 @@ describe("format helpers", () => {
 		const futureDate = new Date(Date.now() + 5 * 60 * 1000).toISOString();
 		expect(formatRelativeCountdown(futureDate)).toMatch(/[mh:]/);
 	});
+
+	it("formats countdowns over 24h in days", () => {
+		const sixDays = new Date(
+			Date.now() + 6 * 24 * 60 * 60 * 1000,
+		).toISOString();
+		expect(formatRelativeCountdown(sixDays)).toMatch(/^6d/);
+
+		const twoMonths = new Date(
+			Date.now() + 62 * 24 * 60 * 60 * 1000,
+		).toISOString();
+		expect(formatRelativeCountdown(twoMonths)).toBe("62d");
+	});
 });

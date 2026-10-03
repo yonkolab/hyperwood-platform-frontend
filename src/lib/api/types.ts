@@ -29,7 +29,10 @@ export type MarketDetail = Pick<
 >;
 export type MarketListResponse = components["schemas"]["MarketListResponse"];
 export type MarketAnnouncement = components["schemas"]["MarketAnnouncement"];
-export type HistoricalCandle = components["schemas"]["HistoricalCandle"];
+export type HistoricalCandle = components["schemas"]["HistoricalCandle"] & {
+	volumeYes: number;
+	volumeNo: number;
+};
 export type OrderBookSnapshotResponse =
 	components["schemas"]["OrderBookSnapshotResponse"];
 export type TradeListResponse = components["schemas"]["TradeListResponse"];

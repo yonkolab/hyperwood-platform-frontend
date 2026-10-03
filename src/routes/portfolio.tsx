@@ -89,7 +89,7 @@ function PortfolioPage() {
 			</section>
 			<section className="grid gap-6 xl:grid-cols-[minmax(0,1fr)_360px]">
 				<Card className="p-5">
-					<h2 className="text-xl font-semibold text-foreground">
+					<h2 className="font-display text-xl font-semibold text-foreground">
 						Posições abertas
 					</h2>
 					<div className="mt-4 space-y-3">
@@ -121,7 +121,7 @@ function PortfolioPage() {
 					</div>
 				</Card>
 				<Card className="p-5">
-					<h2 className="text-xl font-semibold text-foreground">
+					<h2 className="font-display text-xl font-semibold text-foreground">
 						Liquidações recentes
 					</h2>
 					<div className="mt-4 space-y-3">
@@ -143,7 +143,7 @@ function PortfolioPage() {
 				</Card>
 			</section>
 			<Card className="p-5">
-				<h2 className="text-xl font-semibold text-foreground">
+				<h2 className="font-display text-xl font-semibold text-foreground">
 					Fills recentes
 				</h2>
 				<div className="mt-4 space-y-3">
@@ -178,7 +178,7 @@ function SummaryCard(props: { label: string; value: string }) {
 			<p className="text-xs uppercase tracking-[0.2em] text-muted">
 				{props.label}
 			</p>
-			<p className="mt-3 text-2xl font-semibold text-foreground">
+			<p className="mt-3 font-display text-2xl font-semibold text-foreground">
 				{props.value}
 			</p>
 		</Card>

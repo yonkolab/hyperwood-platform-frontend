@@ -102,7 +102,9 @@ function SecurityPage() {
 			{message ? <p className="text-sm text-brand">{message}</p> : null}
 			<section className="grid gap-6 xl:grid-cols-[380px_1fr_1fr]">
 				<Card className="p-5">
-					<h2 className="text-xl font-semibold text-foreground">TOTP</h2>
+					<h2 className="font-display text-xl font-semibold text-foreground">
+						TOTP
+					</h2>
 					<Button
 						className="mt-4 w-full"
 						onClick={() => setupMutation.mutate()}
@@ -134,7 +136,9 @@ function SecurityPage() {
 					</form>
 				</Card>
 				<Card className="p-5">
-					<h2 className="text-xl font-semibold text-foreground">Sessões</h2>
+					<h2 className="font-display text-xl font-semibold text-foreground">
+						Sessões
+					</h2>
 					<div className="mt-4 space-y-3">
 						{sessions.sessions.map((session) => (
 							<div
@@ -170,7 +174,7 @@ function SecurityPage() {
 					</div>
 				</Card>
 				<Card className="p-5">
-					<h2 className="text-xl font-semibold text-foreground">
+					<h2 className="font-display text-xl font-semibold text-foreground">
 						Chaves de API
 					</h2>
 					<form

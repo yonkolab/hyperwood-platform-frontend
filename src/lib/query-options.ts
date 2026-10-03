@@ -100,7 +100,7 @@ export function marketAnnouncementsQueryOptions(marketId: string) {
 export function marketCandlesQueryOptions(marketId: string) {
 	return queryOptions({
 		queryKey: ["markets", marketId, "candles"],
-		queryFn: () => getMarketCandles({ data: { marketId, interval: "1h" } }),
+		queryFn: () => getMarketCandles({ data: { marketId, interval: "1d" } }),
 	});
 }
 

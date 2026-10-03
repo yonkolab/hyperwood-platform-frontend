@@ -27,7 +27,7 @@ function FillHistoryPage() {
 
 	return (
 		<Card className="p-5">
-			<h1 className="text-2xl font-semibold text-foreground">
+			<h1 className="font-display text-2xl font-semibold text-foreground">
 				Histórico de fills
 			</h1>
 			<div className="mt-5 space-y-3">

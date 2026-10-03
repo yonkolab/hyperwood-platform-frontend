@@ -37,7 +37,7 @@ export function HomeSidebar(props: { data: HomePageData }) {
 			<Card className="rounded-lg border-edge bg-transparent p-0 shadow-none">
 				<div className="rounded-lg border border-edge bg-card p-5">
 					<div className="flex items-center justify-between">
-						<h2 className="text-2xl font-semibold text-foreground">
+						<h2 className="font-display text-2xl font-semibold text-foreground">
 							Últimas notícias
 						</h2>
 						<ChevronRight className="size-4 text-muted" />
@@ -70,7 +70,7 @@ export function HomeSidebar(props: { data: HomePageData }) {
 			<Card className="rounded-lg border-edge bg-transparent p-0 shadow-none">
 				<div className="rounded-lg border border-edge bg-card p-5">
 					<div className="flex items-center justify-between">
-						<h2 className="text-2xl font-semibold text-foreground">
+						<h2 className="font-display text-2xl font-semibold text-foreground">
 							Tópicos quentes
 						</h2>
 						<ChevronRight className="size-4 text-muted" />

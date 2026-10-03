@@ -52,14 +52,7 @@ function MarketDetailPage() {
 		marketOrderBookQueryOptions(marketId),
 	);
 	const { data: trades } = useSuspenseQuery(marketTradesQueryOptions(marketId));
-	const isArchived =
-		market.status === "settled" ||
-		market.status === "voided" ||
-		market.status === "cancelled";
-	const { data: candles } = useQuery({
-		...marketCandlesQueryOptions(marketId),
-		enabled: isArchived,
-	});
+	const { data: candles } = useQuery(marketCandlesQueryOptions(marketId));
 	const { data: announcements } = useSuspenseQuery(
 		marketAnnouncementsQueryOptions(marketId),
 	);
@@ -91,7 +84,7 @@ function MarketDetailPage() {
 					<div className="flex flex-wrap items-start justify-between gap-4">
 						<div className="space-y-3">
 							<Badge>{market.event.category}</Badge>
-							<h1 className="max-w-3xl text-3xl font-semibold tracking-tight text-foreground lg:text-5xl">
+							<h1 className="max-w-3xl font-display text-3xl font-semibold tracking-tight text-foreground lg:text-5xl">
 								{market.title}
 							</h1>
 							<p className="max-w-3xl text-sm leading-6 text-muted">
@@ -129,7 +122,7 @@ function MarketDetailPage() {
 			</Card>
 			<div className="grid gap-6 xl:grid-cols-[minmax(0,1fr)_320px]">
 				<Card className="p-5">
-					<h2 className="text-xl font-semibold text-foreground">
+					<h2 className="font-display text-xl font-semibold text-foreground">
 						Regras de resolução
 					</h2>
 					<p className="mt-4 text-sm leading-6 text-muted">
@@ -149,7 +142,9 @@ function MarketDetailPage() {
 					</ul>
 				</Card>
 				<Card className="p-5">
-					<h2 className="text-xl font-semibold text-foreground">Anúncios</h2>
+					<h2 className="font-display text-xl font-semibold text-foreground">
+						Anúncios
+					</h2>
 					<div className="mt-4 space-y-4">
 						{announcements.length === 0 ? (
 							<p className="text-sm text-muted">Nenhum anúncio publicado.</p>
@@ -199,7 +194,7 @@ function MetricCard(props: {
 			<p className="text-xs uppercase tracking-[0.2em] text-muted">
 				{props.label}
 			</p>
-			<p className="mt-3 text-2xl font-semibold text-foreground">
+			<p className="mt-3 font-display text-2xl font-semibold text-foreground">
 				{props.value}
 			</p>
 		</div>

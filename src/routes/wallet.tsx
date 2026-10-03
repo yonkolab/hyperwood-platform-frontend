@@ -121,7 +121,7 @@ function WalletPage() {
 			{message ? <p className="text-sm text-brand">{message}</p> : null}
 			<section className="grid gap-6 xl:grid-cols-[320px_1fr_1fr]">
 				<Card className="p-5">
-					<h2 className="text-lg font-semibold text-foreground">
+					<h2 className="font-display text-lg font-semibold text-foreground">
 						Adicionar método
 					</h2>
 					<form
@@ -147,7 +147,7 @@ function WalletPage() {
 					</form>
 				</Card>
 				<Card className="p-5">
-					<h2 className="text-lg font-semibold text-foreground">
+					<h2 className="font-display text-lg font-semibold text-foreground">
 						Criar depósito
 					</h2>
 					<TransferForm
@@ -158,7 +158,9 @@ function WalletPage() {
 					/>
 				</Card>
 				<Card className="p-5">
-					<h2 className="text-lg font-semibold text-foreground">Criar saque</h2>
+					<h2 className="font-display text-lg font-semibold text-foreground">
+						Criar saque
+					</h2>
 					<TransferForm
 						methods={methods.fundingMethods}
 						form={transferForm}
@@ -169,7 +171,9 @@ function WalletPage() {
 			</section>
 			<section className="grid gap-6 xl:grid-cols-2">
 				<Card className="p-5">
-					<h2 className="text-xl font-semibold text-foreground">Depósitos</h2>
+					<h2 className="font-display text-xl font-semibold text-foreground">
+						Depósitos
+					</h2>
 					<div className="mt-4 space-y-3">
 						{deposits.deposits.map((deposit) => (
 							<TransferRow
@@ -183,7 +187,9 @@ function WalletPage() {
 					</div>
 				</Card>
 				<Card className="p-5">
-					<h2 className="text-xl font-semibold text-foreground">Saques</h2>
+					<h2 className="font-display text-xl font-semibold text-foreground">
+						Saques
+					</h2>
 					<div className="mt-4 space-y-3">
 						{withdrawals.withdrawals.map((withdrawal) => (
 							<TransferRow
@@ -207,7 +213,7 @@ function WalletMetric(props: { label: string; value: string }) {
 			<p className="text-xs uppercase tracking-[0.2em] text-muted">
 				{props.label}
 			</p>
-			<p className="mt-3 text-2xl font-semibold text-foreground">
+			<p className="mt-3 font-display text-2xl font-semibold text-foreground">
 				{props.value}
 			</p>
 		</Card>

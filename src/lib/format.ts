@@ -41,6 +41,18 @@ export function formatRelativeCountdown(value: string) {
 	}
 
 	const hours = Math.floor(minutes / 60);
-	const restMinutes = minutes % 60;
-	return `${hours}h ${restMinutes}m`;
+
+	if (hours < 24) {
+		const restMinutes = minutes % 60;
+		return `${hours}h ${restMinutes}m`;
+	}
+
+	const days = Math.floor(hours / 24);
+	const restHours = hours % 24;
+
+	if (restHours > 0 && days < 7) {
+		return `${days}d ${restHours}h`;
+	}
+
+	return `${days}d`;
 }

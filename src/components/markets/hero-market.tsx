@@ -90,7 +90,7 @@ export function HeroMarket(props: { data: HomePageData }) {
 							<p className="text-xs font-medium text-muted lg:text-sm">
 								{market.event.category} · {market.event.title}
 							</p>
-							<h1 className="mt-1 max-w-3xl text-[1.55rem] font-semibold leading-tight tracking-tight text-foreground lg:text-[1.75rem]">
+							<h1 className="font-display mt-1 max-w-3xl text-[1.55rem] font-semibold leading-tight tracking-tight text-foreground lg:text-[1.75rem]">
 								{market.title}
 							</h1>
 						</div>
@@ -388,6 +388,13 @@ function formatHeroCountdown(value: string | null | undefined, now: number) {
 	const hours = Math.floor(totalSeconds / 3600);
 	const minutes = Math.floor((totalSeconds % 3600) / 60);
 	const seconds = totalSeconds % 60;
+
+	if (hours >= 24) {
+		const days = Math.floor(hours / 24);
+		const restHours = hours % 24;
+
+		return restHours > 0 ? `${days}d ${restHours}h` : `${days}d`;
+	}
 
 	if (hours > 0) {
 		return `${hours}:${String(minutes).padStart(2, "0")}:${String(seconds).padStart(2, "0")}`;

@@ -1,4 +1,4 @@
-import { useMutation, useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { Link, useRouter, useRouterState } from "@tanstack/react-router";
 import { Menu, Search } from "lucide-react";
 import { Button } from "#/components/ui/button";
@@ -16,6 +16,7 @@ export function AppShell(props: {
 	locale: AppLocale;
 }) {
 	const router = useRouter();
+	const queryClient = useQueryClient();
 	const location = useRouterState({
 		select: (state) => state.location,
 	});
@@ -27,6 +28,7 @@ export function AppShell(props: {
 	const logoutMutation = useMutation({
 		mutationFn: async () => logoutUser(),
 		onSuccess: async () => {
+			queryClient.clear();
 			await router.invalidate();
 			await router.navigate({ to: "/" });
 		},

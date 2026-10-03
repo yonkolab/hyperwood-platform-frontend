@@ -34,7 +34,7 @@ function PortfolioExportsPage() {
 		<Card className="p-5">
 			<div className="flex items-center justify-between gap-4">
 				<div>
-					<h1 className="text-2xl font-semibold text-foreground">
+					<h1 className="font-display text-2xl font-semibold text-foreground">
 						Exportações
 					</h1>
 					<p className="mt-1 text-sm text-muted">

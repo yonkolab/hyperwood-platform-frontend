@@ -37,6 +37,10 @@ export const messages = {
 			limitPrice: "Preço limite",
 			submitOrder: "Enviar ordem",
 		},
+		comments: {
+			requiresTrade:
+				"Failed to send your post: Você precisa concluir uma negociação antes de publicar",
+		},
 		auth: {
 			email: "E-mail",
 			username: "Nome de usuário",
@@ -116,6 +120,10 @@ export const messages = {
 			quantity: "Quantity",
 			limitPrice: "Limit price",
 			submitOrder: "Submit order",
+		},
+		comments: {
+			requiresTrade:
+				"Failed to send your post: You need to complete a trade before posting",
 		},
 		auth: {
 			email: "Email",

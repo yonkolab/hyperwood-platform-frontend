@@ -1,5 +1,5 @@
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
@@ -25,6 +25,7 @@ function LoginPage() {
 	const emailFieldId = "login-email";
 	const passwordFieldId = "login-password";
 	const navigate = useNavigate();
+	const queryClient = useQueryClient();
 	const form = useForm<FormValues>({
 		resolver: zodResolver(formSchema),
 	});
@@ -48,6 +49,8 @@ function LoginPage() {
 				return;
 			}
 
+			queryClient.setQueryData(["auth", "me"], result.user);
+			toast.success(`Bem-vindo de volta, ${result.user.username ?? "trader"}!`);
 			await navigate({ to: "/portfolio" });
 		},
 		onError: (error) => {
@@ -58,7 +61,7 @@ function LoginPage() {
 	return (
 		<div className="mx-auto max-w-md">
 			<Card className="p-6">
-				<h1 className="text-2xl font-semibold text-foreground">
+				<h1 className="font-display text-2xl font-semibold text-foreground">
 					Entre na sua conta
 				</h1>
 				<form

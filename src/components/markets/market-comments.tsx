@@ -11,11 +11,11 @@ import {
 	ShieldAlert,
 } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { toast } from "sonner";
 import { Badge } from "#/components/ui/badge";
 import { Button } from "#/components/ui/button";
 import { Card } from "#/components/ui/card";
-import { Input } from "#/components/ui/input";
 import {
 	createMarketComment,
 	getMarketComments,
@@ -25,6 +25,7 @@ import {
 	toggleMarketCommentLike,
 } from "#/features/markets/server";
 import { formatApiError } from "#/lib/api/errors";
+import { ApiError } from "#/lib/api/http";
 import type { User } from "#/lib/api/types";
 
 function formatCommentTimeAgo(iso: string) {
@@ -52,6 +53,71 @@ function formatCommentTimeAgo(iso: string) {
 
 function authorLabel(comment: MarketCommentNode) {
 	return comment.author.username ?? comment.author.email;
+}
+
+const AVATAR_COLORS = [
+	"bg-brand",
+	"bg-yes",
+	"bg-[#7c5cbf]",
+	"bg-[#c0562f]",
+	"bg-[#2f6fb0]",
+	"bg-[#8a6d3b]",
+];
+
+function authorInitials(comment: MarketCommentNode) {
+	const label = comment.author.username ?? comment.author.email;
+
+	return label
+		.replace(/[^a-zA-Z0-9]/g, "")
+		.slice(0, 2)
+		.toUpperCase();
+}
+
+function avatarColorFor(authorId: string) {
+	let hash = 0;
+
+	for (const char of authorId) {
+		hash = (hash * 31 + char.charCodeAt(0)) % AVATAR_COLORS.length;
+	}
+
+	return AVATAR_COLORS[hash];
+}
+
+function AuthorAvatar(props: { comment: MarketCommentNode }) {
+	return (
+		<span
+			className={`flex size-8 shrink-0 items-center justify-center rounded-full text-xs font-bold text-white ${avatarColorFor(props.comment.author.id)}`}
+			aria-hidden
+		>
+			{authorInitials(props.comment)}
+		</span>
+	);
+}
+
+function PositionBadge(props: { comment: MarketCommentNode }) {
+	const position = props.comment.author.position;
+
+	if (position === "yes") {
+		return (
+			<span className="inline-flex items-center rounded-full border border-yes/30 bg-yes-soft px-2 py-0.5 text-[10px] font-bold uppercase tracking-wide text-yes">
+				Yes
+			</span>
+		);
+	}
+
+	if (position === "no") {
+		return (
+			<span className="inline-flex items-center rounded-full border border-no/30 bg-no-soft px-2 py-0.5 text-[10px] font-bold uppercase tracking-wide text-no">
+				No
+			</span>
+		);
+	}
+
+	return (
+		<span className="inline-flex items-center rounded-full border border-edge bg-subtle px-2 py-0.5 text-[10px] font-medium text-muted">
+			no position
+		</span>
+	);
 }
 
 function CommentMenu(props: { comment: MarketCommentNode }) {
@@ -116,6 +182,7 @@ function CommentComposer(props: {
 	onCancel?: () => void;
 	compact?: boolean;
 }) {
+	const { t } = useTranslation();
 	const [body, setBody] = useState("");
 	const queryClient = useQueryClient();
 	const mutation = useMutation({
@@ -135,6 +202,14 @@ function CommentComposer(props: {
 			}
 		},
 		onError: (error) => {
+			if (
+				error instanceof ApiError &&
+				error.code === "comment_requires_trade"
+			) {
+				toast.error(t("comments.requiresTrade"));
+				return;
+			}
+
 			toast.error(formatApiError(error));
 		},
 	});
@@ -157,13 +232,15 @@ function CommentComposer(props: {
 				}
 			}}
 		>
-			<Input
+			<textarea
 				value={body}
 				placeholder={props.placeholder}
 				maxLength={2000}
+				rows={props.compact ? 2 : 4}
 				onChange={(event) => {
 					setBody(event.target.value);
 				}}
+				className="w-full resize-y rounded-lg border border-edge bg-card px-3 py-2.5 text-sm leading-6 text-foreground outline-none transition placeholder:text-muted focus:border-yes/60 focus:ring-2 focus:ring-yes/15"
 			/>
 			<div className="flex justify-end gap-2">
 				{props.onCancel ? (
@@ -420,7 +497,9 @@ export function MarketComments(props: { marketId: string; user: User | null }) {
 		<div ref={sectionRef}>
 			<Card className="p-6">
 				<div className="flex items-center justify-between">
-					<h2 className="text-xl font-semibold text-foreground">Comentários</h2>
+					<h2 className="font-display text-xl font-semibold text-foreground">
+						Comentários
+					</h2>
 					<Badge>{commentCount}</Badge>
 				</div>
 
