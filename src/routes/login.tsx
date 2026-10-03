@@ -40,6 +40,14 @@ function LoginPage() {
 				return;
 			}
 
+			if (result.user.status === "pending_email_verification") {
+				toast.warning(
+					"Você ainda não verificou seu e-mail. Confira sua caixa de entrada para ativar a conta — ou reenvie o link abaixo.",
+				);
+				await navigate({ to: "/verify-email" });
+				return;
+			}
+
 			await navigate({ to: "/portfolio" });
 		},
 		onError: (error) => {
