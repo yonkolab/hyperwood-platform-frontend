@@ -2,7 +2,11 @@ import { Link } from "@tanstack/react-router";
 import { ChevronRight, Flame } from "lucide-react";
 import { Card } from "#/components/ui/card";
 import type { HomePageData } from "#/lib/api/home";
-import { formatCompactNumber, formatDateTime, formatPriceBps } from "#/lib/format";
+import {
+	formatCompactNumber,
+	formatDateTime,
+	formatPriceBps,
+} from "#/lib/format";
 
 export function HomeSidebar(props: { data: HomePageData }) {
 	const announcements =
@@ -33,7 +37,9 @@ export function HomeSidebar(props: { data: HomePageData }) {
 			<Card className="rounded-[28px] border-slate-900 bg-transparent p-0 shadow-none">
 				<div className="rounded-[28px] border border-slate-900 bg-[#0c121a] p-5">
 					<div className="flex items-center justify-between">
-						<h2 className="text-2xl font-semibold text-white">Últimas notícias</h2>
+						<h2 className="text-2xl font-semibold text-white">
+							Últimas notícias
+						</h2>
 						<ChevronRight className="size-4 text-slate-500" />
 					</div>
 					<ol className="mt-5 space-y-5">
@@ -66,7 +72,9 @@ export function HomeSidebar(props: { data: HomePageData }) {
 			<Card className="rounded-[28px] border-slate-900 bg-transparent p-0 shadow-none">
 				<div className="rounded-[28px] border border-slate-900 bg-[#0c121a] p-5">
 					<div className="flex items-center justify-between">
-						<h2 className="text-2xl font-semibold text-white">Tópicos quentes</h2>
+						<h2 className="text-2xl font-semibold text-white">
+							Tópicos quentes
+						</h2>
 						<ChevronRight className="size-4 text-slate-500" />
 					</div>
 					<ol className="mt-5 space-y-4">

@@ -1,4 +1,6 @@
 import { Link } from "@tanstack/react-router";
+import { ChevronLeft, ChevronRight } from "lucide-react";
+import { useEffect, useMemo, useState } from "react";
 import {
 	CartesianGrid,
 	Line,
@@ -8,8 +10,6 @@ import {
 	XAxis,
 	YAxis,
 } from "recharts";
-import { useEffect, useMemo, useState } from "react";
-import { ChevronLeft, ChevronRight } from "lucide-react";
 import { Button } from "#/components/ui/button";
 import { Card } from "#/components/ui/card";
 import type { HomePageData } from "#/lib/api/home";
@@ -95,7 +95,9 @@ export function HeroMarket(props: { data: HomePageData }) {
 							</h1>
 						</div>
 						<div className="text-left lg:text-right">
-							<p className="text-xs font-medium text-slate-500 lg:text-sm">Termina em</p>
+							<p className="text-xs font-medium text-slate-500 lg:text-sm">
+								Termina em
+							</p>
 							<p className="mt-1 text-[1.45rem] font-semibold tabular-nums text-rose-300 lg:text-[1.65rem]">
 								{liveCountdown}
 							</p>
@@ -143,7 +145,6 @@ export function HeroMarket(props: { data: HomePageData }) {
 									))}
 								</div>
 							</div>
-
 						</div>
 
 						<div className="flex min-h-0 flex-col px-1">
@@ -190,7 +191,10 @@ export function HeroMarket(props: { data: HomePageData }) {
 										data={chartData}
 										margin={{ left: 0, right: 8, top: 12, bottom: 0 }}
 									>
-										<CartesianGrid stroke="rgba(100,116,139,0.14)" vertical={false} />
+										<CartesianGrid
+											stroke="rgba(100,116,139,0.14)"
+											vertical={false}
+										/>
 										<XAxis
 											dataKey="label"
 											tick={{ fill: "#64748b", fontSize: 12 }}
@@ -344,7 +348,10 @@ function buildMockPulseItems(market: MarketRecord): HeroPulseItem[] {
 }
 
 function buildMockHeroSeries(market: MarketRecord) {
-	const seed = [...market.id].reduce((sum, char) => sum + char.charCodeAt(0), 0);
+	const seed = [...market.id].reduce(
+		(sum, char) => sum + char.charCodeAt(0),
+		0,
+	);
 	const baseYes = market.yesPriceBps / 100;
 	const points = Array.from({ length: 12 }, (_, index) => {
 		const wave = Math.sin((seed + index) / 2.7) * 4.6;

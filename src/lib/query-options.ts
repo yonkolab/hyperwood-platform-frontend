@@ -12,13 +12,13 @@ import {
 	getWithdrawals,
 } from "#/features/funding/server";
 import {
-	getMarkets,
 	getDefaultMarketSort,
 	getHomePageData,
 	getMarketAnnouncements,
 	getMarketCandles,
 	getMarketDetail,
 	getMarketOrderBook,
+	getMarkets,
 	getMarketTrades,
 } from "#/features/markets/server";
 import {

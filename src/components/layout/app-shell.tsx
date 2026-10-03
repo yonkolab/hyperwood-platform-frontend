@@ -5,8 +5,8 @@ import { Button } from "#/components/ui/button";
 import { Input } from "#/components/ui/input";
 import type { AppLocale } from "#/env";
 import { logoutUser } from "#/features/auth/server";
-import { marketCategoriesQueryOptions } from "#/lib/query-options";
 import type { User } from "#/lib/api/types";
+import { marketCategoriesQueryOptions } from "#/lib/query-options";
 import { LocaleSwitcher } from "./locale-switcher";
 
 export function AppShell(props: {
@@ -50,7 +50,7 @@ export function AppShell(props: {
 								className="border-none bg-transparent px-0 py-0 focus:ring-0"
 							/>
 						</div>
-						
+
 						<LocaleSwitcher locale={props.locale} />
 						{props.user ? (
 							<div className="hidden items-center gap-3 md:flex">
