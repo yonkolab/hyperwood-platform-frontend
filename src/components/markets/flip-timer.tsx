@@ -23,9 +23,11 @@ export function FlipTimer(props: {
 	className?: string;
 	compact?: boolean;
 }) {
-	const [now, setNow] = useState(() => Date.now());
+	const [now, setNow] = useState<number | null>(null);
 
 	useEffect(() => {
+		setNow(Date.now());
+
 		const timer = window.setInterval(() => {
 			setNow(Date.now());
 		}, 1000);
@@ -36,7 +38,9 @@ export function FlipTimer(props: {
 	}, []);
 
 	const closesAt = props.closesAt ? new Date(props.closesAt) : null;
-	const remainingMs = closesAt ? Math.max(0, closesAt.getTime() - now) : 0;
+	const remainingMs = closesAt
+		? Math.max(0, closesAt.getTime() - (now ?? closesAt.getTime()))
+		: 0;
 	const units = buildUnits(remainingMs);
 
 	return (

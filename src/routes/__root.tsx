@@ -61,7 +61,7 @@ function RootDocument({ children }: { children: React.ReactNode }) {
 	}, []);
 
 	return (
-		<html lang={localeResult.locale}>
+		<html lang={localeResult.locale} suppressHydrationWarning>
 			<head>
 				<HeadContent />
 			</head>

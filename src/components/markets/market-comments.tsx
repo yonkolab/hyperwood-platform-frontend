@@ -29,7 +29,11 @@ import { ApiError } from "#/lib/api/http";
 import type { User } from "#/lib/api/types";
 import { marketCommentsQueryOptions } from "#/lib/query-options";
 
-function formatCommentTimeAgo(iso: string) {
+function formatCommentTimeAgo(iso: string, mounted: boolean) {
+	if (!mounted) {
+		return "";
+	}
+
 	const diffMs = Date.now() - new Date(iso).getTime();
 	const minutes = Math.floor(diffMs / 60000);
 

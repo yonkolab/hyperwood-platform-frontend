@@ -1,5 +1,4 @@
 import { Link } from "@tanstack/react-router";
-import { Badge } from "#/components/ui/badge";
 import { Card } from "#/components/ui/card";
 import type { MarketRecord } from "#/lib/api/types";
 import {
@@ -23,7 +22,6 @@ export function MarketCard(props: { market: MarketRecord }) {
 							{market.title}
 						</h3>
 					</div>
-					<Badge>{market.status}</Badge>
 				</div>
 				<p className="line-clamp-2 text-sm text-muted">
 					{market.summary ??

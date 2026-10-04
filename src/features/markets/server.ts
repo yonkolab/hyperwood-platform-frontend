@@ -19,7 +19,8 @@ const marketsQuerySchema = z.object({
 	tag: z.string().optional(),
 	search: z.string().optional(),
 	sort: z.enum(["newest", "closing_soon", "highest_volume"]).optional(),
-	limit: z.number().int().positive().max(30).default(24),
+	limit: z.number().int().positive().max(100).default(24),
+	offset: z.number().int().nonnegative().max(10000).optional(),
 });
 
 const marketIdSchema = z.object({
@@ -39,6 +40,7 @@ function createMarketQueryString(data: z.infer<typeof marketsQuerySchema>) {
 	if (data.tag) searchParams.set("tag", data.tag);
 	if (data.search) searchParams.set("search", data.search);
 	if (data.sort) searchParams.set("sort", data.sort);
+	if (data.offset !== undefined) searchParams.set("offset", String(data.offset));
 
 	return searchParams.toString();
 }

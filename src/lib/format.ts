@@ -29,6 +29,7 @@ export function formatDateTime(value: string, locale = "pt-BR") {
 	return new Intl.DateTimeFormat(locale, {
 		dateStyle: "medium",
 		timeStyle: "short",
+		timeZone: "America/Sao_Paulo",
 	}).format(new Date(value));
 }
 

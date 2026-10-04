@@ -37,7 +37,7 @@ export function AppShell(props: {
 	return (
 		<div className="min-h-screen bg-background text-foreground">
 			<header className="sticky top-0 z-40 border-b border-edge bg-card/90 backdrop-blur">
-				<div className="mx-auto max-w-[1600px] px-4 lg:px-8">
+				<div className="mx-auto max-w-[1440px] px-4 lg:px-8">
 					<div className="flex items-center gap-4 py-3">
 						<Link to="/" className="flex shrink-0 items-center">
 							<img
@@ -119,7 +119,7 @@ export function AppShell(props: {
 					</div>
 				</div>
 			</header>
-			<main className="mx-auto max-w-[1600px] px-4 py-8 lg:px-8">
+			<main className="mx-auto max-w-[1440px] px-4 py-8 lg:px-8">
 				{props.children}
 			</main>
 		</div>

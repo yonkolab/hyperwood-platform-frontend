@@ -52,19 +52,80 @@ export const marketCategoriesQueryOptions = queryOptions({
 		}),
 });
 
+export const HOME_PAGE_SIZE = 50;
+
+export function homeInfiniteQueryOptions(search: {
+	category?: string;
+	search?: string;
+	tag?: string;
+	sort?: string;
+	status?: string;
+}) {
+	const backendSort =
+		search.sort === "closing_soon" ||
+		search.sort === "highest_volume" ||
+		search.sort === "newest"
+			? search.sort
+			: undefined;
+	const backendStatus =
+		search.status === "active" || search.status === "settled"
+			? search.status
+			: undefined;
+
+	return {
+		queryKey: ["markets", "home-infinite", search],
+		initialPageParam: 0,
+		queryFn: ({ pageParam }: { pageParam: number }) =>
+			getMarkets({
+				data: {
+					limit: HOME_PAGE_SIZE,
+					offset: pageParam,
+					sort: backendSort,
+					status: backendStatus,
+					category: search.category,
+					search: search.search,
+					tag: search.tag,
+				},
+			}),
+		getNextPageParam: (lastPage: {
+			pagination?: { hasMore?: boolean; offset?: number; limit?: number };
+		}) => {
+			const p = lastPage.pagination;
+			if (!p || !p.hasMore) return undefined;
+			return (p.offset ?? 0) + (p.limit ?? HOME_PAGE_SIZE);
+		},
+	};
+}
+
 export function homePageQueryOptions(search: {
 	category?: string;
 	search?: string;
 	tag?: string;
+	sort?: string;
+	status?: string;
 }) {
+	const backendSort =
+		search.sort === "closing_soon" ||
+		search.sort === "highest_volume" ||
+		search.sort === "newest"
+			? search.sort
+			: undefined;
+	const backendStatus =
+		search.status === "active" || search.status === "settled"
+			? search.status
+			: undefined;
+
 	return queryOptions({
 		queryKey: ["markets", "home", search],
 		queryFn: () =>
 			getHomePageData({
 				data: {
-					limit: 24,
-					sort: getDefaultMarketSort(),
-					...search,
+					limit: 100,
+					sort: backendSort ?? getDefaultMarketSort(),
+					status: backendStatus,
+					category: search.category,
+					search: search.search,
+					tag: search.tag,
 				},
 			}),
 	});

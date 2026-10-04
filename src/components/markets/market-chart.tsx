@@ -174,6 +174,7 @@ function formatDayLabel(isoDate: string) {
 	return new Date(isoDate).toLocaleDateString("pt-BR", {
 		day: "2-digit",
 		month: "short",
+		timeZone: "UTC",
 	});
 }
 
@@ -189,6 +190,7 @@ function formatFullDate(isoDate: string) {
 		day: "2-digit",
 		month: "long",
 		year: "numeric",
+		timeZone: "UTC",
 	});
 }
 
