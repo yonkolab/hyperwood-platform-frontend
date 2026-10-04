@@ -88,33 +88,41 @@ function HomePage() {
 
 	const hasMore = infinite.hasNextPage ?? false;
 
+	const sidebarData = useMemo(() => {
+		if (!data) return null;
+
+		const tagCounter = new Map<string, number>();
+		for (const market of allMarkets) {
+			for (const tag of market.tags) {
+				tagCounter.set(tag, (tagCounter.get(tag) ?? 0) + 1);
+			}
+		}
+
+		return {
+			marketList: data,
+			heroMarket: allMarkets[0] ?? null,
+			latestMarkets: [...allMarkets]
+				.sort(
+					(a, b) =>
+						new Date(b.statusChangedAt).getTime() -
+						new Date(a.statusChangedAt).getTime(),
+				)
+				.slice(0, 5),
+			hotTopics: [...tagCounter.entries()]
+				.map(([tag, count]) => ({ tag, count }))
+				.sort((a, b) => b.count - a.count)
+				.slice(0, 5),
+			featuredAnnouncements: [] as never[],
+		} as never;
+	}, [data, allMarkets]);
+
 	return (
 		<div className="space-y-10">
 			<section className="grid gap-6 xl:grid-cols-[minmax(0,1fr)_340px] xl:items-start">
-				{data ? (
+				{sidebarData ? (
 					<>
-						<HeroMarket
-							data={
-								{
-									marketList: data,
-									heroMarket: data.markets[0] ?? null,
-									latestMarkets: data.markets.slice(0, 5),
-									hotTopics: [],
-									featuredAnnouncements: [],
-								} as never
-							}
-						/>
-						<HomeSidebar
-							data={
-								{
-									marketList: data,
-									heroMarket: data.markets[0] ?? null,
-									latestMarkets: data.markets.slice(0, 5),
-									hotTopics: [],
-									featuredAnnouncements: [],
-								} as never
-							}
-						/>
+						<HeroMarket data={sidebarData} />
+						<HomeSidebar data={sidebarData} />
 					</>
 				) : null}
 			</section>
