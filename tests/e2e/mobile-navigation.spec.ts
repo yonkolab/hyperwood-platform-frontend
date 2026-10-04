@@ -1,5 +1,35 @@
 import { expect, test } from "@playwright/test";
 
+test("home page hydrates without text mismatches", async ({ page }) => {
+	const hydrationErrors: string[] = [];
+	page.on("console", (message) => {
+		if (
+			message.type() === "error" &&
+			message.text().includes("Hydration failed")
+		) {
+			hydrationErrors.push(message.text());
+		}
+	});
+	page.on("pageerror", (error) => {
+		if (error.message.includes("Hydration failed")) {
+			hydrationErrors.push(error.message);
+		}
+	});
+	await page.addInitScript(() => {
+		const originalNow = Date.now;
+		let currentTime = originalNow();
+		Date.now = () => {
+			currentTime += 26 * 60 * 60 * 1000;
+			return currentTime;
+		};
+	});
+
+	await page.goto("/");
+	await expect(page.getByRole("heading", { name: "Todos os mercados" })).toBeVisible();
+	await expect(page.getByText("Ao vivo").first()).toBeVisible();
+	expect(hydrationErrors).toEqual([]);
+});
+
 test("mobile navigation hides the hero carousel and opens the More sheet", async ({
 	page,
 }) => {

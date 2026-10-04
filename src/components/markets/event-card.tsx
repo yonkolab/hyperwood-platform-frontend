@@ -99,9 +99,12 @@ function EventBookmark({ marketId }: { marketId: string }) {
 }
 
 function EventFooter(props: { volumeMinor: number; category: string }) {
-	const closeText = formatRelativeCountdown(
-		new Date(Date.now() + 2 * 24 * 3600 * 1000).toISOString(),
-	);
+	const [closeText, setCloseText] = useState("2d");
+
+	useEffect(() => {
+		const closesAt = new Date(Date.now() + 2 * 24 * 3600 * 1000).toISOString();
+		setCloseText(formatRelativeCountdown(closesAt));
+	}, []);
 
 	return (
 		<div className="mt-auto flex items-center justify-between gap-3 border-t border-edge px-5 py-2.5 text-xs text-muted">

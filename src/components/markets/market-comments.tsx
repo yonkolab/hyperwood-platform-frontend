@@ -24,8 +24,7 @@ import {
 	toggleMarketCommentBookmark,
 	toggleMarketCommentLike,
 } from "#/features/markets/server";
-import { formatApiError } from "#/lib/api/errors";
-import { ApiError } from "#/lib/api/http";
+import { ApiError, formatApiError } from "#/lib/api/errors";
 import type { User } from "#/lib/api/types";
 import { marketCommentsQueryOptions } from "#/lib/query-options";
 

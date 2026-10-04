@@ -1,4 +1,13 @@
-import { ApiError } from "./http";
+export class ApiError extends Error {
+	constructor(
+		readonly status: number,
+		readonly code: string,
+		message: string,
+	) {
+		super(message);
+		this.name = "ApiError";
+	}
+}
 
 const friendlyMessages: Record<string, string> = {
 	conflict: "E-mail ou usuário já cadastrado.",

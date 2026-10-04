@@ -1,17 +1,7 @@
 import { randomUUID } from "node:crypto";
 import { env } from "#/env";
+import { ApiError } from "./errors";
 import type { ApiErrorResponse } from "./types";
-
-export class ApiError extends Error {
-	constructor(
-		readonly status: number,
-		readonly code: string,
-		message: string,
-	) {
-		super(message);
-		this.name = "ApiError";
-	}
-}
 
 type HttpMethod = "GET" | "POST" | "PATCH" | "DELETE";
 
