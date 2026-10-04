@@ -41,7 +41,7 @@ const MOCK_AVATARS = [
 
 const MOCK_NAMES = ["Blue31", "lt-aint-much", "ghachu", "Cardenas"];
 
-export function HeroMarket(props: { data: HomePageData }) {
+export function HeroMarket(props: { data: HomePageData; className?: string }) {
 	const spotlightMarkets = useMemo(
 		() => props.data.marketList.markets.slice(0, 4),
 		[props.data.marketList.markets],
@@ -140,7 +140,7 @@ export function HeroMarket(props: { data: HomePageData }) {
 	);
 	if (!market) {
 		return (
-			<Card className="p-8">
+			<Card className={`p-8 ${props.className ?? ""}`}>
 				<p className="text-muted">Nenhum mercado ativo para destacar.</p>
 			</Card>
 		);
@@ -156,7 +156,7 @@ export function HeroMarket(props: { data: HomePageData }) {
 		];
 
 	return (
-		<div className="space-y-4">
+		<div className={`space-y-4 ${props.className ?? ""}`}>
 			<Card className="overflow-hidden rounded-lg border-edge bg-card p-4 lg:h-[480px] lg:p-5">
 				<div className="flex h-full flex-col gap-4">
 					<div

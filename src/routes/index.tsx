@@ -1,6 +1,6 @@
-import { useInfiniteQuery, useSuspenseQuery } from "@tanstack/react-query";
+import { useInfiniteQuery } from "@tanstack/react-query";
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
-import { useEffect, useMemo, useState } from "react";
+import { useMemo } from "react";
 import { EventCard } from "#/components/markets/event-card";
 import { HeroMarket } from "#/components/markets/hero-market";
 import { HomeSidebar } from "#/components/markets/home-sidebar";
@@ -117,12 +117,14 @@ function HomePage() {
 	}, [data, allMarkets]);
 
 	return (
-		<div className="space-y-10">
+		<div className="space-y-0 md:space-y-10">
 			<section className="grid gap-6 xl:grid-cols-[minmax(0,1fr)_340px] xl:items-start">
 				{sidebarData ? (
 					<>
-						<HeroMarket data={sidebarData} />
-						<HomeSidebar data={sidebarData} />
+						<HeroMarket data={sidebarData} className="hidden md:block" />
+						<div className="hidden xl:block">
+							<HomeSidebar data={sidebarData} />
+						</div>
 					</>
 				) : null}
 			</section>
@@ -132,6 +134,7 @@ function HomePage() {
 					search={search}
 					onChange={handleFilterChange}
 				/>
+				<MobileFeaturedCard />
 				<div className="grid gap-4 lg:grid-cols-3 xl:grid-cols-4">
 					{visibleMarkets.length === 0 ? (
 						<p className="col-span-full py-16 text-center text-sm text-muted">
@@ -165,6 +168,54 @@ function HomePage() {
 				) : null}
 			</section>
 		</div>
+	);
+}
+
+function MobileFeaturedCard() {
+	return (
+		<aside
+			aria-label="2026 Midterms Predictions"
+			className="relative h-[140px] overflow-hidden rounded-xl border border-edge bg-card px-4 pt-3 shadow-[0_1px_3px_rgba(13,31,23,0.06)] md:hidden"
+		>
+			<h2 className="font-display text-lg font-semibold leading-tight text-foreground">
+				2026 Midterms
+				<br />
+				<span className="text-brand">Predictions</span>
+			</h2>
+			<svg
+				viewBox="0 0 240 100"
+				role="img"
+				aria-label="Mapa estilizado dos Estados Unidos"
+				className="absolute inset-x-0 bottom-0 mx-auto h-[78px] w-full max-w-[270px]"
+			>
+				<defs>
+					<clipPath id="midterms-map">
+						<path d="m10 27 13-9 17 5 13-11 15 7 18-4 9 10 17-3 14 9 14-7 16 8 18-4 14 11 20-3 8 9-10 7-11-3-8 9-16-2-9 9-17-4-10 10-13-2-10 9-17-2-8 8-17-3-11 7-13-7-12 2-8-11-9 1-4-11-10-3 6-8-8-7z" />
+					</clipPath>
+				</defs>
+				<g clipPath="url(#midterms-map)">
+					{Array.from({ length: 168 }, (_, index) => {
+						const column = index % 24;
+						const row = Math.floor(index / 24);
+						const color =
+							(column + row * 2) % 7 < 3
+								? "#4f83ff"
+								: (column + row) % 6 === 0
+									? "#a68cff"
+									: "#fb6868";
+						return (
+							<circle
+								key={`${row}-${column}`}
+								cx={10 + column * 9.5}
+								cy={10 + row * 11}
+								r="2.6"
+								fill={color}
+							/>
+						);
+					})}
+				</g>
+			</svg>
+		</aside>
 	);
 }
 

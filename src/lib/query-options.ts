@@ -30,6 +30,7 @@ import {
 	getPortfolioSettlements,
 	getPortfolioSummary,
 } from "#/features/portfolio/server";
+import type { MarketListResponse } from "#/lib/api/types";
 
 export const localeQueryOptions = queryOptions({
 	queryKey: ["shell", "locale"],
@@ -87,12 +88,12 @@ export function homeInfiniteQueryOptions(search: {
 					tag: search.tag,
 				},
 			}),
-		getNextPageParam: (lastPage: {
-			pagination?: { hasMore?: boolean; offset?: number; limit?: number };
-		}) => {
-			const p = lastPage.pagination;
-			if (!p || !p.hasMore) return undefined;
-			return (p.offset ?? 0) + (p.limit ?? HOME_PAGE_SIZE);
+		getNextPageParam: (
+			lastPage: MarketListResponse,
+			allPages: MarketListResponse[],
+		) => {
+			if (lastPage.markets.length < HOME_PAGE_SIZE) return undefined;
+			return allPages.length * HOME_PAGE_SIZE;
 		},
 	};
 }

@@ -60,12 +60,12 @@ export function MarketFilters(props: MarketFiltersProps) {
 	};
 
 	return (
-		<div className="space-y-3">
+		<div id="market-filters" className="scroll-mt-24 space-y-3">
 			<div className="flex flex-wrap items-center gap-2">
-				<h2 className="font-display text-2xl font-semibold text-foreground">
+				<h2 className="font-display hidden text-2xl font-semibold text-foreground md:block">
 					Todos os mercados
 				</h2>
-				<div className="ml-auto flex items-center gap-1.5">
+				<div className="ml-auto hidden items-center gap-1.5 md:flex">
 					{searchOpen ? (
 						<form
 							className="flex items-center gap-1.5"
@@ -98,6 +98,7 @@ export function MarketFilters(props: MarketFiltersProps) {
 						<Button
 							variant="ghost"
 							size="icon"
+							id="market-search-toggle"
 							aria-label="Pesquisar"
 							onClick={() => {
 								setSearchOpen(true);
@@ -109,6 +110,7 @@ export function MarketFilters(props: MarketFiltersProps) {
 					<Button
 						variant="ghost"
 						size="icon"
+						id="market-filter-toggle"
 						aria-label="Filtros"
 						aria-expanded={filtersOpen}
 						className={filtersOpen ? "bg-subtle text-foreground" : undefined}

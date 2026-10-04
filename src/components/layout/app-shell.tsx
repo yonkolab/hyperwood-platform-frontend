@@ -1,14 +1,21 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { Link, useRouter, useRouterState } from "@tanstack/react-router";
-import { Menu, Search } from "lucide-react";
+import { Bookmark, Search, SlidersHorizontal } from "lucide-react";
 import { Button } from "#/components/ui/button";
 import { Input } from "#/components/ui/input";
-import { ThemeToggle } from "#/components/ui/theme-toggle";
+import {
+	NavigationMenu,
+	NavigationMenuItem,
+	NavigationMenuLink,
+	NavigationMenuList,
+} from "#/components/ui/navigation-menu";
 import type { AppLocale } from "#/env";
 import { logoutUser } from "#/features/auth/server";
 import type { User } from "#/lib/api/types";
 import { marketCategoriesQueryOptions } from "#/lib/query-options";
-import { LocaleSwitcher } from "./locale-switcher";
+import { MobileNavigation } from "./mobile-navigation";
+import { SettingsMenu } from "./settings-menu";
+import { SiteFooter } from "./site-footer";
 
 export function AppShell(props: {
 	children: React.ReactNode;
@@ -34,8 +41,21 @@ export function AppShell(props: {
 		},
 	});
 
+	function submitMobileSearch(event: React.FormEvent<HTMLFormElement>) {
+		event.preventDefault();
+		const formData = new FormData(event.currentTarget);
+		const search = String(formData.get("search") ?? "").trim();
+		void router.navigate({
+			to: "/",
+			search: (previous) => ({
+				...previous,
+				search: search || undefined,
+			}),
+		});
+	}
+
 	return (
-		<div className="min-h-screen bg-background text-foreground">
+		<div className="flex min-h-screen flex-col bg-background pb-[calc(3.5rem+env(safe-area-inset-bottom))] text-foreground md:pb-0">
 			<header className="sticky top-0 z-40 border-b border-edge bg-card/90 backdrop-blur">
 				<div className="mx-auto max-w-[1440px] px-4 lg:px-8">
 					<div className="flex items-center gap-4 py-3">
@@ -55,8 +75,6 @@ export function AppShell(props: {
 							/>
 						</div>
 
-						<LocaleSwitcher locale={props.locale} />
-						<ThemeToggle />
 						{props.user ? (
 							<div className="hidden items-center gap-3 md:flex">
 								<span className="text-sm text-muted">{props.user.email}</span>
@@ -72,30 +90,66 @@ export function AppShell(props: {
 								</Button>
 							</div>
 						) : (
-							<div className="hidden items-center gap-3 md:flex">
+							<>
+								<div className="hidden items-center gap-3 md:flex">
+									<Link
+										to="/login"
+										className="text-sm font-medium text-muted hover:text-foreground"
+									>
+										Entrar
+									</Link>
+									<Link to="/register">
+										<Button>Cadastre-se</Button>
+									</Link>
+								</div>
 								<Link
-									to="/login"
-									className="text-sm font-medium text-muted hover:text-foreground"
+									to="/register"
+									className="ml-auto rounded-lg bg-brand px-3 py-2 text-sm font-semibold text-white transition hover:bg-brand-hover md:hidden"
 								>
-									Entrar
+									Cadastre-se
 								</Link>
-								<Link to="/register">
-									<Button>Cadastre-se</Button>
-								</Link>
-							</div>
+							</>
 						)}
-						<Button variant="ghost" className="md:hidden">
-							<Menu className="size-4" />
-						</Button>
+						<div className="hidden md:block">
+							<SettingsMenu locale={props.locale} />
+						</div>
 					</div>
-					<div className="scrollbar-none -mx-4 overflow-x-auto px-4">
-						<nav className="flex min-w-max items-center gap-6 py-2.5 text-sm">
+					<div className="scrollbar-none -mx-4 hidden overflow-x-auto px-4 md:block">
+						<NavigationMenu className="min-w-max py-1.5">
+							<NavigationMenuList>
+								<NavigationMenuItem>
+									<NavigationMenuLink
+										render={<Link to="/" search={{}} />}
+										active={!selectedCategory}
+									>
+										Tendências
+									</NavigationMenuLink>
+								</NavigationMenuItem>
+								{marketCatalog?.categories.map((category) => (
+									<NavigationMenuItem key={category}>
+										<NavigationMenuLink
+											render={<Link to="/" search={{ category }} />}
+											active={selectedCategory === category}
+										>
+											{category}
+										</NavigationMenuLink>
+									</NavigationMenuItem>
+								))}
+							</NavigationMenuList>
+						</NavigationMenu>
+					</div>
+					<div className="scrollbar-none -mx-4 overflow-x-auto border-t border-edge/70 px-4 md:hidden">
+						<nav
+							aria-label="Categorias"
+							className="flex min-w-max gap-6 py-2.5"
+						>
 							<Link
 								to="/"
 								search={{}}
-								className={`whitespace-nowrap transition ${
+								aria-current={!selectedCategory ? "page" : undefined}
+								className={`text-xs font-semibold transition ${
 									!selectedCategory
-										? "font-semibold text-foreground"
+										? "text-foreground"
 										: "text-muted hover:text-foreground"
 								}`}
 							>
@@ -106,9 +160,12 @@ export function AppShell(props: {
 									key={category}
 									to="/"
 									search={{ category }}
-									className={`whitespace-nowrap transition ${
+									aria-current={
+										selectedCategory === category ? "page" : undefined
+									}
+									className={`text-xs font-semibold transition ${
 										selectedCategory === category
-											? "font-semibold text-foreground"
+											? "text-foreground"
 											: "text-muted hover:text-foreground"
 									}`}
 								>
@@ -117,11 +174,60 @@ export function AppShell(props: {
 							))}
 						</nav>
 					</div>
+					<form
+						className="flex items-center gap-2 pb-3 md:hidden"
+						onSubmit={submitMobileSearch}
+					>
+						<div className="flex min-w-0 flex-1 items-center gap-2 rounded-lg bg-subtle px-3 py-2">
+							<Search
+								className="size-4 shrink-0 text-muted"
+								aria-hidden="true"
+							/>
+							<Input
+								id="header-mobile-search"
+								name="search"
+								aria-label="Pesquisar mercados"
+								defaultValue={
+									typeof location.search.search === "string"
+										? location.search.search
+										: ""
+								}
+								placeholder="Pesquisar mercados..."
+								className="min-w-0 border-0 bg-transparent p-0 text-sm focus:ring-0"
+							/>
+						</div>
+						<Button
+							type="button"
+							variant="ghost"
+							className="size-10 shrink-0 p-0"
+							aria-label="Filtros"
+							onClick={() => {
+								document.getElementById("market-filter-toggle")?.click();
+							}}
+						>
+							<SlidersHorizontal className="size-5" aria-hidden="true" />
+						</Button>
+						<Link
+							to={props.user ? "/portfolio" : "/login"}
+							className="flex size-10 shrink-0 items-center justify-center rounded-lg text-muted transition hover:bg-subtle hover:text-foreground"
+							aria-label="Portfolio"
+						>
+							<Bookmark className="size-5" aria-hidden="true" />
+						</Link>
+					</form>
 				</div>
 			</header>
-			<main className="mx-auto max-w-[1440px] px-4 py-8 lg:px-8">
+			<main className="mx-auto min-h-[60vh] w-full min-w-0 max-w-[1440px] px-4 py-4 md:py-8 lg:px-8">
 				{props.children}
 			</main>
+			<SiteFooter />
+			<MobileNavigation
+				categories={marketCatalog?.categories ?? []}
+				locale={props.locale}
+				user={props.user}
+				isLoggingOut={logoutMutation.isPending}
+				onLogout={() => logoutMutation.mutate()}
+			/>
 		</div>
 	);
 }
