@@ -20,7 +20,7 @@ export function LegalDocument(props: {
 					{props.description}
 				</p>
 				<p className="mt-3 text-sm text-muted">
-					Última atualização: preencher antes da publicação.
+					Última atualização: 5 de outubro de 2026.
 				</p>
 			</header>
 
