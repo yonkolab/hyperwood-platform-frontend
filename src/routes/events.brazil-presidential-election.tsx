@@ -39,7 +39,7 @@ export const Route = createFileRoute("/events/brazil-presidential-election")({
 		const url =
 			"https://prediction-market-platform-frontend.vercel.app/events/brazil-presidential-election";
 		const image =
-			"https://prediction-market-platform-frontend.vercel.app/logo512.png";
+			"https://prediction-market-platform-frontend.vercel.app/android-chrome-512x512.png";
 
 		return {
 			meta: [
@@ -50,6 +50,7 @@ export const Route = createFileRoute("/events/brazil-presidential-election")({
 				{ property: "og:description", content: description },
 				{ property: "og:url", content: url },
 				{ property: "og:image", content: image },
+				{ property: "og:image:alt", content: "Hyperwood" },
 				{ name: "twitter:card", content: "summary" },
 				{ name: "twitter:title", content: title },
 				{ name: "twitter:description", content: description },

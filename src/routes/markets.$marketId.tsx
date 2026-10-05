@@ -62,7 +62,7 @@ export const Route = createFileRoute("/markets/$marketId")({
 			? `https://prediction-market-platform-frontend.vercel.app/markets/${market.id}`
 			: "https://prediction-market-platform-frontend.vercel.app";
 		const image =
-			"https://prediction-market-platform-frontend.vercel.app/logo512.png";
+			"https://prediction-market-platform-frontend.vercel.app/android-chrome-512x512.png";
 
 		return {
 			meta: [
@@ -73,6 +73,7 @@ export const Route = createFileRoute("/markets/$marketId")({
 				{ property: "og:description", content: description },
 				{ property: "og:url", content: url },
 				{ property: "og:image", content: image },
+				{ property: "og:image:alt", content: "Hyperwood" },
 				{ name: "twitter:card", content: "summary" },
 				{ name: "twitter:title", content: title },
 				{ name: "twitter:description", content: description },

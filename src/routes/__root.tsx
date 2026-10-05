@@ -52,7 +52,11 @@ export const Route = createRootRouteWithContext<RouterContext>()({
 			{
 				property: "og:image",
 				content:
-					"https://prediction-market-platform-frontend.vercel.app/logo512.png",
+					"https://prediction-market-platform-frontend.vercel.app/android-chrome-512x512.png",
+			},
+			{
+				property: "og:image:alt",
+				content: "Hyperwood",
 			},
 			{ name: "twitter:card", content: "summary" },
 			{ name: "twitter:title", content: "Hyperwood Trader" },
@@ -64,10 +68,31 @@ export const Route = createRootRouteWithContext<RouterContext>()({
 			{
 				name: "twitter:image",
 				content:
-					"https://prediction-market-platform-frontend.vercel.app/logo512.png",
+					"https://prediction-market-platform-frontend.vercel.app/android-chrome-512x512.png",
 			},
 		],
-		links: [{ rel: "stylesheet", href: appCss }],
+		links: [
+			{ rel: "stylesheet", href: appCss },
+			{ rel: "icon", href: "/favicon.ico", sizes: "any" },
+			{
+				rel: "icon",
+				href: "/favicon-16x16.png",
+				type: "image/png",
+				sizes: "16x16",
+			},
+			{
+				rel: "icon",
+				href: "/favicon-32x32.png",
+				type: "image/png",
+				sizes: "32x32",
+			},
+			{
+				rel: "apple-touch-icon",
+				href: "/apple-touch-icon.png",
+				sizes: "180x180",
+			},
+			{ rel: "manifest", href: "/manifest.json" },
+		],
 		scripts: [
 			{
 				children:
