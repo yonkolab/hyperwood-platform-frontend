@@ -178,14 +178,12 @@ function BrazilPresidentialElectionPage() {
 				</p>
 				<p className="text-sm text-muted">
 					Fontes:{" "}
-					<a
+					<Link
+						to="/events/brazil-presidential-election"
 						className="font-medium text-brand hover:underline"
-						href="https://polymarket.com/event/brazil-presidential-election"
-						target="_blank"
-						rel="noreferrer"
 					>
-						Polymarket
-					</a>{" "}
+						Hyperwood
+					</Link>{" "}
 					e{" "}
 					<a
 						className="font-medium text-brand hover:underline"

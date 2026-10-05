@@ -1,5 +1,5 @@
 import { useQuery, useSuspenseQuery } from "@tanstack/react-query";
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
 import { MarketDetailSkeleton } from "#/components/loading/page-skeletons";
 import { MarketChart } from "#/components/markets/market-chart";
 import {
@@ -127,9 +127,19 @@ function MarketDetailPage() {
 							<ul className="mt-3 space-y-2 text-sm text-brand">
 								{market.resolutionSources.map((source) => (
 									<li key={source}>
-										<a href={source} target="_blank" rel="noreferrer">
-											{source}
-										</a>
+										{source ===
+										"https://polymarket.com/event/brazil-presidential-election" ? (
+											<Link
+												to="/events/brazil-presidential-election"
+												className="hover:underline"
+											>
+												Hyperwood — Eleição presidencial do Brasil 2026
+											</Link>
+										) : (
+											<a href={source} target="_blank" rel="noreferrer">
+												{source}
+											</a>
+										)}
 									</li>
 								))}
 							</ul>
