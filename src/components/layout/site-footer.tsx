@@ -99,9 +99,6 @@ export function SiteFooter() {
 
 				<div className="mt-12 flex flex-col items-center justify-between gap-4 border-t border-edge pt-8 text-xs text-muted sm:flex-row">
 					<span>© 2026 Hyperwood. Todos os direitos reservados.</span>
-					<span className="text-center sm:text-right">
-						Trading envolve risco. Operações são de sua responsabilidade.
-					</span>
 				</div>
 			</div>
 		</footer>
