@@ -36,6 +36,36 @@ export const Route = createRootRouteWithContext<RouterContext>()({
 				content: "width=device-width, initial-scale=1",
 			},
 			{ title: "Hyperwood Trader" },
+			{
+				name: "description",
+				content:
+					"Negocie mercados de previsão e acompanhe probabilidades em tempo real na Hyperwood.",
+			},
+			{ property: "og:site_name", content: "Hyperwood" },
+			{ property: "og:type", content: "website" },
+			{ property: "og:title", content: "Hyperwood Trader" },
+			{
+				property: "og:description",
+				content:
+					"Negocie mercados de previsão e acompanhe probabilidades em tempo real na Hyperwood.",
+			},
+			{
+				property: "og:image",
+				content:
+					"https://prediction-market-platform-frontend.vercel.app/logo512.png",
+			},
+			{ name: "twitter:card", content: "summary" },
+			{ name: "twitter:title", content: "Hyperwood Trader" },
+			{
+				name: "twitter:description",
+				content:
+					"Negocie mercados de previsão e acompanhe probabilidades em tempo real na Hyperwood.",
+			},
+			{
+				name: "twitter:image",
+				content:
+					"https://prediction-market-platform-frontend.vercel.app/logo512.png",
+			},
 		],
 		links: [{ rel: "stylesheet", href: appCss }],
 		scripts: [

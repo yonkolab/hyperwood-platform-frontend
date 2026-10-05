@@ -32,7 +32,7 @@ import {
 
 export const Route = createFileRoute("/markets/$marketId")({
 	loader: async ({ context, params }) => {
-		await Promise.all([
+		const [market] = await Promise.all([
 			context.queryClient.ensureQueryData(
 				marketDetailQueryOptions(params.marketId),
 			),
@@ -47,6 +47,38 @@ export const Route = createFileRoute("/markets/$marketId")({
 			),
 			context.queryClient.ensureQueryData(currentUserQueryOptions),
 		]);
+
+		return { market };
+	},
+	head: ({ loaderData }) => {
+		const market = loaderData?.market;
+		const title = market
+			? `${market.title} | Hyperwood`
+			: "Mercado de previsão | Hyperwood";
+		const description =
+			market?.summary ??
+			"Acompanhe probabilidades e negocie este mercado de previsão na Hyperwood.";
+		const url = market
+			? `https://prediction-market-platform-frontend.vercel.app/markets/${market.id}`
+			: "https://prediction-market-platform-frontend.vercel.app";
+		const image =
+			"https://prediction-market-platform-frontend.vercel.app/logo512.png";
+
+		return {
+			meta: [
+				{ title },
+				{ name: "description", content: description },
+				{ property: "og:type", content: "website" },
+				{ property: "og:title", content: title },
+				{ property: "og:description", content: description },
+				{ property: "og:url", content: url },
+				{ property: "og:image", content: image },
+				{ name: "twitter:card", content: "summary" },
+				{ name: "twitter:title", content: title },
+				{ name: "twitter:description", content: description },
+				{ name: "twitter:image", content: image },
+			],
+		};
 	},
 	pendingMs: 150,
 	pendingComponent: MarketDetailSkeleton,

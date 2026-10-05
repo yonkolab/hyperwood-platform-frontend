@@ -32,6 +32,31 @@ export const Route = createFileRoute("/events/brazil-presidential-election")({
 			marketDetailQueryOptions(activeMarket.id),
 		);
 	},
+	head: () => {
+		const title = "Eleição presidencial do Brasil 2026 | Hyperwood";
+		const description =
+			"Acompanhe os mercados de previsão para a eleição presidencial do Brasil em 2026, com resultados ativos, resolvidos e regras de resolução.";
+		const url =
+			"https://prediction-market-platform-frontend.vercel.app/events/brazil-presidential-election";
+		const image =
+			"https://prediction-market-platform-frontend.vercel.app/logo512.png";
+
+		return {
+			meta: [
+				{ title },
+				{ name: "description", content: description },
+				{ property: "og:type", content: "website" },
+				{ property: "og:title", content: title },
+				{ property: "og:description", content: description },
+				{ property: "og:url", content: url },
+				{ property: "og:image", content: image },
+				{ name: "twitter:card", content: "summary" },
+				{ name: "twitter:title", content: title },
+				{ name: "twitter:description", content: description },
+				{ name: "twitter:image", content: image },
+			],
+		};
+	},
 	component: BrazilPresidentialElectionPage,
 });
 
