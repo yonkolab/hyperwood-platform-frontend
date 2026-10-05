@@ -26,8 +26,8 @@ const SUPPORT_LINKS = [
 	{ label: "Central de ajuda", href: "#" },
 	{ label: "Como funciona", href: "#" },
 	{ label: "Taxas", href: "#" },
-	{ label: "Termos de uso", href: "#" },
-	{ label: "Privacidade", href: "#" },
+	{ label: "Termos de uso", href: "/terms" },
+	{ label: "Privacidade", href: "/privacy" },
 ];
 
 function FooterSection(props: {

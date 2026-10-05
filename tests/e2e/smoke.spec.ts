@@ -64,6 +64,24 @@ test('password recovery pages render their forms', async ({ page }) => {
   ).toBeVisible()
 })
 
+test('legal pages are linked in the footer and marked for review', async ({ page }) => {
+  await page.goto('/')
+  await page.getByRole('link', { name: 'Termos de uso' }).click()
+  await expect(page).toHaveURL(/\/terms$/)
+  await expect(page.getByRole('heading', { name: 'Termos de uso' })).toBeVisible()
+  await expect(page.getByText('Rascunho para revisão jurídica')).toBeVisible()
+
+  await page
+    .getByRole('navigation', { name: 'Outros documentos legais' })
+    .getByRole('link', { name: 'Política de privacidade' })
+    .click()
+  await expect(page).toHaveURL(/\/privacy$/)
+  await expect(
+    page.getByRole('heading', { name: 'Política de privacidade' }),
+  ).toBeVisible()
+  await expect(page.getByText('Rascunho para revisão jurídica')).toBeVisible()
+})
+
 test('market detail route loads for a configured market id', async ({ page }) => {
   const marketId = process.env.E2E_MARKET_ID
 
