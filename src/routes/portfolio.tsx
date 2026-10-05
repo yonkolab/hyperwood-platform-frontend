@@ -1,5 +1,6 @@
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { createFileRoute, redirect } from "@tanstack/react-router";
+import { PortfolioPageSkeleton } from "#/components/loading/page-skeletons";
 import { Card } from "#/components/ui/card";
 import { formatMoney, formatPriceBps } from "#/lib/format";
 import {
@@ -35,6 +36,8 @@ export const Route = createFileRoute("/portfolio")({
 			),
 		]);
 	},
+	pendingMs: 150,
+	pendingComponent: PortfolioPageSkeleton,
 	component: PortfolioPage,
 });
 

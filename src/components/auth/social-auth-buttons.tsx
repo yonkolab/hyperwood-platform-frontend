@@ -1,5 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import { Apple } from "lucide-react";
+import { Skeleton } from "#/components/ui/skeleton";
 import { env } from "#/env";
 import { getOAuthProviders } from "#/features/auth/server";
 
@@ -51,29 +52,37 @@ export function SocialAuthButtons() {
 				</p>
 			</div>
 			<div className="grid gap-3">
-				{(["google", "apple"] as const).map((provider) => {
-					const isEnabled = enabledProviders?.[provider] === true;
-					const authorizationUrl = `${env.VITE_API_BASE_URL.replace(/\/$/, "")}/api/v1/auth/oauth/${provider}/authorize`;
+				{providers.isPending
+					? (["google", "apple"] as const).map((provider) => (
+							<Skeleton
+								key={provider}
+								className="h-11 rounded-lg"
+								role="presentation"
+							/>
+						))
+					: (["google", "apple"] as const).map((provider) => {
+							const isEnabled = enabledProviders?.[provider] === true;
+							const authorizationUrl = `${env.VITE_API_BASE_URL.replace(/\/$/, "")}/api/v1/auth/oauth/${provider}/authorize`;
 
-					return (
-						<button
-							key={provider}
-							type="button"
-							disabled={!isEnabled}
-							onClick={() => window.location.assign(authorizationUrl)}
-							className="inline-flex min-h-11 items-center justify-center gap-2 rounded-lg border border-edge bg-card px-4 py-2 text-sm font-semibold text-foreground transition hover:border-brand/40 hover:bg-subtle disabled:cursor-not-allowed disabled:opacity-50"
-						>
-							{provider === "google" ? (
-								<GoogleMark />
-							) : (
-								<Apple aria-hidden="true" className="size-5" />
-							)}
-							<span>Continuar com {providerNames[provider]}</span>
-						</button>
-					);
-				})}
+							return (
+								<button
+									key={provider}
+									type="button"
+									disabled={!isEnabled}
+									onClick={() => window.location.assign(authorizationUrl)}
+									className="inline-flex min-h-11 items-center justify-center gap-2 rounded-lg border border-edge bg-card px-4 py-2 text-sm font-semibold text-foreground transition hover:border-brand/40 hover:bg-subtle disabled:cursor-not-allowed disabled:opacity-50"
+								>
+									{provider === "google" ? (
+										<GoogleMark />
+									) : (
+										<Apple aria-hidden="true" className="size-5" />
+									)}
+									<span>Continuar com {providerNames[provider]}</span>
+								</button>
+							);
+						})}
 			</div>
-			{providers.isError || providers.isPending ? (
+			{providers.isError ? (
 				<output className="mt-3 block text-center text-xs text-muted">
 					Login social indisponível: conecte e configure a API para ativar.
 				</output>

@@ -1,5 +1,6 @@
 import { useMutation, useSuspenseQuery } from "@tanstack/react-query";
 import { createFileRoute, redirect } from "@tanstack/react-router";
+import { ExportsPageSkeleton } from "#/components/loading/page-skeletons";
 import { Button } from "#/components/ui/button";
 import { Card } from "#/components/ui/card";
 import { createPortfolioExport } from "#/features/portfolio/server";
@@ -21,6 +22,8 @@ export const Route = createFileRoute("/portfolio/exports")({
 			portfolioExportsQueryOptions(currency),
 		);
 	},
+	pendingMs: 150,
+	pendingComponent: ExportsPageSkeleton,
 	component: PortfolioExportsPage,
 });
 

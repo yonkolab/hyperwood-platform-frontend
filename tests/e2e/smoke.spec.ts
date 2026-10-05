@@ -23,6 +23,15 @@ test('homepage renders trader shell', async ({ page }) => {
   await expect(page.getByRole('link', { name: /entrar/i })).toBeVisible()
 })
 
+test('unknown routes render the not found page', async ({ page }) => {
+  await page.goto('/this-route-does-not-exist')
+
+  await expect(
+    page.getByRole('heading', { name: 'Página não encontrada' }),
+  ).toBeVisible()
+  await expect(page.getByText('Erro 404')).toBeVisible()
+})
+
 test('auth routes render login and register forms', async ({ page }) => {
   await page.goto('/login')
   await expect(page.getByLabel(/e-mail/i)).toBeVisible()

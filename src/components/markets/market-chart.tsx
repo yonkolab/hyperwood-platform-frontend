@@ -9,13 +9,34 @@ import {
 	XAxis,
 	YAxis,
 } from "recharts";
+import { Skeleton } from "#/components/ui/skeleton";
 import type { HistoricalCandle } from "#/lib/api/types";
 
 const YES_COLOR = "#00a67e";
 const NO_COLOR = "#dc2f2f";
 
-export function MarketChart(props: { candles?: HistoricalCandle[] }) {
+export function MarketChart(props: {
+	candles?: HistoricalCandle[];
+	isLoading?: boolean;
+}) {
 	const candles = props.candles ?? [];
+
+	if (props.isLoading) {
+		return (
+			<section
+				aria-busy="true"
+				aria-label="Carregando gráfico do mercado"
+				className="space-y-4 rounded-lg border border-edge bg-card p-6"
+			>
+				<output className="sr-only">Carregando gráfico…</output>
+				<div className="flex gap-3">
+					<Skeleton className="h-4 w-20" />
+					<Skeleton className="h-4 w-20" />
+				</div>
+				<Skeleton className="h-[360px] w-full" />
+			</section>
+		);
+	}
 
 	if (candles.length === 0) {
 		return (

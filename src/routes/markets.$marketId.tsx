@@ -1,5 +1,6 @@
 import { useQuery, useSuspenseQuery } from "@tanstack/react-query";
 import { createFileRoute } from "@tanstack/react-router";
+import { MarketDetailSkeleton } from "#/components/loading/page-skeletons";
 import { MarketChart } from "#/components/markets/market-chart";
 import {
 	countComments,
@@ -47,6 +48,8 @@ export const Route = createFileRoute("/markets/$marketId")({
 			context.queryClient.ensureQueryData(currentUserQueryOptions),
 		]);
 	},
+	pendingMs: 150,
+	pendingComponent: MarketDetailSkeleton,
 	component: MarketDetailPage,
 });
 
@@ -57,7 +60,9 @@ function MarketDetailPage() {
 		marketOrderBookQueryOptions(marketId),
 	);
 	const { data: trades } = useSuspenseQuery(marketTradesQueryOptions(marketId));
-	const { data: candles } = useQuery(marketCandlesQueryOptions(marketId));
+	const { data: candles, isLoading: isCandlesLoading } = useQuery(
+		marketCandlesQueryOptions(marketId),
+	);
 	const { data: commentsData } = useQuery(marketCommentsQueryOptions(marketId));
 	const commentCount = countComments(commentsData?.comments ?? []);
 	const { data: announcements } = useSuspenseQuery(
@@ -106,7 +111,7 @@ function MarketDetailPage() {
 
 			<div className="grid gap-6 xl:grid-cols-[minmax(0,1fr)_340px]">
 				<div className="min-w-0 space-y-6">
-					<MarketChart candles={candles} />
+					<MarketChart candles={candles} isLoading={isCandlesLoading} />
 					<OrderBookPanel orderBook={orderBook} trades={trades} />
 					<div className="grid gap-6 lg:grid-cols-[minmax(0,1fr)_320px]">
 						<Card className="p-5">

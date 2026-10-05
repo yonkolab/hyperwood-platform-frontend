@@ -1,5 +1,6 @@
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { createFileRoute, redirect } from "@tanstack/react-router";
+import { HistoryPageSkeleton } from "#/components/loading/page-skeletons";
 import { Card } from "#/components/ui/card";
 import { formatDateTime, formatPriceBps } from "#/lib/format";
 import {
@@ -19,6 +20,8 @@ export const Route = createFileRoute("/portfolio/history/fills")({
 			historicalFillsQueryOptions(currency),
 		);
 	},
+	pendingMs: 150,
+	pendingComponent: HistoryPageSkeleton,
 	component: FillHistoryPage,
 });
 

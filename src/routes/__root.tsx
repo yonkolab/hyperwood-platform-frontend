@@ -8,6 +8,7 @@ import {
 import { useEffect, useState } from "react";
 import { Toaster } from "sonner";
 import { AppShell } from "#/components/layout/app-shell";
+import { NotFoundPage } from "#/components/routing/route-fallbacks";
 import { AppI18nProvider } from "#/lib/i18n";
 import {
 	currentUserQueryOptions,
@@ -44,6 +45,7 @@ export const Route = createRootRouteWithContext<RouterContext>()({
 			},
 		],
 	}),
+	notFoundComponent: NotFoundPage,
 	shellComponent: RootDocument,
 });
 

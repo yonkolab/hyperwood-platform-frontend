@@ -4,6 +4,7 @@ import { createFileRoute, redirect } from "@tanstack/react-router";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
+import { WalletPageSkeleton } from "#/components/loading/page-skeletons";
 import { Button } from "#/components/ui/button";
 import { Card } from "#/components/ui/card";
 import { Input } from "#/components/ui/input";
@@ -55,6 +56,8 @@ export const Route = createFileRoute("/wallet")({
 			context.queryClient.ensureQueryData(withdrawalsQueryOptions),
 		]);
 	},
+	pendingMs: 150,
+	pendingComponent: WalletPageSkeleton,
 	component: WalletPage,
 });
 

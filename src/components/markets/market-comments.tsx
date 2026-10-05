@@ -16,6 +16,7 @@ import { toast } from "sonner";
 import { Badge } from "#/components/ui/badge";
 import { Button } from "#/components/ui/button";
 import { Card } from "#/components/ui/card";
+import { Skeleton } from "#/components/ui/skeleton";
 import {
 	createMarketComment,
 	getMarketComments,
@@ -516,9 +517,26 @@ export function MarketComments(props: { marketId: string; user: User | null }) {
 				</div>
 
 				{isLoading ? (
-					<div className="flex justify-center py-10 text-muted">
-						<Loader2 className="size-5 animate-spin" />
-					</div>
+					<section
+						aria-busy="true"
+						aria-label="Carregando comentários"
+						className="mt-6 space-y-6"
+					>
+						<output className="sr-only">Carregando comentários…</output>
+						{["comment-a", "comment-b", "comment-c"].map((key) => (
+							<div
+								key={key}
+								className="flex gap-3 border-b border-edge pb-5 last:border-0"
+							>
+								<Skeleton className="size-10 shrink-0 rounded-full" />
+								<div className="min-w-0 flex-1 space-y-2">
+									<Skeleton className="h-4 w-1/3" />
+									<Skeleton className="h-3 w-full" />
+									<Skeleton className="h-3 w-4/5" />
+								</div>
+							</div>
+						))}
+					</section>
 				) : commentCount === 0 ? (
 					<p className="py-10 text-center text-sm text-muted">
 						Nenhum comentário ainda. Seja o primeiro a opinar.

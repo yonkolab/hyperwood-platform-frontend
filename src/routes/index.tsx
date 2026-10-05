@@ -1,6 +1,7 @@
 import { useInfiniteQuery } from "@tanstack/react-query";
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useMemo } from "react";
+import { HomePageSkeleton } from "#/components/loading/page-skeletons";
 import { EventCard } from "#/components/markets/event-card";
 import { HeroMarket } from "#/components/markets/hero-market";
 import { HomeSidebar } from "#/components/markets/home-sidebar";
@@ -51,6 +52,8 @@ export const Route = createFileRoute("/")({
 			homeInfiniteQueryOptions(deps),
 		);
 	},
+	pendingMs: 150,
+	pendingComponent: HomePageSkeleton,
 	component: HomePage,
 });
 
@@ -116,6 +119,10 @@ function HomePage() {
 		} as never;
 	}, [data, allMarkets]);
 
+	if (!data && infinite.isLoading) {
+		return <HomePageSkeleton />;
+	}
+
 	return (
 		<div className="space-y-0 md:space-y-10">
 			<section className="grid gap-6 xl:grid-cols-[minmax(0,1fr)_340px] xl:items-start">
@@ -136,7 +143,12 @@ function HomePage() {
 				/>
 				<MobileFeaturedCard />
 				<div className="grid gap-4 lg:grid-cols-3 xl:grid-cols-4">
-					{visibleMarkets.length === 0 ? (
+					{infinite.isError ? (
+						<p className="col-span-full py-16 text-center text-sm text-no">
+							Não foi possível carregar os mercados. Atualize a página para
+							tentar novamente.
+						</p>
+					) : visibleMarkets.length === 0 ? (
 						<p className="col-span-full py-16 text-center text-sm text-muted">
 							Nada encontrado com esses filtros — ajuste a busca ou limpe.
 						</p>
