@@ -53,6 +53,34 @@ export const marketCategoriesQueryOptions = queryOptions({
 		}),
 });
 
+export function electionEventQueryOptions(eventSlug: string) {
+	return queryOptions({
+		queryKey: ["markets", "events", eventSlug],
+		queryFn: async () => {
+			const result = await getMarkets({
+				data: {
+					search: "presidencial brasileira de 2026",
+					limit: 100,
+				},
+			});
+			const event = result.eventGroups.find(
+				(group) => group.eventSlug === eventSlug,
+			);
+
+			if (!event) {
+				throw new Error(`Evento não encontrado: ${eventSlug}`);
+			}
+
+			return {
+				event,
+				markets: result.markets.filter(
+					(market) => market.event.slug === eventSlug,
+				),
+			};
+		},
+	});
+}
+
 export const HOME_PAGE_SIZE = 50;
 
 export function homeInfiniteQueryOptions(search: {

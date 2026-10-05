@@ -11,6 +11,10 @@ import {
 } from "#/lib/format";
 
 const FAVORITES_KEY = "hw-favorites";
+const ELECTION_ACTIVE_CANDIDATES = new Set([
+	"eleicoes-2026-flavio-eleito",
+	"eleicoes-2026-lula-reeleito",
+]);
 
 function loadFavorites(): string[] {
 	if (typeof window === "undefined") {
@@ -168,7 +172,7 @@ function EventCardMatchup(props: { eventId: string; markets: MarketRecord[] }) {
 }
 
 function EventCardRows(props: {
-	eventId: string;
+	eventSlug: string;
 	eventTitle: string;
 	category: string;
 	markets: MarketRecord[];
@@ -220,6 +224,16 @@ function EventCardRows(props: {
 					</li>
 				))}
 			</ol>
+			{props.eventSlug === "eleicoes-brasil-2026" ? (
+				<div className="border-t border-edge px-5 py-3">
+					<Link
+						to="/events/brazil-presidential-election"
+						className="text-sm font-semibold text-brand hover:underline"
+					>
+						Ver todos os resultados
+					</Link>
+				</div>
+			) : null}
 		</>
 	);
 }
@@ -242,6 +256,19 @@ export function EventCard(props: {
 	const headline =
 		markets.find((market) => market.status === "active") ?? markets[0];
 	const isMatchup = event.category === "Esportes";
+	const cardMarkets =
+		event.eventSlug === "eleicoes-brasil-2026"
+			? [...markets].sort((left, right) => {
+					const leftIsCandidate = ELECTION_ACTIVE_CANDIDATES.has(left.slug);
+					const rightIsCandidate = ELECTION_ACTIVE_CANDIDATES.has(right.slug);
+
+					if (leftIsCandidate !== rightIsCandidate) {
+						return leftIsCandidate ? -1 : 1;
+					}
+
+					return right.yesPriceBps - left.yesPriceBps;
+				})
+			: markets;
 
 	return (
 		<Card className="flex h-full flex-col gap-0 overflow-hidden rounded-lg border-edge bg-card p-0 shadow-[0_1px_2px_rgba(13,31,23,0.05)] transition hover:border-brand/30 hover:shadow-[0_2px_12px_rgba(13,56,46,0.08)]">
@@ -253,10 +280,10 @@ export function EventCard(props: {
 			) : (
 				<div className="flex h-full flex-col">
 					<EventCardRows
-						eventId={event.eventId}
+						eventSlug={event.eventSlug}
 						eventTitle={event.eventTitle}
 						category={event.category}
-						markets={markets}
+						markets={cardMarkets}
 						headlineId={headline ? headline.id : null}
 					/>
 					<EventFooter volumeMinor={volumeMinor} category={event.category} />

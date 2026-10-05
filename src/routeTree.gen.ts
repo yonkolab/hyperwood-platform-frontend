@@ -21,6 +21,7 @@ import { Route as TermsRouteImport } from './routes/terms'
 import { Route as VerifyEmailRouteImport } from './routes/verify-email'
 import { Route as WalletRouteImport } from './routes/wallet'
 import { Route as AuthCallbackRouteImport } from './routes/auth.callback'
+import { Route as EventsBrazilPresidentialElectionRouteImport } from './routes/events.brazil-presidential-election'
 import { Route as MarketsMarketIdRouteImport } from './routes/markets.$marketId'
 import { Route as MfaVerifyRouteImport } from './routes/mfa.verify'
 import { Route as PortfolioExportsRouteImport } from './routes/portfolio.exports'
@@ -89,6 +90,12 @@ const AuthCallbackRoute = AuthCallbackRouteImport.update({
   path: '/auth/callback',
   getParentRoute: () => rootRouteImport,
 } as any)
+const EventsBrazilPresidentialElectionRoute =
+  EventsBrazilPresidentialElectionRouteImport.update({
+    id: '/events/brazil-presidential-election',
+    path: '/events/brazil-presidential-election',
+    getParentRoute: () => rootRouteImport,
+  } as any)
 const MarketsMarketIdRoute = MarketsMarketIdRouteImport.update({
   id: '/markets/$marketId',
   path: '/markets/$marketId',
@@ -138,6 +145,7 @@ export interface FileRoutesByFullPath {
   '/verify-email': typeof VerifyEmailRoute
   '/wallet': typeof WalletRoute
   '/auth/callback': typeof AuthCallbackRoute
+  '/events/brazil-presidential-election': typeof EventsBrazilPresidentialElectionRoute
   '/markets/$marketId': typeof MarketsMarketIdRoute
   '/mfa/verify': typeof MfaVerifyRoute
   '/portfolio/exports': typeof PortfolioExportsRoute
@@ -159,6 +167,7 @@ export interface FileRoutesByTo {
   '/verify-email': typeof VerifyEmailRoute
   '/wallet': typeof WalletRoute
   '/auth/callback': typeof AuthCallbackRoute
+  '/events/brazil-presidential-election': typeof EventsBrazilPresidentialElectionRoute
   '/markets/$marketId': typeof MarketsMarketIdRoute
   '/mfa/verify': typeof MfaVerifyRoute
   '/portfolio/exports': typeof PortfolioExportsRoute
@@ -181,6 +190,7 @@ export interface FileRoutesById {
   '/verify-email': typeof VerifyEmailRoute
   '/wallet': typeof WalletRoute
   '/auth/callback': typeof AuthCallbackRoute
+  '/events/brazil-presidential-election': typeof EventsBrazilPresidentialElectionRoute
   '/markets/$marketId': typeof MarketsMarketIdRoute
   '/mfa/verify': typeof MfaVerifyRoute
   '/portfolio/exports': typeof PortfolioExportsRoute
@@ -204,6 +214,7 @@ export interface FileRouteTypes {
     | '/verify-email'
     | '/wallet'
     | '/auth/callback'
+    | '/events/brazil-presidential-election'
     | '/markets/$marketId'
     | '/mfa/verify'
     | '/portfolio/exports'
@@ -225,6 +236,7 @@ export interface FileRouteTypes {
     | '/verify-email'
     | '/wallet'
     | '/auth/callback'
+    | '/events/brazil-presidential-election'
     | '/markets/$marketId'
     | '/mfa/verify'
     | '/portfolio/exports'
@@ -246,6 +258,7 @@ export interface FileRouteTypes {
     | '/verify-email'
     | '/wallet'
     | '/auth/callback'
+    | '/events/brazil-presidential-election'
     | '/markets/$marketId'
     | '/mfa/verify'
     | '/portfolio/exports'
@@ -268,6 +281,7 @@ export interface RootRouteChildren {
   VerifyEmailRoute: typeof VerifyEmailRoute
   WalletRoute: typeof WalletRoute
   AuthCallbackRoute: typeof AuthCallbackRoute
+  EventsBrazilPresidentialElectionRoute: typeof EventsBrazilPresidentialElectionRoute
   MarketsMarketIdRoute: typeof MarketsMarketIdRoute
   MfaVerifyRoute: typeof MfaVerifyRoute
   SettingsSecurityRoute: typeof SettingsSecurityRoute
@@ -360,6 +374,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthCallbackRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/events/brazil-presidential-election': {
+      id: '/events/brazil-presidential-election'
+      path: '/events/brazil-presidential-election'
+      fullPath: '/events/brazil-presidential-election'
+      preLoaderRoute: typeof EventsBrazilPresidentialElectionRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/markets/$marketId': {
       id: '/markets/$marketId'
       path: '/markets/$marketId'
@@ -441,6 +462,7 @@ const rootRouteChildren: RootRouteChildren = {
   VerifyEmailRoute: VerifyEmailRoute,
   WalletRoute: WalletRoute,
   AuthCallbackRoute: AuthCallbackRoute,
+  EventsBrazilPresidentialElectionRoute: EventsBrazilPresidentialElectionRoute,
   MarketsMarketIdRoute: MarketsMarketIdRoute,
   MfaVerifyRoute: MfaVerifyRoute,
   SettingsSecurityRoute: SettingsSecurityRoute,
