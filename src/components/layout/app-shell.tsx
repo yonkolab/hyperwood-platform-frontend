@@ -77,7 +77,6 @@ export function AppShell(props: {
 
 						{props.user ? (
 							<div className="hidden items-center gap-3 md:flex">
-								<span className="text-sm text-muted">{props.user.email}</span>
 								<Link to="/portfolio">
 									<Button>Portfolio</Button>
 								</Link>

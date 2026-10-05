@@ -17,6 +17,15 @@ const friendlyMessages: Record<string, string> = {
 		"Muitas tentativas. Aguarde alguns instantes e tente de novo.",
 	email_not_verified: "Verifique seu e-mail antes de entrar.",
 	invalid_verification_token: "Link de verificação inválido ou expirado.",
+	oauth_account_exists:
+		"Já existe uma conta com este e-mail. Entre usando seu método original; por segurança, as contas não são vinculadas automaticamente.",
+	oauth_cancelled: "Autenticação cancelada.",
+	oauth_email_unverified:
+		"Verifique seu e-mail no provedor antes de continuar.",
+	oauth_provider_unavailable:
+		"Este método de login ainda não está configurado.",
+	oauth_state_invalid:
+		"A tentativa de login expirou ou já foi usada. Inicie o login novamente.",
 };
 
 export function formatApiError(error: unknown): string {

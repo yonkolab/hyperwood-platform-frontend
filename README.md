@@ -88,8 +88,14 @@ This app does not expose backend bearer tokens to browser code.
 
 - login and registration happen through TanStack Start server functions
 - the backend opaque session token is stored in an HttpOnly cookie
+- social login exchanges a short-lived, one-time authorization code server-to-server
 - authenticated loaders and actions call the backend server-to-server
 - private SSE for `/api/v1/portfolio/stream` is proxied through the frontend
+
+Google and Apple buttons appear when their credentials are configured in the
+backend API. Register the API callback URLs shown in its `GOOGLE_OAUTH_REDIRECT_URI`
+and `APPLE_OAUTH_REDIRECT_URI` settings with each provider, and set
+`SOCIAL_AUTH_FRONTEND_CALLBACK_URL` to the frontend `/auth/callback` URL.
 
 The API types are generated from the backend OpenAPI spec:
 

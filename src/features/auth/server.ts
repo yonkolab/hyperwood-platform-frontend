@@ -8,6 +8,7 @@ import type {
 	CreateApiKeyResponse,
 	LoginMfaChallengeResponse,
 	LoginSessionResponse,
+	OAuthProvidersResponse,
 	RevokeApiKeyResponse,
 	RevokeSessionResponse,
 	RotateApiKeyResponse,
@@ -78,6 +79,9 @@ const confirmTotpSchema = z.object({
 });
 
 type LoginResult = LoginSessionResponse | LoginMfaChallengeResponse;
+type ClientLoginResult =
+	| Omit<LoginSessionResponse, "sessionToken">
+	| LoginMfaChallengeResponse;
 
 function isLoginSession(result: LoginResult): result is LoginSessionResponse {
 	return result.mfaRequired === false;
@@ -133,14 +137,47 @@ export const requestEmailVerification = createServerFn({ method: "POST" })
 
 export const loginUser = createServerFn({ method: "POST" })
 	.inputValidator(loginSchema)
-	.handler(async ({ data }): Promise<LoginResult> => {
+	.handler(async ({ data }): Promise<ClientLoginResult> => {
 		const result = await requestBackend<LoginResult>("/api/v1/auth/login", {
 			method: "POST",
 			body: data,
 		});
 
 		if (isLoginSession(result)) {
-			setStoredSessionToken(result.sessionToken);
+			const { sessionToken, ...clientResult } = result;
+			setStoredSessionToken(sessionToken);
+			return clientResult;
+		}
+
+		return result;
+	});
+
+const oauthProviderSchema = z.enum(["google", "apple"]);
+const oauthExchangeSchema = z.object({
+	provider: oauthProviderSchema,
+	code: z.string().min(1).max(128),
+});
+
+export const getOAuthProviders = createServerFn({ method: "GET" }).handler(
+	(): Promise<OAuthProvidersResponse> =>
+		requestBackend<OAuthProvidersResponse>("/api/v1/auth/oauth/providers"),
+);
+
+export const exchangeOAuthLoginCode = createServerFn({ method: "POST" })
+	.inputValidator(oauthExchangeSchema)
+	.handler(async ({ data }): Promise<ClientLoginResult> => {
+		const result = await requestBackend<LoginResult>(
+			`/api/v1/auth/oauth/${data.provider}/exchange`,
+			{
+				method: "POST",
+				body: { code: data.code },
+			},
+		);
+
+		if (isLoginSession(result)) {
+			const { sessionToken, ...clientResult } = result;
+			setStoredSessionToken(sessionToken);
+			return clientResult;
 		}
 
 		return result;
@@ -158,18 +195,21 @@ export const verifyEmail = createServerFn({ method: "POST" })
 
 export const verifyTotpLogin = createServerFn({ method: "POST" })
 	.inputValidator(verifyTotpSchema)
-	.handler(async ({ data }): Promise<LoginSessionResponse> => {
-		const result = await requestBackend<LoginSessionResponse>(
-			"/api/v1/auth/mfa/totp/verify",
-			{
-				method: "POST",
-				body: data,
-			},
-		);
+	.handler(
+		async ({ data }): Promise<Omit<LoginSessionResponse, "sessionToken">> => {
+			const result = await requestBackend<LoginSessionResponse>(
+				"/api/v1/auth/mfa/totp/verify",
+				{
+					method: "POST",
+					body: data,
+				},
+			);
 
-		setStoredSessionToken(result.sessionToken);
-		return result;
-	});
+			const { sessionToken, ...clientResult } = result;
+			setStoredSessionToken(sessionToken);
+			return clientResult;
+		},
+	);
 
 export const logoutUser = createServerFn({ method: "POST" }).handler(
 	async (): Promise<{ ok: true }> => {

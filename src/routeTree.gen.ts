@@ -15,6 +15,7 @@ import { Route as PortfolioRouteImport } from './routes/portfolio'
 import { Route as RegisterRouteImport } from './routes/register'
 import { Route as VerifyEmailRouteImport } from './routes/verify-email'
 import { Route as WalletRouteImport } from './routes/wallet'
+import { Route as AuthCallbackRouteImport } from './routes/auth.callback'
 import { Route as MarketsMarketIdRouteImport } from './routes/markets.$marketId'
 import { Route as MfaVerifyRouteImport } from './routes/mfa.verify'
 import { Route as PortfolioExportsRouteImport } from './routes/portfolio.exports'
@@ -51,6 +52,11 @@ const VerifyEmailRoute = VerifyEmailRouteImport.update({
 const WalletRoute = WalletRouteImport.update({
   id: '/wallet',
   path: '/wallet',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AuthCallbackRoute = AuthCallbackRouteImport.update({
+  id: '/auth/callback',
+  path: '/auth/callback',
   getParentRoute: () => rootRouteImport,
 } as any)
 const MarketsMarketIdRoute = MarketsMarketIdRouteImport.update({
@@ -96,6 +102,7 @@ export interface FileRoutesByFullPath {
   '/register': typeof RegisterRoute
   '/verify-email': typeof VerifyEmailRoute
   '/wallet': typeof WalletRoute
+  '/auth/callback': typeof AuthCallbackRoute
   '/markets/$marketId': typeof MarketsMarketIdRoute
   '/mfa/verify': typeof MfaVerifyRoute
   '/portfolio/exports': typeof PortfolioExportsRoute
@@ -111,6 +118,7 @@ export interface FileRoutesByTo {
   '/register': typeof RegisterRoute
   '/verify-email': typeof VerifyEmailRoute
   '/wallet': typeof WalletRoute
+  '/auth/callback': typeof AuthCallbackRoute
   '/markets/$marketId': typeof MarketsMarketIdRoute
   '/mfa/verify': typeof MfaVerifyRoute
   '/portfolio/exports': typeof PortfolioExportsRoute
@@ -127,6 +135,7 @@ export interface FileRoutesById {
   '/register': typeof RegisterRoute
   '/verify-email': typeof VerifyEmailRoute
   '/wallet': typeof WalletRoute
+  '/auth/callback': typeof AuthCallbackRoute
   '/markets/$marketId': typeof MarketsMarketIdRoute
   '/mfa/verify': typeof MfaVerifyRoute
   '/portfolio/exports': typeof PortfolioExportsRoute
@@ -144,6 +153,7 @@ export interface FileRouteTypes {
     | '/register'
     | '/verify-email'
     | '/wallet'
+    | '/auth/callback'
     | '/markets/$marketId'
     | '/mfa/verify'
     | '/portfolio/exports'
@@ -159,6 +169,7 @@ export interface FileRouteTypes {
     | '/register'
     | '/verify-email'
     | '/wallet'
+    | '/auth/callback'
     | '/markets/$marketId'
     | '/mfa/verify'
     | '/portfolio/exports'
@@ -174,6 +185,7 @@ export interface FileRouteTypes {
     | '/register'
     | '/verify-email'
     | '/wallet'
+    | '/auth/callback'
     | '/markets/$marketId'
     | '/mfa/verify'
     | '/portfolio/exports'
@@ -190,6 +202,7 @@ export interface RootRouteChildren {
   RegisterRoute: typeof RegisterRoute
   VerifyEmailRoute: typeof VerifyEmailRoute
   WalletRoute: typeof WalletRoute
+  AuthCallbackRoute: typeof AuthCallbackRoute
   MarketsMarketIdRoute: typeof MarketsMarketIdRoute
   MfaVerifyRoute: typeof MfaVerifyRoute
   SettingsSecurityRoute: typeof SettingsSecurityRoute
@@ -238,6 +251,13 @@ declare module '@tanstack/react-router' {
       path: '/wallet'
       fullPath: '/wallet'
       preLoaderRoute: typeof WalletRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/auth/callback': {
+      id: '/auth/callback'
+      path: '/auth/callback'
+      fullPath: '/auth/callback'
+      preLoaderRoute: typeof AuthCallbackRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/markets/$marketId': {
@@ -315,6 +335,7 @@ const rootRouteChildren: RootRouteChildren = {
   RegisterRoute: RegisterRoute,
   VerifyEmailRoute: VerifyEmailRoute,
   WalletRoute: WalletRoute,
+  AuthCallbackRoute: AuthCallbackRoute,
   MarketsMarketIdRoute: MarketsMarketIdRoute,
   MfaVerifyRoute: MfaVerifyRoute,
   SettingsSecurityRoute: SettingsSecurityRoute,

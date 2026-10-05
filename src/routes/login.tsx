@@ -4,6 +4,7 @@ import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { z } from "zod";
+import { SocialAuthButtons } from "#/components/auth/social-auth-buttons";
 import { Button } from "#/components/ui/button";
 import { Card } from "#/components/ui/card";
 import { Input } from "#/components/ui/input";
@@ -96,6 +97,7 @@ function LoginPage() {
 						{mutation.isPending ? "Entrando..." : "Entrar"}
 					</Button>
 				</form>
+				<SocialAuthButtons />
 			</Card>
 		</div>
 	);
