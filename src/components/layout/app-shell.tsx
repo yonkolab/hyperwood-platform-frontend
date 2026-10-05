@@ -110,7 +110,10 @@ export function AppShell(props: {
 							</>
 						)}
 						<div className="hidden md:block">
-							<SettingsMenu locale={props.locale} />
+							<SettingsMenu
+								locale={props.locale}
+								isAuthenticated={Boolean(props.user)}
+							/>
 						</div>
 					</div>
 					<div className="scrollbar-none -mx-4 hidden overflow-x-auto px-4 md:block">

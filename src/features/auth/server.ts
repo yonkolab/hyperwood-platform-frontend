@@ -40,6 +40,10 @@ const loginSchema = emailSchema.extend({
 	password: z.string().min(1),
 });
 
+const profileUsernameSchema = z.object({
+	username: z.string().trim().min(3).max(64),
+});
+
 const verifyEmailSchema = z.object({
 	token: z.string().min(1),
 });
@@ -111,6 +115,22 @@ export const getCurrentUser = createServerFn({ method: "GET" }).handler(
 		}
 	},
 );
+
+export const updateCurrentUserProfile = createServerFn({ method: "POST" })
+	.inputValidator(profileUsernameSchema)
+	.handler(async ({ data }): Promise<AuthMeResponse> => {
+		const token = await getAuthorizationToken();
+
+		if (!token) {
+			throw new Error("Missing session token for updateCurrentUserProfile");
+		}
+
+		return requestBackend<AuthMeResponse>("/api/v1/auth/me", {
+			method: "PATCH",
+			token,
+			body: data,
+		});
+	});
 
 export const registerUser = createServerFn({ method: "POST" })
 	.inputValidator(registerSchema)

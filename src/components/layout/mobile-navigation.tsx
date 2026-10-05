@@ -227,6 +227,7 @@ export function MobileNavigation(props: MobileNavigationProps) {
 							<div className="overflow-hidden rounded-xl border border-edge">
 								<SettingsActions
 									locale={props.locale}
+									isAuthenticated={Boolean(props.user)}
 									onAction={() => setSheetOpen(false)}
 								/>
 							</div>

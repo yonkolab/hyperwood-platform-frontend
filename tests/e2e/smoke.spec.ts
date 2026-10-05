@@ -32,6 +32,13 @@ test('unknown routes render the not found page', async ({ page }) => {
   await expect(page.getByText('Erro 404')).toBeVisible()
 })
 
+test('profile page requires an authenticated user', async ({ page }) => {
+  await page.goto('/profile')
+
+  await expect(page).toHaveURL(/\/login$/)
+  await expect(page.getByLabel(/e-mail/i)).toBeVisible()
+})
+
 test('auth routes render login and register forms', async ({ page }) => {
   await page.goto('/login')
   await expect(page.getByLabel(/e-mail/i)).toBeVisible()

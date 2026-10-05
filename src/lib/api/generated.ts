@@ -226,7 +226,8 @@ export interface paths {
 		delete?: never;
 		options?: never;
 		head?: never;
-		patch?: never;
+		/** Update the authenticated user's basic profile */
+		patch: operations["updateAuthenticatedUserProfile"];
 		trace?: never;
 	};
 	"/api/v1/auth/sessions": {
@@ -2667,6 +2668,9 @@ export interface components {
 			acknowledged: true;
 			test: boolean;
 		};
+		UpdateProfileRequest: {
+			username: string;
+		};
 		SessionSummary: {
 			/** Format: uuid */
 			id: string;
@@ -3944,6 +3948,33 @@ export interface operations {
 				};
 			};
 			401: components["responses"]["Unauthorized"];
+		};
+	};
+	updateAuthenticatedUserProfile: {
+		parameters: {
+			query?: never;
+			header?: never;
+			path?: never;
+			cookie?: never;
+		};
+		requestBody: {
+			content: {
+				"application/json": components["schemas"]["UpdateProfileRequest"];
+			};
+		};
+		responses: {
+			/** @description Updated current user. */
+			200: {
+				headers: {
+					[name: string]: unknown;
+				};
+				content: {
+					"application/json": components["schemas"]["AuthMeResponse"];
+				};
+			};
+			401: components["responses"]["Unauthorized"];
+			404: components["responses"]["NotFound"];
+			409: components["responses"]["Conflict"];
 		};
 	};
 	listSessions: {

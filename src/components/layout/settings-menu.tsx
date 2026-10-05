@@ -1,4 +1,4 @@
-import { useRouter } from "@tanstack/react-router";
+import { Link, useRouter } from "@tanstack/react-router";
 import {
 	BookOpen,
 	CircleDot,
@@ -9,6 +9,7 @@ import {
 	Moon,
 	ScrollText,
 	Sun,
+	UserRound,
 } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { Button } from "#/components/ui/button";
@@ -27,6 +28,7 @@ type MenuItem = {
 export function SettingsActions(props: {
 	locale: AppLocale;
 	onAction?: () => void;
+	isAuthenticated?: boolean;
 }) {
 	const [theme, setThemeState] = useState<"light" | "dark">("light");
 	const router = useRouter();
@@ -68,6 +70,16 @@ export function SettingsActions(props: {
 
 	return (
 		<>
+			{props.isAuthenticated ? (
+				<Link
+					to="/profile"
+					className="flex w-full items-center gap-3 px-4 py-2.5 text-left text-sm text-foreground transition hover:bg-subtle"
+					onClick={() => props.onAction?.()}
+				>
+					<UserRound className="size-4 text-muted" />
+					Profile
+				</Link>
+			) : null}
 			{items.map((item) =>
 				item.divider ? (
 					<div key={item.label} className="my-1 border-t border-edge" />
@@ -99,7 +111,10 @@ export function SettingsActions(props: {
 	);
 }
 
-export function SettingsMenu(props: { locale: AppLocale }) {
+export function SettingsMenu(props: {
+	locale: AppLocale;
+	isAuthenticated: boolean;
+}) {
 	const [open, setOpen] = useState(false);
 	const menuRef = useRef<HTMLDivElement>(null);
 
@@ -162,6 +177,7 @@ export function SettingsMenu(props: { locale: AppLocale }) {
 					<div className="absolute right-0 top-11 z-20 w-56 overflow-hidden rounded-lg border border-edge bg-card py-1 shadow-[0_8px_24px_rgba(13,31,23,0.14)]">
 						<SettingsActions
 							locale={props.locale}
+							isAuthenticated={props.isAuthenticated}
 							onAction={() => setOpen(false)}
 						/>
 					</div>
