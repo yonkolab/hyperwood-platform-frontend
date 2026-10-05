@@ -9,6 +9,8 @@ import type {
 	LoginMfaChallengeResponse,
 	LoginSessionResponse,
 	OAuthProvidersResponse,
+	RequestPasswordResetResponse,
+	ResetPasswordResponse,
 	RevokeApiKeyResponse,
 	RevokeSessionResponse,
 	RotateApiKeyResponse,
@@ -42,6 +44,13 @@ const loginSchema = emailSchema.extend({
 
 const profileUsernameSchema = z.object({
 	username: z.string().trim().min(3).max(64),
+});
+
+const resetEmailSchema = emailSchema;
+
+const resetPasswordSchema = z.object({
+	token: z.string().min(1).max(128),
+	password: z.string().min(10).max(128),
 });
 
 const verifyEmailSchema = z.object({
@@ -130,6 +139,33 @@ export const updateCurrentUserProfile = createServerFn({ method: "POST" })
 			token,
 			body: data,
 		});
+	});
+
+export const requestPasswordReset = createServerFn({ method: "POST" })
+	.inputValidator(resetEmailSchema)
+	.handler(
+		async ({ data }): Promise<RequestPasswordResetResponse> =>
+			requestBackend<RequestPasswordResetResponse>(
+				"/api/v1/auth/password/forgot",
+				{
+					method: "POST",
+					body: data,
+				},
+			),
+	);
+
+export const resetPassword = createServerFn({ method: "POST" })
+	.inputValidator(resetPasswordSchema)
+	.handler(async ({ data }): Promise<ResetPasswordResponse> => {
+		const result = await requestBackend<ResetPasswordResponse>(
+			"/api/v1/auth/password/reset",
+			{
+				method: "POST",
+				body: data,
+			},
+		);
+		clearStoredSessionToken();
+		return result;
 	});
 
 export const registerUser = createServerFn({ method: "POST" })

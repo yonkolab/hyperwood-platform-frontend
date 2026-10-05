@@ -1,6 +1,6 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { createFileRoute, useNavigate } from "@tanstack/react-router";
+import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { z } from "zod";
@@ -89,6 +89,14 @@ function LoginPage() {
 							{...form.register("password")}
 						/>
 					</label>
+					<div className="text-right">
+						<Link
+							to="/forgot-password"
+							className="text-sm font-medium text-brand underline-offset-4 hover:underline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand"
+						>
+							Esqueceu a senha?
+						</Link>
+					</div>
 					<Button
 						type="submit"
 						className="w-full"

@@ -161,6 +161,43 @@ export interface paths {
 		patch?: never;
 		trace?: never;
 	};
+	"/api/v1/auth/password/forgot": {
+		parameters: {
+			query?: never;
+			header?: never;
+			path?: never;
+			cookie?: never;
+		};
+		get?: never;
+		put?: never;
+		/**
+		 * Request a password reset email
+		 * @description Always returns the same public response to prevent account enumeration.
+		 */
+		post: operations["requestPasswordReset"];
+		delete?: never;
+		options?: never;
+		head?: never;
+		patch?: never;
+		trace?: never;
+	};
+	"/api/v1/auth/password/reset": {
+		parameters: {
+			query?: never;
+			header?: never;
+			path?: never;
+			cookie?: never;
+		};
+		get?: never;
+		put?: never;
+		/** Reset a password using a single-use email token */
+		post: operations["resetPassword"];
+		delete?: never;
+		options?: never;
+		head?: never;
+		patch?: never;
+		trace?: never;
+	};
 	"/api/v1/webhooks/email/providers/{provider}": {
 		parameters: {
 			query?: never;
@@ -2663,6 +2700,23 @@ export interface components {
 		OAuthExchangeRequest: {
 			code: string;
 		};
+		RequestPasswordResetRequest: {
+			/** Format: email */
+			email: string;
+		};
+		RequestPasswordResetResponse: {
+			message: string;
+			/** @description Present only in non-production environments for local testing. */
+			developmentResetToken?: string | null;
+		};
+		ResetPasswordRequest: {
+			token: string;
+			password: string;
+		};
+		ResetPasswordResponse: {
+			/** @enum {boolean} */
+			reset: true;
+		};
 		EmailWebhookAckResponse: {
 			/** @enum {boolean} */
 			acknowledged: true;
@@ -3842,6 +3896,57 @@ export interface operations {
 			409: components["responses"]["Conflict"];
 			410: components["responses"]["Gone"];
 			429: components["responses"]["TooManyRequests"];
+		};
+	};
+	requestPasswordReset: {
+		parameters: {
+			query?: never;
+			header?: never;
+			path?: never;
+			cookie?: never;
+		};
+		requestBody: {
+			content: {
+				"application/json": components["schemas"]["RequestPasswordResetRequest"];
+			};
+		};
+		responses: {
+			/** @description If an eligible account exists, reset instructions will be sent. */
+			202: {
+				headers: {
+					"Cache-Control"?: string;
+					[name: string]: unknown;
+				};
+				content: {
+					"application/json": components["schemas"]["RequestPasswordResetResponse"];
+				};
+			};
+		};
+	};
+	resetPassword: {
+		parameters: {
+			query?: never;
+			header?: never;
+			path?: never;
+			cookie?: never;
+		};
+		requestBody: {
+			content: {
+				"application/json": components["schemas"]["ResetPasswordRequest"];
+			};
+		};
+		responses: {
+			/** @description Password updated and existing sessions revoked. */
+			200: {
+				headers: {
+					"Cache-Control"?: string;
+					[name: string]: unknown;
+				};
+				content: {
+					"application/json": components["schemas"]["ResetPasswordResponse"];
+				};
+			};
+			400: components["responses"]["BadRequest"];
 		};
 	};
 	receiveEmailProviderWebhook: {

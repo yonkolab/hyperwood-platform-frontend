@@ -10,10 +10,12 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as ForgotPasswordRouteImport } from './routes/forgot-password'
 import { Route as LoginRouteImport } from './routes/login'
 import { Route as PortfolioRouteImport } from './routes/portfolio'
 import { Route as ProfileRouteImport } from './routes/profile'
 import { Route as RegisterRouteImport } from './routes/register'
+import { Route as ResetPasswordRouteImport } from './routes/reset-password'
 import { Route as VerifyEmailRouteImport } from './routes/verify-email'
 import { Route as WalletRouteImport } from './routes/wallet'
 import { Route as AuthCallbackRouteImport } from './routes/auth.callback'
@@ -28,6 +30,11 @@ import { Route as PortfolioHistoryOrdersRouteImport } from './routes/portfolio.h
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ForgotPasswordRoute = ForgotPasswordRouteImport.update({
+  id: '/forgot-password',
+  path: '/forgot-password',
   getParentRoute: () => rootRouteImport,
 } as any)
 const LoginRoute = LoginRouteImport.update({
@@ -48,6 +55,11 @@ const ProfileRoute = ProfileRouteImport.update({
 const RegisterRoute = RegisterRouteImport.update({
   id: '/register',
   path: '/register',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ResetPasswordRoute = ResetPasswordRouteImport.update({
+  id: '/reset-password',
+  path: '/reset-password',
   getParentRoute: () => rootRouteImport,
 } as any)
 const VerifyEmailRoute = VerifyEmailRouteImport.update({
@@ -103,10 +115,12 @@ const PortfolioHistoryOrdersRoute = PortfolioHistoryOrdersRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/forgot-password': typeof ForgotPasswordRoute
   '/login': typeof LoginRoute
   '/portfolio': typeof PortfolioRouteWithChildren
   '/profile': typeof ProfileRoute
   '/register': typeof RegisterRoute
+  '/reset-password': typeof ResetPasswordRoute
   '/verify-email': typeof VerifyEmailRoute
   '/wallet': typeof WalletRoute
   '/auth/callback': typeof AuthCallbackRoute
@@ -120,10 +134,12 @@ export interface FileRoutesByFullPath {
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/forgot-password': typeof ForgotPasswordRoute
   '/login': typeof LoginRoute
   '/portfolio': typeof PortfolioRouteWithChildren
   '/profile': typeof ProfileRoute
   '/register': typeof RegisterRoute
+  '/reset-password': typeof ResetPasswordRoute
   '/verify-email': typeof VerifyEmailRoute
   '/wallet': typeof WalletRoute
   '/auth/callback': typeof AuthCallbackRoute
@@ -138,10 +154,12 @@ export interface FileRoutesByTo {
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/forgot-password': typeof ForgotPasswordRoute
   '/login': typeof LoginRoute
   '/portfolio': typeof PortfolioRouteWithChildren
   '/profile': typeof ProfileRoute
   '/register': typeof RegisterRoute
+  '/reset-password': typeof ResetPasswordRoute
   '/verify-email': typeof VerifyEmailRoute
   '/wallet': typeof WalletRoute
   '/auth/callback': typeof AuthCallbackRoute
@@ -157,10 +175,12 @@ export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
+    | '/forgot-password'
     | '/login'
     | '/portfolio'
     | '/profile'
     | '/register'
+    | '/reset-password'
     | '/verify-email'
     | '/wallet'
     | '/auth/callback'
@@ -174,10 +194,12 @@ export interface FileRouteTypes {
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
+    | '/forgot-password'
     | '/login'
     | '/portfolio'
     | '/profile'
     | '/register'
+    | '/reset-password'
     | '/verify-email'
     | '/wallet'
     | '/auth/callback'
@@ -191,10 +213,12 @@ export interface FileRouteTypes {
   id:
     | '__root__'
     | '/'
+    | '/forgot-password'
     | '/login'
     | '/portfolio'
     | '/profile'
     | '/register'
+    | '/reset-password'
     | '/verify-email'
     | '/wallet'
     | '/auth/callback'
@@ -209,10 +233,12 @@ export interface FileRouteTypes {
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  ForgotPasswordRoute: typeof ForgotPasswordRoute
   LoginRoute: typeof LoginRoute
   PortfolioRoute: typeof PortfolioRouteWithChildren
   ProfileRoute: typeof ProfileRoute
   RegisterRoute: typeof RegisterRoute
+  ResetPasswordRoute: typeof ResetPasswordRoute
   VerifyEmailRoute: typeof VerifyEmailRoute
   WalletRoute: typeof WalletRoute
   AuthCallbackRoute: typeof AuthCallbackRoute
@@ -229,6 +255,13 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/forgot-password': {
+      id: '/forgot-password'
+      path: '/forgot-password'
+      fullPath: '/forgot-password'
+      preLoaderRoute: typeof ForgotPasswordRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/login': {
@@ -257,6 +290,13 @@ declare module '@tanstack/react-router' {
       path: '/register'
       fullPath: '/register'
       preLoaderRoute: typeof RegisterRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/reset-password': {
+      id: '/reset-password'
+      path: '/reset-password'
+      fullPath: '/reset-password'
+      preLoaderRoute: typeof ResetPasswordRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/verify-email': {
@@ -350,10 +390,12 @@ const PortfolioRouteWithChildren = PortfolioRoute._addFileChildren(
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  ForgotPasswordRoute: ForgotPasswordRoute,
   LoginRoute: LoginRoute,
   PortfolioRoute: PortfolioRouteWithChildren,
   ProfileRoute: ProfileRoute,
   RegisterRoute: RegisterRoute,
+  ResetPasswordRoute: ResetPasswordRoute,
   VerifyEmailRoute: VerifyEmailRoute,
   WalletRoute: WalletRoute,
   AuthCallbackRoute: AuthCallbackRoute,

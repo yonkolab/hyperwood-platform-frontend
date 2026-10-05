@@ -81,6 +81,10 @@ export type LoginMfaChallengeResponse =
 export type OAuthProvidersResponse =
 	components["schemas"]["OAuthProvidersResponse"];
 export type VerifyEmailResponse = components["schemas"]["VerifyEmailResponse"];
+export type RequestPasswordResetResponse =
+	components["schemas"]["RequestPasswordResetResponse"];
+export type ResetPasswordResponse =
+	components["schemas"]["ResetPasswordResponse"];
 export type SessionListResponse = components["schemas"]["SessionListResponse"];
 export type TotpSetupResponse = components["schemas"]["TotpSetupResponse"];
 export type TotpConfirmResponse = components["schemas"]["TotpConfirmResponse"];

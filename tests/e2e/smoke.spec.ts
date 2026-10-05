@@ -43,10 +43,25 @@ test('auth routes render login and register forms', async ({ page }) => {
   await page.goto('/login')
   await expect(page.getByLabel(/e-mail/i)).toBeVisible()
   await expect(page.getByLabel('Senha')).toBeVisible()
+  await expect(page.getByRole('link', { name: /esqueceu a senha/i })).toBeVisible()
 
   await page.goto('/register')
   await expect(page.getByLabel(/e-mail/i)).toBeVisible()
   await expect(page.getByLabel('Senha')).toBeVisible()
+})
+
+test('password recovery pages render their forms', async ({ page }) => {
+  await page.goto('/forgot-password')
+  await expect(page.getByRole('heading', { name: 'Recuperar senha' })).toBeVisible()
+  await expect(page.getByLabel('E-mail')).toBeVisible()
+
+  await page.goto('/reset-password')
+  await expect(page.getByRole('heading', { name: 'Criar nova senha' })).toBeVisible()
+  await expect(page.getByLabel('Token recebido por e-mail')).toBeVisible()
+  await expect(page.getByRole('textbox', { name: 'Nova senha', exact: true })).toBeVisible()
+  await expect(
+    page.getByRole('textbox', { name: 'Confirmar nova senha', exact: true }),
+  ).toBeVisible()
 })
 
 test('market detail route loads for a configured market id', async ({ page }) => {
